@@ -320,7 +320,7 @@
     <nav class="nav" aria-label="Päävalikko">
       <a class="brand" href="#alku" aria-label="Kotivaihto, alkuun"><span class="brand-mark" aria-hidden="true">K</span> Kotivaihto</a>
       <div class="nav-links"><a href="#markkina">Markkina</a><a href="#rahoitus">Rahoitus</a><a href="#tarkistus">Tarkistus</a><a href="#menetelma">Menetelmä</a></div>
-      <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton">Jaa yhteenveto</button><button class="button" type="button" id="printButton">Tulosta</button></div>
+      <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton" title="Jaettava linkki sisältää laskelman luvut, ei ilmoitustekstiä tai kohdeportaaliin johtavaa linkkiä.">Jaa vertailu</button><button class="button" type="button" id="printButton">Tulosta</button></div>
     </nav>
   </header>
 
@@ -505,7 +505,7 @@
           bindInputs();
           setupCombobox("current");
           setupCombobox("target");
-          if (!restoreSavedComparison()) {
+          if (!restoreSharedComparison() && !restoreSavedComparison()) {
             selectArea("current", findArea("00100"), false);
             selectArea("target", findArea("02600"), false);
           }
@@ -660,6 +660,17 @@
         };
       }
 
+      function createSharedComparison() {
+        const snapshot = createSavedComparison();
+        return {
+          version: snapshot.version,
+          currentPostcode: snapshot.currentPostcode,
+          targetPostcode: snapshot.targetPostcode,
+          offerChecks: snapshot.offerChecks,
+          values: snapshot.values
+        };
+      }
+
       function saveComparison() {
         try {
           const snapshot = createSavedComparison();
@@ -687,17 +698,7 @@
           const raw = localStorage.getItem(savedComparisonKey);
           if (!raw) return false;
           const snapshot = JSON.parse(raw);
-          if (snapshot?.version !== 1 || !snapshot.values || typeof snapshot.values !== "object") return false;
-          const currentArea = snapshot.currentPostcode ? findArea(snapshot.currentPostcode) : null;
-          const targetArea = snapshot.targetPostcode ? findArea(snapshot.targetPostcode) : null;
-          if (snapshot.offerChecks && typeof snapshot.offerChecks === "object") {
-            state.offerChecks = Object.fromEntries($$('[data-offer-check]').map(input => [input.dataset.offerCheck, Boolean(snapshot.offerChecks[input.dataset.offerCheck])]));
-          }
-          if (currentArea) selectArea("current", currentArea, false);
-          if (targetArea) selectArea("target", targetArea, false);
-          savedInputIds.forEach(id => {
-            if (typeof snapshot.values[id] === "string") $(`#${id}`).value = snapshot.values[id];
-          });
+          if (!applyComparisonSnapshot(snapshot)) return false;
           const savedAt = snapshot.savedAt ? new Date(snapshot.savedAt) : null;
           const time = savedAt && Number.isFinite(savedAt.getTime()) ? ` (${savedAt.toLocaleString("fi-FI", { dateStyle: "short", timeStyle: "short" })})` : "";
           setSavedStatus(`Tallennettu vertailu palautettiin tälle laitteelle${time}.`, "good");
@@ -705,6 +706,41 @@
         } catch (_) {
           return false;
         }
+      }
+
+      function applyComparisonSnapshot(snapshot) {
+        if (snapshot?.version !== 1 || !snapshot.values || typeof snapshot.values !== "object") return false;
+        const currentArea = snapshot.currentPostcode ? findArea(snapshot.currentPostcode) : null;
+        const targetArea = snapshot.targetPostcode ? findArea(snapshot.targetPostcode) : null;
+        state.offerChecks = snapshot.offerChecks && typeof snapshot.offerChecks === "object"
+          ? Object.fromEntries($$('[data-offer-check]').map(input => [input.dataset.offerCheck, Boolean(snapshot.offerChecks[input.dataset.offerCheck])]))
+          : {};
+        if (currentArea) selectArea("current", currentArea, false);
+        else { state.current.area = null; $("#current-area-search").value = ""; }
+        if (targetArea) selectArea("target", targetArea, false);
+        else { state.target.area = null; $("#target-area-search").value = ""; }
+        savedInputIds.forEach(id => {
+          if (typeof snapshot.values[id] === "string") $(`#${id}`).value = snapshot.values[id];
+        });
+        return true;
+      }
+
+      function restoreSharedComparison() {
+        try {
+          const encoded = new URL(location.href).searchParams.get("comparison");
+          if (!encoded) return false;
+          const restored = applyComparisonSnapshot(JSON.parse(encoded));
+          if (restored) setSavedStatus("Jaettu vertailu avattiin. Sitä ei tallennettu tälle laitteelle.", "good");
+          return restored;
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function createShareUrl() {
+        const url = new URL(location.href);
+        url.searchParams.set("comparison", JSON.stringify(createSharedComparison()));
+        return url.href;
       }
 
       function setSavedTargetStatus(message, tone = "") {
@@ -1179,11 +1215,16 @@
         const target = result.target.area ? `${result.target.area.area}, ${result.target.area.municipality}` : "seuraava koti";
         const direction = result.monthlyDelta > 0 ? "kasvavat" : result.monthlyDelta < 0 ? "pienenevät" : "pysyvät samoina";
         const text = `Kotivaihto-yhteenveto\nKohde: ${target}\nUusi rahoitustarve: ${euro(result.financingNeed)}\nAsumismenot ${direction}: ${signedEuro(result.monthlyDelta)}/kk\nLaskelma on suuntaa-antava, ei lainatarjous.`;
-        const payload = { title: document.title, text, url: location.href };
+        const shareUrl = createShareUrl();
+        const payload = { title: document.title, text, url: shareUrl };
         try {
-          if (navigator.share) { await navigator.share(payload); return; }
-          await navigator.clipboard.writeText(`${text}\n${location.href}`);
-          toast("Yhteenveto ja sivun osoite kopioitiin leikepöydälle.");
+          if (navigator.share) {
+            await navigator.share(payload);
+            toast("Jaettu linkki sisältää tämän laskelman luvut, ei ilmoitustekstiä tai kohdelinkkiä.");
+            return;
+          }
+          await navigator.clipboard.writeText(`${text}\n${shareUrl}`);
+          toast("Yhteenveto ja jaettava vertailulinkki kopioitiin leikepöydälle.");
         } catch (_) { toast("Jakaminen keskeytettiin."); }
       }
 
