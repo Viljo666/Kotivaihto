@@ -178,6 +178,20 @@
     .flow-step.emphasis { border-color: #c9a8ba; background: var(--plum-soft); }
     .flow-step.emphasis strong { color: var(--plum); }
     .calculation-note { margin: .75rem 0 0; color: var(--muted); font-size: .76rem; }
+    .stress-test { margin-top: 1.15rem; padding-top: 1.05rem; border-top: 1px solid var(--line); }
+    .stress-heading { display: flex; align-items: start; justify-content: space-between; gap: .8rem; margin-bottom: .7rem; }
+    .stress-heading h3 { margin: 0; font-size: .94rem; }
+    .stress-heading p { margin: .15rem 0 0; color: var(--muted); font-size: .74rem; }
+    .stress-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; }
+    .stress-scenario { padding: .78rem; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); }
+    .stress-scenario.own { border-color: #c9a8ba; background: var(--plum-soft); }
+    .stress-rate { display: block; color: var(--plum); font-size: .78rem; font-weight: 850; }
+    .stress-scenario small { display: block; min-height: 1.15rem; margin-top: .08rem; color: var(--muted); font-size: .68rem; }
+    .stress-scenario strong { display: block; margin-top: .38rem; font-size: .94rem; font-variant-numeric: tabular-nums; }
+    .stress-scenario em { display: block; margin-top: .17rem; color: var(--muted); font-size: .68rem; font-style: normal; }
+    .stress-scenario .higher { color: var(--red); }
+    .stress-scenario .lower { color: var(--green); }
+    .stress-note { margin: .7rem 0 0; color: var(--muted); font-size: .71rem; }
 
     .chart-card { overflow: hidden; }
     .chart-shell { max-width: 100%; padding: .3rem .2rem 0; overflow-x: auto; overflow-y: hidden; }
@@ -208,6 +222,16 @@
     .risk.info .risk-icon { color: var(--plum); background: var(--plum-soft); }
     .risk.good { background: #fbfefc; border-color: #cde9d9; }
     .risk.good .risk-icon { color: var(--green); background: var(--green-soft); }
+    .offer-checklist { margin-top: 1rem; padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); }
+    .offer-checklist-head { display: flex; align-items: start; justify-content: space-between; gap: .8rem; }
+    .offer-checklist-head h3 { margin: 0; font-size: .94rem; }
+    .offer-checklist-head p { margin: .16rem 0 0; color: var(--muted); font-size: .74rem; }
+    .offer-progress { flex: 0 0 auto; padding: .25rem .5rem; border-radius: 999px; background: #fff; color: var(--plum); font-size: .72rem; font-weight: 800; }
+    .offer-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .8rem; margin-top: .8rem; }
+    .offer-check { display: flex; align-items: start; gap: .55rem; padding: .58rem .62rem; border: 1px solid #e2dbe0; border-radius: 9px; background: #fff; color: var(--ink); font-size: .76rem; line-height: 1.35; cursor: pointer; }
+    .offer-check input { flex: 0 0 auto; width: 1.05rem; min-height: 1.05rem; margin: .06rem 0 0; padding: 0; accent-color: var(--plum); }
+    .offer-check:has(input:checked) { border-color: #b7d9c7; background: #fbfefc; }
+    .offer-note { margin: .7rem 0 0; color: var(--muted); font-size: .71rem; }
 
     .method-card { padding-bottom: 1.25rem; }
     .method-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
@@ -241,8 +265,9 @@
       .nav-actions .button-quiet { display: none; }
       .container { width: min(100% - 1.2rem, 1180px); }
       .hero { padding-top: 2.4rem; }
-      .home-grid, .risk-grid, .method-grid { grid-template-columns: 1fr; }
+      .home-grid, .risk-grid, .method-grid, .offer-list { grid-template-columns: 1fr; }
       .finance-settings, .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stress-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .flow { grid-template-columns: 1fr; gap: .45rem; }
       .flow-step { min-height: auto; }
       .flow-step:not(:last-child)::after { content: "↓"; right: auto; left: calc(50% - .68rem); top: auto; bottom: -.84rem; }
@@ -252,7 +277,7 @@
       .footer-inner p + p { margin-top: .7rem; }
     }
     @media (max-width: 430px) {
-      .input-grid, .finance-settings, .metrics { grid-template-columns: 1fr; }
+      .input-grid, .finance-settings, .metrics, .stress-grid { grid-template-columns: 1fr; }
       .field.wide { grid-column: auto; }
       .section-heading { display: block; }
       .section-tag { display: inline-block; margin-top: .6rem; }
@@ -368,6 +393,11 @@
           <div class="metrics" id="finance-metrics"></div>
           <div class="flow" id="finance-flow"></div>
           <p class="calculation-note" id="finance-note"></p>
+          <section class="stress-test" aria-labelledby="stress-title">
+            <div class="stress-heading"><div><h3 id="stress-title">Korkostressi</h3><p>Näe, miten uuden lainan korko vaikuttaa kuukausimenoihin.</p></div><span class="section-tag">Ei ennuste</span></div>
+            <div class="stress-grid" id="stress-grid"></div>
+            <p class="stress-note" id="stress-note"></p>
+          </section>
         </section>
 
         <section id="markkina" class="card chart-card" aria-labelledby="market-title">
@@ -380,6 +410,17 @@
         <section id="tarkistus" class="card" aria-labelledby="risk-title">
           <div class="section-heading"><div><h2 id="risk-title">Tarkista ennen tarjousta</h2><p>Nämä nostot eivät ole luottopäätöksiä. Ne auttavat tekemään näkyväksi kohdat, jotka kannattaa varmistaa asiakirjoista tai asiantuntijalta.</p></div><span class="section-tag" id="risk-count">0 kohtaa</span></div>
           <div class="risk-grid" id="risk-grid"></div>
+          <section class="offer-checklist" aria-labelledby="offer-checklist-title">
+            <div class="offer-checklist-head"><div><h3 id="offer-checklist-title">Ennen tarjousta</h3><p>Merkitse kohdat vasta, kun olet tarkistanut ne alkuperäisistä asiakirjoista.</p></div><span class="offer-progress" id="offer-progress">0 / 5 tarkistettu</span></div>
+            <div class="offer-list">
+              <label class="offer-check"><input type="checkbox" data-offer-check="price"><span>Velaton hinta, myyntihinta ja yhtiölaina ovat selvät.</span></label>
+              <label class="offer-check"><input type="checkbox" data-offer-check="company-loan"><span>Rahoitusvastike sekä yhtiölainan korko- ja lyhennysaikataulu on tarkistettu.</span></label>
+              <label class="offer-check"><input type="checkbox" data-offer-check="certificate"><span>Isännöitsijäntodistus ja viimeisin tilinpäätös on luettu.</span></label>
+              <label class="offer-check"><input type="checkbox" data-offer-check="repairs"><span>Tulevat remontit, PTS ja päätetyt hankkeet on tarkistettu.</span></label>
+              <label class="offer-check"><input type="checkbox" data-offer-check="funding"><span>Oma rahoitus, varainsiirtovero ja käteispuskuri on varmistettu.</span></label>
+            </div>
+            <p class="offer-note">Tämä lista on muistiapu, ei kiinteistönvälitys-, laki- tai rahoitusneuvo.</p>
+          </section>
         </section>
 
         <section id="menetelma" class="card method-card" aria-labelledby="method-title">
@@ -423,7 +464,8 @@
       const defaultState = () => ({
         current: { area: null },
         target: { area: null, importedListing: null },
-        activeOption: { current: -1, target: -1 }
+        activeOption: { current: -1, target: -1 },
+        offerChecks: {}
       });
 
       async function init() {
@@ -486,6 +528,10 @@
         $("#clearSavedButton").addEventListener("click", clearSavedComparison);
         $("#resetButton").addEventListener("click", resetExample);
         $("#scrollButton").addEventListener("click", () => $("#tarkistus").scrollIntoView({ behavior: "smooth", block: "start" }));
+        $$('[data-offer-check]').forEach(input => input.addEventListener("change", () => {
+          state.offerChecks[input.dataset.offerCheck] = input.checked;
+          renderOfferChecklist();
+        }));
         $("#open-listing").addEventListener("click", openListing);
         $("#import-listing").addEventListener("click", importListing);
         $("#paste-listing").addEventListener("click", pasteListingFromClipboard);
@@ -578,6 +624,7 @@
           savedAt: new Date().toISOString(),
           currentPostcode: state.current.area?.postcode || null,
           targetPostcode: state.target.area?.postcode || null,
+          offerChecks: state.offerChecks,
           values
         };
       }
@@ -612,6 +659,9 @@
           if (snapshot?.version !== 1 || !snapshot.values || typeof snapshot.values !== "object") return false;
           const currentArea = snapshot.currentPostcode ? findArea(snapshot.currentPostcode) : null;
           const targetArea = snapshot.targetPostcode ? findArea(snapshot.targetPostcode) : null;
+          if (snapshot.offerChecks && typeof snapshot.offerChecks === "object") {
+            state.offerChecks = Object.fromEntries($$('[data-offer-check]').map(input => [input.dataset.offerCheck, Boolean(snapshot.offerChecks[input.dataset.offerCheck])]));
+          }
           if (currentArea) selectArea("current", currentArea, false);
           if (targetArea) selectArea("target", targetArea, false);
           savedInputIds.forEach(id => {
@@ -809,8 +859,10 @@
         renderAreaStatus("target", result.target.area);
         renderSummary(result);
         renderFinance(result);
+        renderStressTest(result);
         renderChart(result);
         renderRisks(result);
+        renderOfferChecklist();
         renderSource();
       }
 
@@ -865,6 +917,23 @@
         ];
         $("#finance-flow").innerHTML = steps.map(([label, value], index) => `<div class="flow-step ${index === steps.length - 1 ? "emphasis" : ""}"><span>${label}</span><strong>${value < 0 ? `−${euro(Math.abs(value))}` : euro(value)}</strong></div>`).join("");
         $("#finance-note").textContent = `Ostossa käteisenä maksettava kauppahinta on velaton hinta (${euro(result.target.price)}) − yhtiölaina (${euro(result.target.companyLoan)}). Varainsiirtovero ${euro(result.transferTax)} on 1,5 % velattomasta hinnasta. Laskelma ei huomioi mahdollisia pankin kuluja, korkosuojausta tai verovaikutuksia.`;
+      }
+
+      function renderStressTest(result) {
+        const ownRate = result.target.rate;
+        const scenarios = [{ rate: ownRate, own: true }];
+        [4, 5, 6].forEach(rate => {
+          if (!scenarios.some(item => Math.abs(item.rate - rate) < .001)) scenarios.push({ rate, own: false });
+        });
+        const fixedMonthlyCosts = result.target.maintenance + result.target.companyCharge + result.target.other;
+        $("#stress-grid").innerHTML = scenarios.map(({ rate, own }) => {
+          const loanPayment = annuity(result.financingNeed, rate, result.target.years);
+          const monthlyTotal = fixedMonthlyCosts + loanPayment;
+          const delta = monthlyTotal - result.currentMonthly;
+          const deltaClass = delta > 0 ? "higher" : delta < 0 ? "lower" : "";
+          return `<article class="stress-scenario ${own ? "own" : ""}"><span class="stress-rate">${own ? "Oma korko" : "Korko"} ${decimal.format(rate)} %</span><small>${euro(loanPayment)}/kk lainaerä</small><strong>${euro(monthlyTotal)}/kk</strong><em class="${deltaClass}">${signedEuro(delta)}/kk vs. nykyinen</em></article>`;
+        }).join("");
+        $("#stress-note").textContent = `Korkostressi muuttaa vain uuden asuntolainan korkoa, laina-ajalla ${result.target.years || 0} vuotta. Se ei ennusta korkoja eikä arvioi rahoitusvastikkeen mahdollista muutosta.`;
       }
 
       function renderChart(result) {
@@ -926,6 +995,13 @@
         const icon = { warning: "!", alert: "!", info: "i", good: "✓" };
         $("#risk-grid").innerHTML = risks.map(risk => `<article class="risk ${risk.tone}"><div class="risk-top"><span class="risk-icon" aria-hidden="true">${icon[risk.tone]}</span><h3>${risk.title}</h3></div><p>${risk.text}</p></article>`).join("");
         $("#risk-count").textContent = `${risks.filter(risk => risk.tone !== "good").length} kohtaa`;
+      }
+
+      function renderOfferChecklist() {
+        const checks = $$('[data-offer-check]');
+        checks.forEach(input => { input.checked = Boolean(state.offerChecks[input.dataset.offerCheck]); });
+        const done = checks.filter(input => input.checked).length;
+        $("#offer-progress").textContent = `${done} / ${checks.length} tarkistettu`;
       }
 
       function renderSource() {
