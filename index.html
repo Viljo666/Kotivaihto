@@ -96,6 +96,26 @@
     .area-status.suppressed { background: var(--amber-soft); color: #8d540a; }
     .area-status strong { color: inherit; }
 
+    .listing-import { margin: 0 0 1rem; border: 1px solid #decbd5; border-radius: 11px; background: #fffafc; overflow: hidden; }
+    .listing-import summary { padding: .8rem .86rem; color: var(--plum); cursor: pointer; font-size: .86rem; font-weight: 800; }
+    .listing-import[open] summary { border-bottom: 1px solid #eadde4; background: #fff; }
+    .listing-import-content { padding: .85rem; }
+    .listing-import-content > p { margin: 0 0 .78rem; color: var(--muted); font-size: .77rem; }
+    .listing-source-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .8rem; }
+    .listing-source-links a { display: inline-flex; align-items: center; min-height: 34px; padding: .38rem .58rem; border: 1px solid #dbc9d3; border-radius: 8px; color: var(--plum); background: #fff; font-size: .76rem; font-weight: 800; text-decoration: none; }
+    .listing-source-links a:hover { background: var(--plum-soft); }
+    .listing-import-row { display: flex; gap: .5rem; }
+    .listing-import-row input { min-width: 0; }
+    .listing-import-row .button-quiet { flex: 0 0 auto; min-height: 42px; }
+    .listing-import textarea { width: 100%; min-height: 112px; padding: .6rem .68rem; resize: vertical; border: 1px solid #d9d0d6; border-radius: 9px; color: var(--ink); background: #fff; line-height: 1.38; }
+    .listing-import textarea:focus { border-color: var(--plum); outline: 0; box-shadow: 0 0 0 3px var(--plum-soft); }
+    .listing-import-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; margin-top: .65rem; }
+    .listing-import-actions .button { min-height: 38px; }
+    .import-status { min-height: 1.2rem; margin: .62rem 0 0; color: var(--muted); font-size: .75rem; }
+    .import-status.good { color: var(--green); }
+    .import-status.warning { color: var(--amber); }
+    .import-status.error { color: var(--red); }
+
     .combobox { position: relative; }
     .combo-input { padding-right: 2.2rem; }
     .combo-icon { position: absolute; top: 50%; right: .7rem; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
@@ -222,6 +242,7 @@
       .field.wide { grid-column: auto; }
       .section-heading { display: block; }
       .section-tag { display: inline-block; margin-top: .6rem; }
+      .listing-import-row { display: grid; grid-template-columns: 1fr; }
     }
     @media print {
       body { background: #fff; }
@@ -286,6 +307,17 @@
 
             <form class="home-card target" id="targetForm" novalidate>
               <div class="home-title"><span class="home-symbol" aria-hidden="true">⌂</span><div><h3>Seuraava koti</h3><p>Oston käteistarve ja kuukausimenot</p></div></div>
+              <details class="listing-import" id="listing-import">
+                <summary>Tuo kohdeilmoituksen perustiedot</summary>
+                <div class="listing-import-content">
+                  <p>Avaa kohde Etuovesta tai Oikotiestä, kopioi ilmoituksen näkyvät perustiedot ja liitä ne alle. Tiedot käsitellään vain tässä selaimessa; Kotivaihto ei lue sivustoja automaattisesti.</p>
+                  <div class="listing-source-links" aria-label="Kohdepalvelut"><a href="https://www.etuovi.com/myytavat-asunnot" target="_blank" rel="noopener">Selaa Etuovea ↗</a><a href="https://asunnot.oikotie.fi/myytavat-asunnot" target="_blank" rel="noopener">Selaa Oikotietä ↗</a></div>
+                  <div class="field"><label for="listing-url">Ilmoituksen linkki <span class="label-help">(vain oma viite)</span></label><div class="listing-import-row"><input id="listing-url" type="url" inputmode="url" placeholder="https://www.etuovi.com/kohde/... tai https://asunnot.oikotie.fi/..." autocomplete="off"><button id="open-listing" class="button-quiet" type="button">Avaa linkki</button></div></div>
+                  <div class="field" style="margin-top:.7rem"><label for="listing-text">Kopioidut kohdetiedot</label><textarea id="listing-text" placeholder="Esim. Velaton hinta 259 000 €\nAsuinpinta-ala 61 m²\nYhtiölaina 35 000 €\nHoitovastike 290 €/kk\nRahoitusvastike 180 €/kk\n00100 Helsinki"></textarea></div>
+                  <div class="listing-import-actions"><button id="import-listing" class="button" type="button">Täytä tiedot</button><span>Varmista tuodut luvut aina ilmoituksesta.</span></div>
+                  <p class="import-status" id="import-status" role="status" aria-live="polite"></p>
+                </div>
+              </details>
               <div class="input-grid">
                 <div class="field wide">
                   <label for="target-area-search">Postinumero tai alue</label>
@@ -369,7 +401,7 @@
 
       const defaultState = () => ({
         current: { area: null },
-        target: { area: null },
+        target: { area: null, importedListing: null },
         activeOption: { current: -1, target: -1 }
       });
 
@@ -415,6 +447,11 @@
         $("#shareButton").addEventListener("click", sharePage);
         $("#resetButton").addEventListener("click", resetExample);
         $("#scrollButton").addEventListener("click", () => $("#tarkistus").scrollIntoView({ behavior: "smooth", block: "start" }));
+        $("#open-listing").addEventListener("click", openListing);
+        $("#import-listing").addEventListener("click", importListing);
+        $("#listing-url").addEventListener("keydown", event => {
+          if (event.key === "Enter") { event.preventDefault(); openListing(); }
+        });
       }
 
       function setupCombobox(home) {
@@ -483,6 +520,99 @@
         }
         updateAll();
         if (focus) $(`#${home}-size`).focus();
+      }
+
+      function setImportStatus(message, tone = "") {
+        const element = $("#import-status");
+        element.textContent = message;
+        element.className = `import-status ${tone}`;
+      }
+
+      function normalizeListingUrl(value) {
+        const url = new URL(String(value || "").trim());
+        const isEtuovi = url.hostname === "etuovi.com" || url.hostname.endsWith(".etuovi.com");
+        const isOikotie = url.hostname === "oikotie.fi" || url.hostname.endsWith(".oikotie.fi");
+        if (!isEtuovi && !isOikotie) throw new Error("Linkin tulee olla Etuovi- tai Oikotie-ilmoitus.");
+        return url.href;
+      }
+
+      function openListing() {
+        try {
+          const url = normalizeListingUrl($("#listing-url").value);
+          window.open(url, "_blank", "noopener");
+          setImportStatus("Ilmoitus avattiin uuteen välilehteen. Kopioi näkyvät perustiedot ja liitä ne tähän.", "good");
+        } catch (error) {
+          setImportStatus(error.message || "Anna ensin Etuovi- tai Oikotie-linkki.", "error");
+        }
+      }
+
+      function escapeRegExp(value) {
+        return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+
+      function parseFinnishNumber(value) {
+        const compact = String(value || "").replace(/\u00a0/g, " ").replace(/\s/g, "").replace(/\./g, "").replace(",", ".").replace(/[^\d.-]/g, "");
+        const parsed = Number(compact);
+        return Number.isFinite(parsed) ? parsed : null;
+      }
+
+      function extractListingValue(text, labels, unit) {
+        const labelPattern = labels.map(escapeRegExp).join("|");
+        const match = text.match(new RegExp(`(?:${labelPattern})\\s*(?:[:–—-]?\\s*)?([0-9][0-9\\s.,]*)\\s*${unit}`, "i"));
+        return match ? parseFinnishNumber(match[1]) : null;
+      }
+
+      function parseListingText(rawText) {
+        const text = String(rawText || "").replace(/\r/g, " ");
+        const postcodeMatch = text.match(/\b\d{5}\b/);
+        const size = extractListingValue(text, ["asuinpinta-ala", "asuinpinta ala", "pinta-ala", "pinta ala"], "m(?:²|2)");
+        const velatonPrice = extractListingValue(text, ["velaton hinta", "velaton myyntihinta"], "(?:€|eur)");
+        const sharePrice = extractListingValue(text, ["myyntihinta", "myynti hinta"], "(?:€|eur)");
+        const companyLoan = extractListingValue(text, ["yhtiölaina", "taloyhtiölaina", "lainaosuus"], "(?:€|eur)");
+        const maintenance = extractListingValue(text, ["hoitovastike"], "(?:€|eur)(?:\\s*/?\\s*kk)?");
+        const companyCharge = extractListingValue(text, ["rahoitusvastike", "pääomavastike"], "(?:€|eur)(?:\\s*/?\\s*kk)?");
+        const price = velatonPrice ?? (sharePrice !== null && companyLoan !== null ? sharePrice + companyLoan : sharePrice);
+        return { postcode: postcodeMatch?.[0] || null, size, price, velatonPrice, sharePrice, companyLoan, maintenance, companyCharge };
+      }
+
+      function setImportedValue(id, value, label, updated) {
+        if (value === null || value === undefined || !Number.isFinite(value)) return;
+        $(id).value = Math.round(value * 100) / 100;
+        updated.push(label);
+      }
+
+      function importListing() {
+        const rawText = $("#listing-text").value.trim();
+        if (!rawText) { setImportStatus("Liitä ensin kohdeilmoituksen perustiedot. Pelkkää linkkiä ei lueta automaattisesti.", "warning"); return; }
+        const parsed = parseListingText(rawText);
+        const updated = [];
+        const area = parsed.postcode ? findArea(parsed.postcode) : null;
+        if (area) selectArea("target", area, false);
+        else if (parsed.postcode) {
+          state.target.area = null;
+          $("#target-area-search").value = `${parsed.postcode} · hintatasoa ei ole tässä aineistossa`;
+          updated.push("postinumero");
+        }
+        if (parsed.price === null && parsed.postcode && (!area || area.suppressed)) {
+          $("#target-price").value = "";
+        }
+        setImportedValue("#target-size", parsed.size, "pinta-ala", updated);
+        setImportedValue("#target-price", parsed.price, parsed.velatonPrice !== null ? "velaton hinta" : parsed.sharePrice !== null && parsed.companyLoan !== null ? "velaton hinta (myyntihinta + yhtiölaina)" : "myyntihinta – tarkista velaton hinta", updated);
+        setImportedValue("#target-company-loan", parsed.companyLoan, "yhtiölaina", updated);
+        setImportedValue("#target-maintenance", parsed.maintenance, "hoitovastike", updated);
+        setImportedValue("#target-company-charge", parsed.companyCharge, "rahoitusvastike", updated);
+        let sourceUrl = null;
+        try { sourceUrl = $("#listing-url").value.trim() ? normalizeListingUrl($("#listing-url").value) : null; } catch (_) { /* Linkki ei estä paikallista tietojen tuontia. */ }
+        state.target.importedListing = updated.length ? { ...parsed, sourceUrl } : null;
+        updateAll();
+        if (!updated.length) {
+          setImportStatus("Tekstistä ei löytynyt tuettavia perustietoja. Kopioi ainakin velaton hinta, pinta-ala tai postinumero näkyvine otsikoineen.", "warning");
+          return;
+        }
+        const qualification = parsed.sharePrice !== null && parsed.velatonPrice === null && parsed.companyLoan === null ? " Myyntihinta tuotiin velattoman hinnan kenttään – tarkista se ennen laskelman käyttöä." : "";
+        const areaNotice = parsed.postcode && !area ? ` Postinumero ${parsed.postcode} ei kuulu tämän hintatiedoston rajattuun otokseen.` : "";
+        setImportStatus(`Tuotu: ${updated.join(", ")}.${qualification}${areaNotice}`, "good");
+        $("#listing-import").open = false;
       }
 
       function readHome(home) {
@@ -611,6 +741,7 @@
         if (suppressed.length) risks.push({ tone: "alert", title: "Salattu hintatieto", text: `${suppressed.map(area => `${area.postcode} ${area.area}`).join(" ja ")}: neliöhinta on salattu lähdeaineistossa. Älä korvaa sitä laskennallisella arvolla.` });
         [result.current.area, result.target.area].filter(area => area && !area.suppressed && area.sales < 10).forEach(area => risks.push({ tone: "warning", title: "Vähän kauppoja alueella", text: `${area.postcode} ${area.area}: julkaistussa havainnossa on ${area.sales} kauppaa. Tulkinta kannattaa tehdä varoen.` }));
         const companyLoanShare = result.target.price > 0 ? result.target.companyLoan / result.target.price : 0;
+        if (state.target.importedListing) risks.push({ tone: "info", title: "Ilmoituksen tiedot on tuotu kopioidusta tekstistä", text: "Tarkista ennen tarjousta velaton hinta, yhtiölaina ja vastikkeet alkuperäisestä ilmoituksesta sekä isännöitsijäntodistuksesta." });
         if (companyLoanShare >= .30) risks.push({ tone: "warning", title: "Yhtiölainan osuus on suuri", text: `Yhtiölaina on ${percent(companyLoanShare * 100)} seuraavan kodin velattomasta hinnasta. Tarkista lainaehdot, korkoriski ja rahoitusvastikkeen kehitys.` });
         if (result.equityAfterSale < 0) risks.push({ tone: "alert", title: "Nykyisestä kodista ei vapaudu omaa pääomaa", text: `Nykyisen kodin arvioitu myyntitulo ei kata asuntolainaa ja välityspalkkiota. Rahoitusvaje ${euro(Math.abs(result.equityAfterSale))} sisältyy uuteen rahoitustarpeeseen.` });
         if (result.monthlyDelta > 500) risks.push({ tone: "warning", title: "Kuukausimenot kasvavat selvästi", text: `Kuukausivaikutus on ${signedEuro(result.monthlyDelta)}/kk. Tee oma stressitesti korolle, vastikkeille ja muille menoille.` });
@@ -639,6 +770,7 @@
         $("#current-size").value = 52; $("#current-private-loan").value = 98000; $("#current-maintenance").value = 260; $("#current-company-charge").value = 0; $("#current-mortgage-payment").value = 740; $("#current-other").value = 120;
         $("#target-size").value = 62; $("#target-company-loan").value = 30000; $("#target-maintenance").value = 320; $("#target-company-charge").value = 160; $("#target-other").value = 140; $("#target-rate").value = 3.3; $("#target-years").value = 25;
         $("#broker-percent").value = 3.8; $("#buyer-costs").value = 1000; $("#buffer").value = 5000;
+        $("#listing-import").open = false; setImportStatus("");
         selectArea("current", findArea("00100"), false); selectArea("target", findArea("02600"), false);
         toast("Esimerkkitiedot palautettiin.");
       }
