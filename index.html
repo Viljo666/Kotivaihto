@@ -145,8 +145,12 @@
     .summary-card { padding: 1.18rem; overflow: hidden; }
     .summary-card h2 { font-size: 1.15rem; }
     .summary-kicker { margin: .22rem 0 0; color: var(--muted); font-size: .8rem; }
-    .headline { margin: 1.15rem 0 .15rem; color: var(--plum); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 850; letter-spacing: -.07em; line-height: 1; font-variant-numeric: tabular-nums; }
-    .headline-label { margin: 0 0 1rem; color: var(--muted); font-size: .84rem; }
+    .outcome { margin: 1.15rem 0 1rem; padding: .9rem; border-radius: 12px; background: var(--plum-soft); }
+    .outcome.is-lower { background: var(--green-soft); }
+    .outcome-kicker { margin: 0; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+    .headline { margin: .2rem 0 .12rem; color: var(--plum); font-size: clamp(1.45rem, 3vw, 2.05rem); font-weight: 850; letter-spacing: -.055em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+    .outcome.is-lower .headline { color: var(--green); }
+    .headline-label { margin: 0; color: var(--muted); font-size: .78rem; }
     .summary-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
     .summary-list li { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; padding: .78rem 0; border-bottom: 1px solid var(--line); }
     .summary-list span { color: var(--muted); font-size: .78rem; }
@@ -156,6 +160,8 @@
     .summary-footnote { margin: 1rem 0 0; color: var(--muted); font-size: .72rem; }
     .summary-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: 1rem; }
     .summary-actions button { min-width: 0; }
+    .saved-status { min-height: 1.2rem; margin: .8rem 0 0; color: var(--muted); font-size: .72rem; }
+    .saved-status.good { color: var(--green); }
 
     .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
     .metric { padding: .92rem; border-radius: 11px; background: var(--soft); }
@@ -271,7 +277,7 @@
     <nav class="nav" aria-label="Päävalikko">
       <a class="brand" href="#alku" aria-label="Kotivaihto, alkuun"><span class="brand-mark" aria-hidden="true">K</span> Kotivaihto</a>
       <div class="nav-links"><a href="#markkina">Markkina</a><a href="#rahoitus">Rahoitus</a><a href="#tarkistus">Tarkistus</a><a href="#menetelma">Menetelmä</a></div>
-      <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton">Jaa</button><button class="button" type="button" id="printButton">Tulosta</button></div>
+      <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton">Jaa yhteenveto</button><button class="button" type="button" id="printButton">Tulosta</button></div>
     </nav>
   </header>
 
@@ -387,7 +393,7 @@
         </section>
       </section>
 
-      <aside class="summary-wrap" aria-label="Laskelman yhteenveto"><section class="summary-card" id="summary-card"><header><h2>Yhteenveto</h2><p class="summary-kicker">Päivittyy jokaisella muutoksella</p></header><div><p class="headline" id="summary-financing">—</p><p class="headline-label">uuden rahoituksen tarve</p></div><ul class="summary-list" id="summary-list"></ul><p class="summary-footnote">Asuntolainaerä on annuiteettilaskelma valitulla korolla ja laina-ajalla. Se ei ole pankin lainatarjous.</p><div class="summary-actions"><button class="button-quiet" type="button" id="resetButton">Palauta esimerkki</button><button class="button" type="button" id="scrollButton">Tarkista kohdat</button></div></section></aside>
+      <aside class="summary-wrap" aria-label="Laskelman yhteenveto"><section class="summary-card" id="summary-card"><header><h2>Yhteenveto</h2><p class="summary-kicker">Päivittyy jokaisella muutoksella</p></header><div class="outcome" id="summary-outcome"><p class="outcome-kicker">Arjen vaikutus</p><p class="headline" id="summary-monthly">—</p><p class="headline-label" id="summary-monthly-label">täydennä tiedot nähdäksesi kuukausivaikutuksen</p></div><ul class="summary-list" id="summary-list"></ul><p class="summary-footnote">Asuntolainaerä on annuiteettilaskelma valitulla korolla ja laina-ajalla. Se ei ole pankin lainatarjous.</p><div class="summary-actions"><button class="button-quiet" type="button" id="saveButton">Tallenna tälle laitteelle</button><button class="button-quiet" type="button" id="clearSavedButton">Poista tallennus</button><button class="button-quiet" type="button" id="resetButton">Palauta esimerkki</button><button class="button" type="button" id="scrollButton">Tarkista kohdat</button></div><p class="saved-status" id="saved-status" role="status" aria-live="polite"></p></section></aside>
     </div>
   </main>
 
@@ -409,6 +415,8 @@
       const signedEuro = (value) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${euro(Math.abs(value))}`;
       const percent = (value) => `${value > 0 ? "+" : ""}${decimal.format(value)} %`;
       const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+      const savedComparisonKey = "kotivaihto-saved-comparison-v1";
+      const savedInputIds = ["current-size", "current-price", "current-company-loan", "current-private-loan", "current-maintenance", "current-company-charge", "current-mortgage-payment", "current-other", "target-size", "target-price", "target-company-loan", "target-maintenance", "target-company-charge", "target-other", "target-rate", "target-years", "broker-percent", "buyer-costs", "buffer"];
       let data;
       let state;
 
@@ -426,8 +434,10 @@
           bindInputs();
           setupCombobox("current");
           setupCombobox("target");
-          selectArea("current", findArea("00100"), false);
-          selectArea("target", findArea("02600"), false);
+          if (!restoreSavedComparison()) {
+            selectArea("current", findArea("00100"), false);
+            selectArea("target", findArea("02600"), false);
+          }
           updateAll();
         } catch (error) {
           showLoadError(error);
@@ -472,6 +482,8 @@
         ["#broker-percent", "#buyer-costs", "#buffer"].forEach(selector => $(selector).addEventListener("input", updateAll));
         $("#printButton").addEventListener("click", () => window.print());
         $("#shareButton").addEventListener("click", sharePage);
+        $("#saveButton").addEventListener("click", saveComparison);
+        $("#clearSavedButton").addEventListener("click", clearSavedComparison);
         $("#resetButton").addEventListener("click", resetExample);
         $("#scrollButton").addEventListener("click", () => $("#tarkistus").scrollIntoView({ behavior: "smooth", block: "start" }));
         $("#open-listing").addEventListener("click", openListing);
@@ -551,6 +563,67 @@
         }
         updateAll();
         if (focus) $(`#${home}-size`).focus();
+      }
+
+      function setSavedStatus(message, tone = "") {
+        const element = $("#saved-status");
+        element.textContent = message;
+        element.className = `saved-status ${tone}`;
+      }
+
+      function createSavedComparison() {
+        const values = Object.fromEntries(savedInputIds.map(id => [id, $(`#${id}`).value]));
+        return {
+          version: 1,
+          savedAt: new Date().toISOString(),
+          currentPostcode: state.current.area?.postcode || null,
+          targetPostcode: state.target.area?.postcode || null,
+          values
+        };
+      }
+
+      function saveComparison() {
+        try {
+          const snapshot = createSavedComparison();
+          localStorage.setItem(savedComparisonKey, JSON.stringify(snapshot));
+          setSavedStatus("Tallennettu vain tälle laitteelle. Kopioitua ilmoitustekstiä tai linkkiä ei tallennettu.", "good");
+          toast("Vertailu tallennettiin tälle laitteelle.");
+        } catch (_) {
+          setSavedStatus("Tallennus ei ole käytettävissä tässä selaimessa.");
+          toast("Vertailua ei voitu tallentaa.");
+        }
+      }
+
+      function clearSavedComparison() {
+        try {
+          localStorage.removeItem(savedComparisonKey);
+          setSavedStatus("Tallennettu vertailu poistettiin tältä laitteelta.");
+          toast("Tallennus poistettiin.");
+        } catch (_) {
+          setSavedStatus("Tallennuksen poistaminen ei onnistunut tässä selaimessa.");
+        }
+      }
+
+      function restoreSavedComparison() {
+        try {
+          const raw = localStorage.getItem(savedComparisonKey);
+          if (!raw) return false;
+          const snapshot = JSON.parse(raw);
+          if (snapshot?.version !== 1 || !snapshot.values || typeof snapshot.values !== "object") return false;
+          const currentArea = snapshot.currentPostcode ? findArea(snapshot.currentPostcode) : null;
+          const targetArea = snapshot.targetPostcode ? findArea(snapshot.targetPostcode) : null;
+          if (currentArea) selectArea("current", currentArea, false);
+          if (targetArea) selectArea("target", targetArea, false);
+          savedInputIds.forEach(id => {
+            if (typeof snapshot.values[id] === "string") $(`#${id}`).value = snapshot.values[id];
+          });
+          const savedAt = snapshot.savedAt ? new Date(snapshot.savedAt) : null;
+          const time = savedAt && Number.isFinite(savedAt.getTime()) ? ` (${savedAt.toLocaleString("fi-FI", { dateStyle: "short", timeStyle: "short" })})` : "";
+          setSavedStatus(`Tallennettu vertailu palautettiin tälle laitteelle${time}.`, "good");
+          return true;
+        } catch (_) {
+          return false;
+        }
       }
 
       function setImportStatus(message, tone = "") {
@@ -755,10 +828,21 @@
       }
 
       function renderSummary(result) {
-        $("#summary-financing").textContent = euro(result.financingNeed);
+        const outcome = $("#summary-outcome");
+        const monthly = $("#summary-monthly");
+        const monthlyLabel = $("#summary-monthly-label");
+        outcome.classList.toggle("is-lower", result.monthlyDelta < 0);
+        monthly.textContent = `${signedEuro(result.monthlyDelta)}/kk`;
+        monthlyLabel.textContent = result.monthlyDelta > 0
+          ? "asumismenot kasvavat nykyiseen verrattuna"
+          : result.monthlyDelta < 0
+            ? "asumismenot pienenevät nykyiseen verrattuna"
+            : "asumismenot pysyvät samoina nykyiseen verrattuna";
         const items = [
+          ["Uusi rahoitustarve", euro(result.financingNeed), ""],
           ["Myynnistä jää", result.equityAfterSale >= 0 ? euro(result.equityAfterSale) : `−${euro(Math.abs(result.equityAfterSale))}`, result.equityAfterSale >= 0 ? "negative" : "positive"],
-          ["Kuukausivaikutus", signedEuro(result.monthlyDelta) + "/kk", result.monthlyDelta <= 0 ? "negative" : "positive"],
+          ["Nykyiset asumismenot", `${euro(result.currentMonthly)}/kk`, ""],
+          ["Seuraavat asumismenot", `${euro(result.targetMonthly)}/kk`, ""],
           ["Alueiden hintataso", result.perSqmDelta == null ? "Ei vertailtavissa" : percent(result.perSqmDelta), ""],
           ["Tarkistettavaa", `${buildRisks(result).filter(risk => risk.tone !== "good").length} kohtaa`, ""]
         ];
@@ -858,15 +942,20 @@
         $("#broker-percent").value = 3.8; $("#buyer-costs").value = 1000; $("#buffer").value = 5000;
         $("#listing-url").value = ""; $("#listing-text").value = ""; $("#listing-import").open = true; setImportStatus(""); clearImportReview();
         selectArea("current", findArea("00100"), false); selectArea("target", findArea("02600"), false);
+        setSavedStatus("Esimerkki näkyy nyt. Mahdollinen tallennettu vertailu säilyy laitteella, kunnes poistat sen.");
         toast("Esimerkkitiedot palautettiin.");
       }
 
       async function sharePage() {
-        const payload = { title: document.title, text: "Kotivaihto – muuton rahoitus ja aluevertailu", url: location.href };
+        const result = calculate();
+        const target = result.target.area ? `${result.target.area.area}, ${result.target.area.municipality}` : "seuraava koti";
+        const direction = result.monthlyDelta > 0 ? "kasvavat" : result.monthlyDelta < 0 ? "pienenevät" : "pysyvät samoina";
+        const text = `Kotivaihto-yhteenveto\nKohde: ${target}\nUusi rahoitustarve: ${euro(result.financingNeed)}\nAsumismenot ${direction}: ${signedEuro(result.monthlyDelta)}/kk\nLaskelma on suuntaa-antava, ei lainatarjous.`;
+        const payload = { title: document.title, text, url: location.href };
         try {
           if (navigator.share) { await navigator.share(payload); return; }
-          await navigator.clipboard.writeText(location.href);
-          toast("Sivun osoite kopioitiin leikepöydälle.");
+          await navigator.clipboard.writeText(`${text}\n${location.href}`);
+          toast("Yhteenveto ja sivun osoite kopioitiin leikepöydälle.");
         } catch (_) { toast("Jakaminen keskeytettiin."); }
       }
 
