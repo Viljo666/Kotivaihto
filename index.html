@@ -207,6 +207,18 @@
     .stress-scenario .higher { color: var(--red); }
     .stress-scenario .lower { color: var(--green); }
     .stress-note { margin: .7rem 0 0; color: var(--muted); font-size: .71rem; }
+    .budget-guide { margin-top: 1.15rem; padding-top: 1.05rem; border-top: 1px solid var(--line); }
+    .budget-guide-head { display: flex; align-items: start; justify-content: space-between; gap: .8rem; }
+    .budget-guide-head h3 { margin: 0; font-size: .94rem; }
+    .budget-guide-head p { margin: .15rem 0 0; color: var(--muted); font-size: .74rem; }
+    .budget-input { max-width: 240px; margin-top: .78rem; }
+    .budget-result { margin-top: .75rem; padding: .82rem; border: 1px solid #ded6dc; border-radius: 10px; background: var(--soft); }
+    .budget-result-main { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; }
+    .budget-result-main span { color: var(--muted); font-size: .74rem; }
+    .budget-result-main strong { color: var(--plum); font-size: 1.12rem; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+    .budget-result p { margin: .42rem 0 0; color: var(--muted); font-size: .74rem; line-height: 1.42; }
+    .budget-result.warning { border-color: #f0dab0; background: #fffdf9; }
+    .budget-result.warning strong { color: var(--amber); }
 
     .chart-card { overflow: hidden; }
     .chart-shell { max-width: 100%; padding: .3rem .2rem 0; overflow-x: auto; overflow-y: hidden; }
@@ -423,6 +435,11 @@
             <div class="stress-grid" id="stress-grid"></div>
             <p class="stress-note" id="stress-note"></p>
           </section>
+          <section class="budget-guide" aria-labelledby="budget-title">
+            <div class="budget-guide-head"><div><h3 id="budget-title">Oma kuukausiraja</h3><p>Aseta haluamasi enimmäismeno, niin näet näillä oletuksilla lasketun hintasuuntaviivan.</p></div><span class="section-tag">Valinnainen</span></div>
+            <div class="field budget-input"><label for="monthly-cap">Asumismenot enintään</label><div class="input-with-unit"><input id="monthly-cap" type="number" min="0" step="50" inputmode="decimal" placeholder="Esim. 1 600"><span class="unit">€/kk</span></div></div>
+            <div class="budget-result" id="budget-result" aria-live="polite"></div>
+          </section>
         </section>
 
         <section id="markkina" class="card chart-card" aria-labelledby="market-title">
@@ -485,7 +502,7 @@
       const savedComparisonKey = "kotivaihto-saved-comparison-v1";
       const savedTargetHomesKey = "kotivaihto-saved-target-homes-v1";
       const maxSavedTargetHomes = 4;
-      const savedInputIds = ["current-size", "current-price", "current-company-loan", "current-private-loan", "current-maintenance", "current-company-charge", "current-mortgage-payment", "current-other", "target-size", "target-price", "target-company-loan", "target-maintenance", "target-company-charge", "target-other", "target-rate", "target-years", "broker-percent", "buyer-costs", "buffer"];
+      const savedInputIds = ["current-size", "current-price", "current-company-loan", "current-private-loan", "current-maintenance", "current-company-charge", "current-mortgage-payment", "current-other", "target-size", "target-price", "target-company-loan", "target-maintenance", "target-company-charge", "target-other", "target-rate", "target-years", "broker-percent", "buyer-costs", "buffer", "monthly-cap"];
       const targetInputIds = savedInputIds.filter(id => id.startsWith("target-"));
       let data;
       let state;
@@ -551,7 +568,7 @@
         $$("input[data-home]").forEach(input => {
           input.addEventListener("input", () => updateAll());
         });
-        ["#broker-percent", "#buyer-costs", "#buffer"].forEach(selector => $(selector).addEventListener("input", updateAll));
+        ["#broker-percent", "#buyer-costs", "#buffer", "#monthly-cap"].forEach(selector => $(selector).addEventListener("input", updateAll));
         $("#printButton").addEventListener("click", () => window.print());
         $("#shareButton").addEventListener("click", sharePage);
         $("#saveButton").addEventListener("click", saveComparison);
@@ -1019,6 +1036,8 @@
         const brokerPercent = toNumber($("#broker-percent").value) / 100;
         const buyerCosts = toNumber($("#buyer-costs").value);
         const buffer = toNumber($("#buffer").value);
+        const monthlyCapValue = $("#monthly-cap").value.trim();
+        const monthlyCap = monthlyCapValue === "" ? null : toNumber(monthlyCapValue);
         const brokerFee = current.price * brokerPercent;
         const currentSharePrice = current.price - current.companyLoan;
         const equityAfterSale = currentSharePrice - current.privateLoan - brokerFee;
@@ -1028,10 +1047,16 @@
         const financingNeed = Math.max(0, cashNeed - equityAfterSale);
         const monthlyLoan = annuity(financingNeed, target.rate, target.years);
         const currentMonthly = current.maintenance + current.companyCharge + current.mortgagePayment + current.other;
-        const targetMonthly = target.maintenance + target.companyCharge + target.other + monthlyLoan;
+        const targetFixedMonthly = target.maintenance + target.companyCharge + target.other;
+        const targetMonthly = targetFixedMonthly + monthlyLoan;
         const monthlyDelta = targetMonthly - currentMonthly;
         const perSqmDelta = current.area?.pricePerSqm && target.area?.pricePerSqm ? (target.area.pricePerSqm / current.area.pricePerSqm - 1) * 100 : null;
-        return { current, target, brokerPercent, buyerCosts, buffer, brokerFee, currentSharePrice, equityAfterSale, targetSharePrice, transferTax, cashNeed, financingNeed, monthlyLoan, currentMonthly, targetMonthly, monthlyDelta, perSqmDelta };
+        const maxLoanPayment = monthlyCap === null ? null : Math.max(0, monthlyCap - targetFixedMonthly);
+        const maxNewLoan = maxLoanPayment === null ? null : principalForAnnuity(maxLoanPayment, target.rate, target.years);
+        const maxTargetPrice = maxNewLoan === null || monthlyCap < targetFixedMonthly
+          ? null
+          : Math.max(0, (equityAfterSale + maxNewLoan + target.companyLoan - buyerCosts - buffer) / 1.015);
+        return { current, target, brokerPercent, buyerCosts, buffer, brokerFee, currentSharePrice, equityAfterSale, targetSharePrice, transferTax, cashNeed, financingNeed, monthlyLoan, currentMonthly, targetFixedMonthly, targetMonthly, monthlyDelta, perSqmDelta, monthlyCap, maxLoanPayment, maxNewLoan, maxTargetPrice };
       }
 
       function annuity(principal, annualRate, years) {
@@ -1041,6 +1066,13 @@
         return monthlyRate === 0 ? principal / months : principal * monthlyRate / (1 - Math.pow(1 + monthlyRate, -months));
       }
 
+      function principalForAnnuity(payment, annualRate, years) {
+        if (payment <= 0 || years <= 0) return 0;
+        const monthlyRate = annualRate / 100 / 12;
+        const months = years * 12;
+        return monthlyRate === 0 ? payment * months : payment * (1 - Math.pow(1 + monthlyRate, -months)) / monthlyRate;
+      }
+
       function updateAll() {
         const result = calculate();
         renderAreaStatus("current", result.current.area);
@@ -1048,6 +1080,7 @@
         renderSummary(result);
         renderFinance(result);
         renderStressTest(result);
+        renderBudgetGuide(result);
         renderChart(result);
         renderRisks(result);
         renderOfferChecklist();
@@ -1124,6 +1157,26 @@
         $("#stress-note").textContent = `Korkostressi muuttaa vain uuden asuntolainan korkoa, laina-ajalla ${result.target.years || 0} vuotta. Se ei ennusta korkoja eikä arvioi rahoitusvastikkeen mahdollista muutosta.`;
       }
 
+      function renderBudgetGuide(result) {
+        const element = $("#budget-result");
+        if (result.monthlyCap === null) {
+          element.className = "budget-result";
+          element.innerHTML = "<p>Syötä oma kuukausiraja, jos haluat nähdä velattoman hinnan laskennallisen suuntaviivan nykyisillä oletuksilla.</p>";
+          return;
+        }
+        if (result.monthlyCap < result.targetFixedMonthly) {
+          element.className = "budget-result warning";
+          element.innerHTML = `<div class="budget-result-main"><span>Muut kulut ovat jo</span><strong>${euro(result.targetFixedMonthly)}/kk</strong></div><p>Kuukausiraja ${euro(result.monthlyCap)}/kk jää alle hoito-, rahoitus- ja muiden asumismenojen. Nosta rajaa tai tarkista nämä kulut ennen hintasuuntaviivan tulkintaa.</p>`;
+          return;
+        }
+        const difference = result.maxTargetPrice - result.target.price;
+        const comparison = difference >= 0
+          ? `Nykyinen kohde jää tästä noin ${euro(difference)} alle.`
+          : `Nykyinen kohde ylittää tämän noin ${euro(Math.abs(difference))}.`;
+        element.className = "budget-result";
+        element.innerHTML = `<div class="budget-result-main"><span>Velattoman hinnan suuntaviiva</span><strong>${euro(result.maxTargetPrice)}</strong></div><p>Kun asumismenot pidetään enintään ${euro(result.monthlyCap)}/kk, laskelma jättää uudelle lainalle enintään ${euro(result.maxNewLoan)}. ${comparison} Suuntaviiva käyttää tätä laskuria, ei pankin maksukyvyn arviota.</p>`;
+      }
+
       function renderChart(result) {
         const requests = [{ area: result.current.area, color: "current" }, { area: result.target.area, color: "target" }];
         const seen = new Set();
@@ -1172,6 +1225,7 @@
         if (companyLoanShare >= .30) risks.push({ tone: "warning", title: "Yhtiölainan osuus on suuri", text: `Yhtiölaina on ${percent(companyLoanShare * 100)} seuraavan kodin velattomasta hinnasta. Tarkista lainaehdot, korkoriski ja rahoitusvastikkeen kehitys.` });
         if (result.equityAfterSale < 0) risks.push({ tone: "alert", title: "Nykyisestä kodista ei vapaudu omaa pääomaa", text: `Nykyisen kodin arvioitu myyntitulo ei kata asuntolainaa ja välityspalkkiota. Rahoitusvaje ${euro(Math.abs(result.equityAfterSale))} sisältyy uuteen rahoitustarpeeseen.` });
         if (result.monthlyDelta > 500) risks.push({ tone: "warning", title: "Kuukausimenot kasvavat selvästi", text: `Kuukausivaikutus on ${signedEuro(result.monthlyDelta)}/kk. Tee oma stressitesti korolle, vastikkeille ja muille menoille.` });
+        if (result.monthlyCap !== null && result.targetMonthly > result.monthlyCap) risks.push({ tone: "warning", title: "Oma kuukausiraja ylittyy", text: `Seuraavan kodin asumismenot ovat tässä laskelmassa ${euro(result.targetMonthly)}/kk, mikä ylittää syöttämäsi ${euro(result.monthlyCap)}/kk rajan. Tarkista hinta, laina-aika, korko ja kuukausikulut.` });
         const targetGuide = result.target.area?.pricePerSqm ? result.target.area.pricePerSqm * result.target.size : null;
         if (targetGuide && Math.abs(result.target.price / targetGuide - 1) > .15) risks.push({ tone: "info", title: "Oma hinta poikkeaa alueen lähtötasosta", text: `Syöttämäsi velaton hinta poikkeaa yli 15 % postinumeroalueen neliöhintaan perustuvasta lähtötasosta. Tämä voi olla perusteltua kohteen ominaisuuksien vuoksi.` });
         if (!risks.length) risks.push({ tone: "good", title: "Ei automaattisia huomioita", text: "Syötetyillä oletuksilla laskuri ei nostanut erityistä tarkistuskohtaa. Tämä ei poista kohde-, rahoitus- tai asiakirjatarkastuksen tarvetta." });
@@ -1203,7 +1257,7 @@
         $("#currentForm").reset(); $("#targetForm").reset();
         $("#current-size").value = 52; $("#current-private-loan").value = 98000; $("#current-maintenance").value = 260; $("#current-company-charge").value = 0; $("#current-mortgage-payment").value = 740; $("#current-other").value = 120;
         $("#target-size").value = 62; $("#target-company-loan").value = 30000; $("#target-maintenance").value = 320; $("#target-company-charge").value = 160; $("#target-other").value = 140; $("#target-rate").value = 3.3; $("#target-years").value = 25;
-        $("#broker-percent").value = 3.8; $("#buyer-costs").value = 1000; $("#buffer").value = 5000;
+        $("#broker-percent").value = 3.8; $("#buyer-costs").value = 1000; $("#buffer").value = 5000; $("#monthly-cap").value = "";
         $("#listing-url").value = ""; $("#listing-text").value = ""; $("#listing-import").open = true; setImportStatus(""); clearImportReview();
         selectArea("current", findArea("00100"), false); selectArea("target", findArea("02600"), false);
         setSavedStatus("Esimerkki näkyy nyt. Mahdollinen tallennettu vertailu säilyy laitteella, kunnes poistat sen.");
