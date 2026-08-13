@@ -1,0 +1,49 @@
+{
+  "contractVersion": "1.0.0",
+  "metadata": {
+    "title": "Kotivaihto – hintatasot ja alueindeksit",
+    "generatedAt": "2026-08-13",
+    "postalPriceObservation": "2026Q1",
+    "municipalityIndexObservation": "2026Q1",
+    "source": {
+      "publisher": "Tilastokeskus",
+      "postalPriceTable": "13mt – Vanhojen osakeasuntojen neliöhinnat ja kauppojen lukumäärät postinumeroalueittain, neljännesvuosittain",
+      "postalPriceUrl": "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ashi/13mt.px/",
+      "municipalityIndexTable": "15is – Vanhojen osakeasuntojen hintaindeksi, neliöhinnat ja kauppamäärät, neljännesvuosittain",
+      "municipalityIndexUrl": "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ashi/15is.px/"
+    },
+    "coverageNotice": "Tämä julkaisu sisältää rajatun, päivitettävän lähtöotoksen postinumeroalueita. Alue, jota tiedosto ei sisällä, näytetään puuttuvana tietona – sovellus ei korvaa sitä arviolla.",
+    "methodology": {
+      "postalPrice": "Postinumeroalueen neliöhinta on julkaistu aritmeettinen keskihinta kerrostalokaksioille. Se kuvaa alueiden välistä hintatasoa, ei ajallista hintamuutosta.",
+      "timeChange": "Ajallinen muutos näytetään vain kunta-/aluekohtaisesta laatuvakioidusta hintaindeksistä (2025=100). Neliöhintaa ei käytetä hintamuutoksen laskentaan.",
+      "suppression": "Jos Tilastokeskus on salannut neliöhinnan, arvo säilytetään puuttuvana. Sovellus ei johda, interpoloi tai korvaa salattua lukua.",
+      "forecast": "Tiedosto ja käyttöliittymä eivät sisällä ennusteita."
+    }
+  },
+  "postalAreas": [
+    { "postcode": "00100", "area": "Helsinki keskusta – Etu-Töölö", "municipality": "Helsinki", "municipalityCode": "091", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 7167, "sales": 35, "suppressed": false },
+    { "postcode": "00120", "area": "Punavuori – Bulevardi", "municipality": "Helsinki", "municipalityCode": "091", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 7392, "sales": 15, "suppressed": false },
+    { "postcode": "00250", "area": "Taka-Töölö", "municipality": "Helsinki", "municipalityCode": "091", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 6230, "sales": 17, "suppressed": false },
+    { "postcode": "00500", "area": "Sörnäinen – Harju", "municipality": "Helsinki", "municipalityCode": "091", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 5212, "sales": 21, "suppressed": false },
+    { "postcode": "00800", "area": "Länsi-Herttoniemi", "municipality": "Helsinki", "municipalityCode": "091", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 4212, "sales": 7, "suppressed": false },
+    { "postcode": "01300", "area": "Tikkurila", "municipality": "Vantaa", "municipalityCode": "092", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 3716, "sales": 24, "suppressed": false },
+    { "postcode": "01400", "area": "Rekola", "municipality": "Vantaa", "municipalityCode": "092", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": null, "sales": 2, "suppressed": true, "suppressionReason": "Neliöhinta on salattu Tilastokeskuksen aineistossa." },
+    { "postcode": "02100", "area": "Tapiola", "municipality": "Espoo", "municipalityCode": "049", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 5708, "sales": 10, "suppressed": false },
+    { "postcode": "02210", "area": "Olari", "municipality": "Espoo", "municipalityCode": "049", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 2941, "sales": 7, "suppressed": false },
+    { "postcode": "02600", "area": "Etelä-Leppävaara", "municipality": "Espoo", "municipalityCode": "049", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 4045, "sales": 8, "suppressed": false },
+    { "postcode": "20100", "area": "Turku Keskus", "municipality": "Turku", "municipalityCode": "853", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 3450, "sales": 57, "suppressed": false },
+    { "postcode": "20500", "area": "Vesilinna", "municipality": "Turku", "municipalityCode": "853", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 3272, "sales": 11, "suppressed": false },
+    { "postcode": "33100", "area": "Tampere Keskus", "municipality": "Tampere", "municipalityCode": "837", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 3691, "sales": 32, "suppressed": false },
+    { "postcode": "33200", "area": "Tampere Keskus Läntinen", "municipality": "Tampere", "municipalityCode": "837", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 3456, "sales": 15, "suppressed": false },
+    { "postcode": "90100", "area": "Oulu Keskus", "municipality": "Oulu", "municipalityCode": "564", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": 2680, "sales": 17, "suppressed": false },
+    { "postcode": "90220", "area": "Kontinkangas", "municipality": "Oulu", "municipalityCode": "564", "category": "Kerrostalokaksiot", "observation": "2026Q1", "pricePerSqm": null, "sales": 4, "suppressed": true, "suppressionReason": "Neliöhinta on salattu Tilastokeskuksen aineistossa." }
+  ],
+  "municipalities": {
+    "Helsinki": { "code": "091", "indexBase": "2025=100", "series": [{ "period": "2025Q1", "index": 101.0 }, { "period": "2025Q2", "index": 101.3 }, { "period": "2025Q3", "index": 99.3 }, { "period": "2025Q4", "index": 98.4 }, { "period": "2026Q1", "index": 97.2 }] },
+    "Espoo": { "code": "049", "indexBase": "2025=100", "series": [{ "period": "2025Q1", "index": 100.1 }, { "period": "2025Q2", "index": 102.1 }, { "period": "2025Q3", "index": 100.4 }, { "period": "2025Q4", "index": 97.5 }, { "period": "2026Q1", "index": 96.5 }] },
+    "Vantaa": { "code": "092", "indexBase": "2025=100", "series": [{ "period": "2025Q1", "index": 101.3 }, { "period": "2025Q2", "index": 101.0 }, { "period": "2025Q3", "index": 100.4 }, { "period": "2025Q4", "index": 97.4 }, { "period": "2026Q1", "index": 98.1 }] },
+    "Turku": { "code": "853", "indexBase": "2025=100", "series": [{ "period": "2025Q1", "index": 100.8 }, { "period": "2025Q2", "index": 100.2 }, { "period": "2025Q3", "index": 101.3 }, { "period": "2025Q4", "index": 97.8 }, { "period": "2026Q1", "index": 99.3 }] },
+    "Tampere": { "code": "837", "indexBase": "2025=100", "series": [{ "period": "2025Q1", "index": 101.4 }, { "period": "2025Q2", "index": 101.1 }, { "period": "2025Q3", "index": 99.7 }, { "period": "2025Q4", "index": 97.8 }, { "period": "2026Q1", "index": 96.9 }] },
+    "Oulu": { "code": "564", "indexBase": "2025=100", "series": [{ "period": "2025Q1", "index": 100.5 }, { "period": "2025Q2", "index": 101.4 }, { "period": "2025Q3", "index": 99.4 }, { "period": "2025Q4", "index": 99.3 }, { "period": "2026Q1", "index": 98.0 }] }
+  }
+}
