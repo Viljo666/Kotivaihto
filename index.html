@@ -101,6 +101,10 @@
     .listing-import[open] summary { border-bottom: 1px solid #eadde4; background: #fff; }
     .listing-import-content { padding: .85rem; }
     .listing-import-content > p { margin: 0 0 .78rem; color: var(--muted); font-size: .77rem; }
+    .import-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin: 0 0 .8rem; padding: 0; list-style: none; counter-reset: import-step; }
+    .import-steps li { min-height: 57px; padding: .52rem .58rem .5rem 1.85rem; position: relative; border-radius: 9px; background: var(--soft); color: var(--muted); font-size: .72rem; line-height: 1.25; }
+    .import-steps li::before { counter-increment: import-step; content: counter(import-step); position: absolute; left: .54rem; top: .52rem; width: .9rem; height: .9rem; display: grid; place-items: center; border-radius: 50%; background: var(--plum); color: #fff; font-size: .61rem; font-weight: 900; }
+    .import-steps strong { display: block; margin-bottom: .1rem; color: var(--ink); font-size: .72rem; }
     .listing-source-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .8rem; }
     .listing-source-links a { display: inline-flex; align-items: center; min-height: 34px; padding: .38rem .58rem; border: 1px solid #dbc9d3; border-radius: 8px; color: var(--plum); background: #fff; font-size: .76rem; font-weight: 800; text-decoration: none; }
     .listing-source-links a:hover { background: var(--plum-soft); }
@@ -111,6 +115,8 @@
     .listing-import textarea:focus { border-color: var(--plum); outline: 0; box-shadow: 0 0 0 3px var(--plum-soft); }
     .listing-import-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; margin-top: .65rem; }
     .listing-import-actions .button { min-height: 38px; }
+    .listing-import-actions .button-quiet { min-height: 38px; }
+    .listing-url-note { margin: .55rem 0 0; color: var(--muted); font-size: .71rem; }
     .import-status { min-height: 1.2rem; margin: .62rem 0 0; color: var(--muted); font-size: .75rem; }
     .import-status.good { color: var(--green); }
     .import-status.warning { color: var(--amber); }
@@ -243,6 +249,8 @@
       .section-heading { display: block; }
       .section-tag { display: inline-block; margin-top: .6rem; }
       .listing-import-row { display: grid; grid-template-columns: 1fr; }
+      .import-steps { grid-template-columns: 1fr; }
+      .import-steps li { min-height: 43px; }
     }
     @media print {
       body { background: #fff; }
@@ -307,14 +315,15 @@
 
             <form class="home-card target" id="targetForm" novalidate>
               <div class="home-title"><span class="home-symbol" aria-hidden="true">⌂</span><div><h3>Seuraava koti</h3><p>Oston käteistarve ja kuukausimenot</p></div></div>
-              <details class="listing-import" id="listing-import">
-                <summary>Tuo kohdeilmoituksen perustiedot</summary>
+              <details class="listing-import" id="listing-import" open>
+                <summary>Tuo kohde Etuovesta tai Oikotiestä</summary>
                 <div class="listing-import-content">
-                  <p>Avaa kohde Etuovesta tai Oikotiestä, kopioi ilmoituksen näkyvät perustiedot ja liitä ne alle. Tiedot käsitellään vain tässä selaimessa; Kotivaihto ei lue sivustoja automaattisesti.</p>
+                  <p>Yksi nopea vaihe: kopioi kohdeilmoituksen <strong>perustiedot</strong> ja paina alla <strong>Liitä ja täytä</strong>. Tiedot käsitellään vain tällä laitteella.</p>
+                  <ol class="import-steps"><li><strong>Avaa kohde</strong>Etuovi tai Oikotie</li><li><strong>Kopioi tiedot</strong>Valitse kohteen perustiedot</li><li><strong>Liitä ja täytä</strong>Kotivaihto täyttää kentät</li></ol>
                   <div class="listing-source-links" aria-label="Kohdepalvelut"><a href="https://www.etuovi.com/myytavat-asunnot" target="_blank" rel="noopener">Selaa Etuovea ↗</a><a href="https://asunnot.oikotie.fi/myytavat-asunnot" target="_blank" rel="noopener">Selaa Oikotietä ↗</a></div>
-                  <div class="field"><label for="listing-url">Ilmoituksen linkki <span class="label-help">(vain oma viite)</span></label><div class="listing-import-row"><input id="listing-url" type="url" inputmode="url" placeholder="https://www.etuovi.com/kohde/... tai https://asunnot.oikotie.fi/..." autocomplete="off"><button id="open-listing" class="button-quiet" type="button">Avaa linkki</button></div></div>
-                  <div class="field" style="margin-top:.7rem"><label for="listing-text">Kopioidut kohdetiedot</label><textarea id="listing-text" placeholder="Esim. Velaton hinta 259 000 €\nAsuinpinta-ala 61 m²\nYhtiölaina 35 000 €\nHoitovastike 290 €/kk\nRahoitusvastike 180 €/kk\n00100 Helsinki"></textarea></div>
-                  <div class="listing-import-actions"><button id="import-listing" class="button" type="button">Täytä tiedot</button><span>Varmista tuodut luvut aina ilmoituksesta.</span></div>
+                  <div class="listing-import-actions"><button id="paste-listing" class="button" type="button">Liitä ja täytä</button><button id="show-paste-area" class="button-quiet" type="button">Liitä itse</button><span>Varmista tuodut luvut aina ilmoituksesta.</span></div>
+                  <div class="field" id="listing-text-field" style="margin-top:.7rem" hidden><label for="listing-text">Kopioidut kohdetiedot</label><textarea id="listing-text" placeholder="Esim. Velaton hinta 259 000 €\nAsuinpinta-ala 61 m²\nYhtiölaina 35 000 €\nHoitovastike 290 €/kk\nRahoitusvastike 180 €/kk\n00100 Helsinki"></textarea><div class="listing-import-actions"><button id="import-listing" class="button" type="button">Täytä liitetyistä tiedoista</button></div></div>
+                  <div class="field" style="margin-top:.7rem"><label for="listing-url">Ilmoituksen linkki <span class="label-help">(valinnainen)</span></label><div class="listing-import-row"><input id="listing-url" type="url" inputmode="url" placeholder="https://www.etuovi.com/kohde/... tai https://asunnot.oikotie.fi/..." autocomplete="off"><button id="open-listing" class="button-quiet" type="button">Avaa linkki</button></div><p class="listing-url-note">Linkki tallennetaan vain oman tuonnin viitteeksi. Julkaisuportaaleista ei haeta tietoja automaattisesti ilman niiden hyväksymää rajapintayhteyttä.</p></div>
                   <p class="import-status" id="import-status" role="status" aria-live="polite"></p>
                 </div>
               </details>
@@ -449,6 +458,8 @@
         $("#scrollButton").addEventListener("click", () => $("#tarkistus").scrollIntoView({ behavior: "smooth", block: "start" }));
         $("#open-listing").addEventListener("click", openListing);
         $("#import-listing").addEventListener("click", importListing);
+        $("#paste-listing").addEventListener("click", pasteListingFromClipboard);
+        $("#show-paste-area").addEventListener("click", showListingTextArea);
         $("#listing-url").addEventListener("keydown", event => {
           if (event.key === "Enter") { event.preventDefault(); openListing(); }
         });
@@ -543,6 +554,32 @@
           setImportStatus("Ilmoitus avattiin uuteen välilehteen. Kopioi näkyvät perustiedot ja liitä ne tähän.", "good");
         } catch (error) {
           setImportStatus(error.message || "Anna ensin Etuovi- tai Oikotie-linkki.", "error");
+        }
+      }
+
+      function showListingTextArea() {
+        $("#listing-import").open = true;
+        $("#listing-text-field").hidden = false;
+        $("#listing-text").focus();
+      }
+
+      async function pasteListingFromClipboard() {
+        try {
+          if (!navigator.clipboard?.readText) throw new Error("Leikepöydän luku ei ole käytettävissä tässä selaimessa.");
+          const copied = (await navigator.clipboard.readText()).trim();
+          if (!copied) throw new Error("Leikepöytä on tyhjä. Kopioi ensin kohdeilmoituksen perustiedot.");
+          if (/^https?:\/\/\S+$/i.test(copied)) {
+            const url = normalizeListingUrl(copied);
+            $("#listing-url").value = url;
+            setImportStatus("Ilmoituslinkki lisättiin. Kopioi kohteen perustiedot ja paina Liitä ja täytä – linkkiä ei voida lukea automaattisesti ilman hyväksyttyä rajapintaa.", "warning");
+            return;
+          }
+          $("#listing-text-field").hidden = false;
+          $("#listing-text").value = copied;
+          importListing();
+        } catch (error) {
+          showListingTextArea();
+          setImportStatus(`${error.message || "Leikepöydän lukeminen ei onnistunut."} Liitä tiedot tekstikenttään ja paina Täytä liitetyistä tiedoista.`, "warning");
         }
       }
 
@@ -770,7 +807,7 @@
         $("#current-size").value = 52; $("#current-private-loan").value = 98000; $("#current-maintenance").value = 260; $("#current-company-charge").value = 0; $("#current-mortgage-payment").value = 740; $("#current-other").value = 120;
         $("#target-size").value = 62; $("#target-company-loan").value = 30000; $("#target-maintenance").value = 320; $("#target-company-charge").value = 160; $("#target-other").value = 140; $("#target-rate").value = 3.3; $("#target-years").value = 25;
         $("#broker-percent").value = 3.8; $("#buyer-costs").value = 1000; $("#buffer").value = 5000;
-        $("#listing-import").open = false; setImportStatus("");
+        $("#listing-url").value = ""; $("#listing-text").value = ""; $("#listing-text-field").hidden = true; $("#listing-import").open = true; setImportStatus("");
         selectArea("current", findArea("00100"), false); selectArea("target", findArea("02600"), false);
         toast("Esimerkkitiedot palautettiin.");
       }
