@@ -172,19 +172,41 @@
     .calculation-note { margin: .75rem 0 0; color: var(--muted); font-size: .76rem; }
 
     .chart-card { overflow: hidden; }
-    .chart-shell { max-width: 100%; padding: .3rem .2rem 0; overflow-x: auto; overflow-y: hidden; }
+    .chart-shell { position: relative; max-width: 100%; padding: .3rem .2rem 0; overflow-x: auto; overflow-y: hidden; }
     .chart { min-width: 510px; width: 100%; height: 255px; display: block; }
     .chart-grid { stroke: #e7e0e5; stroke-width: 1; }
     .chart-label { fill: #7b737a; font-size: 11px; font-family: inherit; }
     .chart-line-current { fill: none; stroke: var(--plum); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
     .chart-line-target { fill: none; stroke: #1d7657; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-    .chart-dot-current { fill: var(--plum); }
-    .chart-dot-target { fill: #1d7657; }
+    .chart-dot-current { fill: var(--plum); stroke: #fff; stroke-width: 0; transition: r .16s ease, stroke-width .16s ease; }
+    .chart-dot-target { fill: #1d7657; stroke: #fff; stroke-width: 0; transition: r .16s ease, stroke-width .16s ease; }
+    .chart-dot-current.is-active, .chart-dot-target.is-active { stroke-width: 2.5; }
+    .chart-crosshair { stroke: #a79aa2; stroke-width: 1; stroke-dasharray: 3 4; pointer-events: none; }
+    .chart-hit { fill: transparent; cursor: crosshair; }
+    .chart-hit:focus { fill: rgba(90, 35, 72, .07); outline: none; }
     .chart-legend { display: flex; flex-wrap: wrap; gap: .7rem 1.1rem; margin-top: .15rem; color: var(--muted); font-size: .78rem; }
     .legend-item { display: inline-flex; align-items: center; gap: .35rem; }
     .legend-mark { width: 11px; height: 3px; border-radius: 10px; background: var(--plum); }
     .legend-mark.green { background: var(--green); }
+    .chart-readout { min-height: 1.3rem; margin: .75rem 0 0; color: var(--ink); font-size: .8rem; font-variant-numeric: tabular-nums; }
     .index-note { margin: .82rem 0 0; color: var(--muted); font-size: .76rem; }
+
+    .monthly-compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+    .monthly-home { padding: 1rem; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
+    .monthly-home.target { border-color: #d8c1d0; background: #fffafd; }
+    .monthly-home header { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; padding-bottom: .8rem; border-bottom: 1px solid var(--line); }
+    .monthly-home h3 { margin: 0; font-size: .94rem; letter-spacing: -.02em; }
+    .monthly-home header strong { color: var(--plum); font-size: 1rem; font-variant-numeric: tabular-nums; }
+    .monthly-list { display: grid; gap: .52rem; margin: .85rem 0 0; padding: 0; list-style: none; }
+    .monthly-list li { display: flex; justify-content: space-between; gap: .75rem; color: var(--muted); font-size: .78rem; }
+    .monthly-list strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .monthly-delta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: .75rem; padding: .9rem 1rem; border-radius: 11px; background: var(--soft); }
+    .monthly-delta p { margin: 0; color: var(--muted); font-size: .8rem; }
+    .monthly-delta strong { color: var(--plum); font-size: 1.12rem; font-variant-numeric: tabular-nums; }
+    .monthly-delta.positive { background: var(--red-soft); }
+    .monthly-delta.positive strong { color: var(--red); }
+    .monthly-delta.negative { background: var(--green-soft); }
+    .monthly-delta.negative strong { color: var(--green); }
 
     .risk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
     .risk { min-height: 124px; padding: .95rem; border: 1px solid var(--line); border-radius: 11px; }
@@ -233,7 +255,7 @@
       .nav-actions .button-quiet { display: none; }
       .container { width: min(100% - 1.2rem, 1180px); }
       .hero { padding-top: 2.4rem; }
-      .home-grid, .risk-grid, .method-grid { grid-template-columns: 1fr; }
+      .home-grid, .risk-grid, .method-grid, .monthly-compare { grid-template-columns: 1fr; }
       .finance-settings, .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .flow { grid-template-columns: 1fr; gap: .45rem; }
       .flow-step { min-height: auto; }
@@ -268,7 +290,7 @@
   <header class="site-header">
     <nav class="nav" aria-label="Päävalikko">
       <a class="brand" href="#alku" aria-label="Kotivaihto, alkuun"><span class="brand-mark" aria-hidden="true">K</span> Kotivaihto</a>
-      <div class="nav-links"><a href="#markkina">Markkina</a><a href="#rahoitus">Rahoitus</a><a href="#tarkistus">Tarkistus</a><a href="#menetelma">Menetelmä</a></div>
+      <div class="nav-links"><a href="#markkina">Markkina</a><a href="#rahoitus">Rahoitus</a><a href="#kuukausi">Kuukausi</a><a href="#tarkistus">Tarkistus</a><a href="#menetelma">Menetelmä</a></div>
       <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton">Jaa</button><button class="button" type="button" id="printButton">Tulosta</button></div>
     </nav>
   </header>
@@ -361,10 +383,18 @@
           <p class="calculation-note" id="finance-note"></p>
         </section>
 
+        <section id="kuukausi" class="card" aria-labelledby="monthly-title">
+          <div class="section-heading"><div><h2 id="monthly-title">Kuukausimenot vertailussa</h2><p>Näet asumismenojen osat rinnakkain. Seuraavan kodin lainaerä perustuu tässä laskelmassa uuteen rahoitustarpeeseen, korkoon ja laina-aikaan.</p></div><span class="section-tag">€/kk</span></div>
+          <div class="monthly-compare" id="monthly-compare"></div>
+          <div class="monthly-delta" id="monthly-delta"></div>
+          <p class="calculation-note" id="monthly-note"></p>
+        </section>
+
         <section id="markkina" class="card chart-card" aria-labelledby="market-title">
           <div class="section-heading"><div><h2 id="market-title">Kuntatason indeksin historiallinen muutos</h2><p id="market-subtitle">Valitse kaksi aluetta nähdäksesi niiden kuntatasoisen indeksisarjan.</p></div><span class="section-tag">Ei ennusteita</span></div>
           <div class="chart-shell" id="chart-wrap"></div>
           <div class="chart-legend" id="chart-legend"></div>
+          <p class="chart-readout" id="chart-readout" aria-live="polite"></p>
           <p class="index-note" id="index-note"></p>
         </section>
 
@@ -698,6 +728,7 @@
         renderAreaStatus("target", result.target.area);
         renderSummary(result);
         renderFinance(result);
+        renderMonthly(result);
         renderChart(result);
         renderRisks(result);
         renderSource();
@@ -717,11 +748,12 @@
 
       function renderSummary(result) {
         $("#summary-financing").textContent = euro(result.financingNeed);
+        const riskCount = buildRisks(result).filter(risk => risk.tone !== "good").length;
         const items = [
           ["Myynnistä jää", result.equityAfterSale >= 0 ? euro(result.equityAfterSale) : `−${euro(Math.abs(result.equityAfterSale))}`, result.equityAfterSale >= 0 ? "negative" : "positive"],
           ["Kuukausivaikutus", signedEuro(result.monthlyDelta) + "/kk", result.monthlyDelta <= 0 ? "negative" : "positive"],
           ["Alueiden hintataso", result.perSqmDelta == null ? "Ei vertailtavissa" : percent(result.perSqmDelta), ""],
-          ["Tarkistettavaa", `${buildRisks(result).filter(risk => risk.tone !== "good").length} kohtaa`, ""]
+          ["Tarkistettavaa", riskCountLabel(riskCount), ""]
         ];
         $("#summary-list").innerHTML = items.map(([label, value, className]) => `<li><span>${label}</span><strong class="${className}">${value}</strong></li>`).join("");
       }
@@ -744,13 +776,50 @@
         $("#finance-note").textContent = `Ostossa käteisenä maksettava kauppahinta on velaton hinta (${euro(result.target.price)}) − yhtiölaina (${euro(result.target.companyLoan)}). Varainsiirtovero ${euro(result.transferTax)} on 1,5 % velattomasta hinnasta. Laskelma ei huomioi mahdollisia pankin kuluja, korkosuojausta tai verovaikutuksia.`;
       }
 
+      function renderMonthly(result) {
+        const homes = [
+          {
+            title: "Nykyinen koti",
+            total: result.currentMonthly,
+            rows: [
+              ["Hoitovastike", result.current.maintenance],
+              ["Rahoitusvastike", result.current.companyCharge],
+              ["Asuntolainaerä", result.current.mortgagePayment],
+              ["Muut asumismenot", result.current.other]
+            ]
+          },
+          {
+            title: "Seuraava koti",
+            total: result.targetMonthly,
+            target: true,
+            rows: [
+              ["Hoitovastike", result.target.maintenance],
+              ["Rahoitusvastike", result.target.companyCharge],
+              ["Uusi lainaerä", result.monthlyLoan],
+              ["Muut asumismenot", result.target.other]
+            ]
+          }
+        ];
+        $("#monthly-compare").innerHTML = homes.map(home => `<section class="monthly-home ${home.target ? "target" : ""}"><header><h3>${home.title}</h3><strong>${euro(home.total)}/kk</strong></header><ul class="monthly-list">${home.rows.map(([label, value]) => `<li><span>${label}</span><strong>${euro(value)}/kk</strong></li>`).join("")}</ul></section>`).join("");
+        const tone = result.monthlyDelta > 0 ? "positive" : result.monthlyDelta < 0 ? "negative" : "";
+        $("#monthly-delta").className = `monthly-delta ${tone}`;
+        $("#monthly-delta").innerHTML = `<p>Muutos nykyisiin asumismenoihin verrattuna</p><strong>${signedEuro(result.monthlyDelta)}/kk</strong>`;
+        $("#monthly-note").textContent = "Kuukausivertailu ei sisällä esimerkiksi sähköä, kotivakuutusta tai muuttokuluja, ellei niitä ole lisätty kohtaan Muut asumismenot.";
+      }
+
       function renderChart(result) {
         const currentMunicipality = result.current.area?.municipality;
         const targetMunicipality = result.target.area?.municipality;
         const municipalities = [currentMunicipality, targetMunicipality].filter((value, index, array) => value && array.indexOf(value) === index && data.municipalities[value]);
         const subtitles = municipalities.length ? municipalities.map(name => `${name} (${data.municipalities[name].indexBase})`).join(" ja ") : "Valitse kaksi aluetta nähdäksesi indeksisarjat.";
         $("#market-subtitle").textContent = `Näytetään ${subtitles}. Käyrät ovat julkaistuja havaintoja, eivät ennusteita.`;
-        if (!municipalities.length) { $("#chart-wrap").innerHTML = ""; $("#chart-legend").innerHTML = ""; $("#index-note").textContent = "Kuntaindeksiä ei ole saatavilla valinnoille."; return; }
+        if (!municipalities.length) {
+          $("#chart-wrap").innerHTML = "";
+          $("#chart-legend").innerHTML = "";
+          $("#chart-readout").textContent = "";
+          $("#index-note").textContent = "Kuntaindeksiä ei ole saatavilla valinnoille.";
+          return;
+        }
         const series = municipalities.map(name => ({ name, points: data.municipalities[name].series }));
         const periods = series[0].points.map(point => point.period);
         const values = series.flatMap(item => item.points.map(point => point.index));
@@ -764,11 +833,48 @@
         const colors = ["current", "target"];
         const paths = series.map((item, index) => {
           const className = `chart-line-${colors[index]}`;
-          const dots = item.points.map((point, dotIndex) => `<circle class="chart-dot-${colors[index]}" cx="${x(dotIndex)}" cy="${y(point.index)}" r="3.5"><title>${item.name} ${point.period}: ${decimal.format(point.index)}</title></circle>`).join("");
+          const dots = item.points.map((point, dotIndex) => `<circle class="chart-dot-${colors[index]}" data-chart-dot="${dotIndex}" cx="${x(dotIndex)}" cy="${y(point.index)}" r="3.5"><title>${item.name} ${point.period}: ${decimal.format(point.index)}</title></circle>`).join("");
           return `<path class="${className}" d="${item.points.map((point, pointIndex) => `${pointIndex ? "L" : "M"}${x(pointIndex)} ${y(point.index)}`).join(" ")}"/>${dots}`;
         }).join("");
-        $("#chart-wrap").innerHTML = `<svg class="chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Kuntaindeksin historiallinen kehitys">${grid}${xLabels}${paths}</svg>`;
+        const hitWidth = (width - pad.left - pad.right) / Math.max(periods.length - 1, 1);
+        const hits = periods.map((period, index) => {
+          const left = index === 0 ? pad.left : x(index) - hitWidth / 2;
+          const right = index === periods.length - 1 ? width - pad.right : x(index) + hitWidth / 2;
+          const label = series.map(item => `${item.name} ${decimal.format(item.points[index].index)}`).join(", ");
+          return `<rect class="chart-hit" data-chart-period="${index}" x="${left}" y="${pad.top}" width="${Math.max(1, right - left)}" height="${height - pad.top - pad.bottom}" tabindex="${index === periods.length - 1 ? "0" : "-1"}" role="button" aria-label="${period}: ${label}"/>`;
+        }).join("");
+        $("#chart-wrap").innerHTML = `<svg class="chart" viewBox="0 0 ${width} ${height}" role="group" aria-label="Kuntaindeksin historiallinen kehitys. Valitse havaintopiste nähdäksesi tarkat arvot.">${grid}${xLabels}${paths}<line class="chart-crosshair" id="chart-crosshair" y1="${pad.top}" y2="${height - pad.bottom}"/>${hits}</svg>`;
         $("#chart-legend").innerHTML = series.map((item, index) => `<span class="legend-item"><i class="legend-mark ${index === 1 ? "green" : ""}"></i>${item.name}: ${decimal.format(item.points[0].index)} → ${decimal.format(item.points.at(-1).index)} (${percent((item.points.at(-1).index / item.points[0].index - 1) * 100)})</span>`).join("");
+        const setChartPeriod = index => {
+          const activeIndex = clamp(index, 0, periods.length - 1);
+          const period = periods[activeIndex];
+          const reading = series.map(item => `${item.name}: ${decimal.format(item.points[activeIndex].index)}`).join(" · ");
+          $("#chart-readout").textContent = `${period}: ${reading}.`;
+          const crosshair = $("#chart-crosshair");
+          crosshair.setAttribute("x1", x(activeIndex));
+          crosshair.setAttribute("x2", x(activeIndex));
+          $$('[data-chart-dot]', $("#chart-wrap")).forEach(dot => {
+            const active = Number(dot.dataset.chartDot) === activeIndex;
+            dot.classList.toggle("is-active", active);
+            dot.setAttribute("r", active ? "5.5" : "3.5");
+          });
+          $$('[data-chart-period]', $("#chart-wrap")).forEach(hit => hit.setAttribute("tabindex", Number(hit.dataset.chartPeriod) === activeIndex ? "0" : "-1"));
+        };
+        $$('[data-chart-period]', $("#chart-wrap")).forEach(hit => {
+          const index = Number(hit.dataset.chartPeriod);
+          hit.addEventListener("pointerenter", () => setChartPeriod(index));
+          hit.addEventListener("focus", () => setChartPeriod(index));
+          hit.addEventListener("click", () => setChartPeriod(index));
+          hit.addEventListener("keydown", event => {
+            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            const next = event.key === 'ArrowLeft' ? index - 1 : event.key === 'ArrowRight' ? index + 1 : event.key === 'Home' ? 0 : periods.length - 1;
+            const target = clamp(next, 0, periods.length - 1);
+            setChartPeriod(target);
+            $(`[data-chart-period="${target}"]`, $("#chart-wrap")).focus();
+          });
+        });
+        setChartPeriod(periods.length - 1);
         $("#index-note").textContent = "Indeksi kuvaa alueen laatuvakioitua hintamuutosta perusjaksoon nähden. Postinumeroalueen neliöhintaa käytetään sivulla vain hintatason vertailuun, ei tämän käyrän tai hintamuutoksen laskentaan.";
       }
 
@@ -788,11 +894,15 @@
         return risks;
       }
 
+      function riskCountLabel(count) {
+        return `${count} ${count === 1 ? "kohta" : "kohtaa"}`;
+      }
+
       function renderRisks(result) {
         const risks = buildRisks(result);
         const icon = { warning: "!", alert: "!", info: "i", good: "✓" };
         $("#risk-grid").innerHTML = risks.map(risk => `<article class="risk ${risk.tone}"><div class="risk-top"><span class="risk-icon" aria-hidden="true">${icon[risk.tone]}</span><h3>${risk.title}</h3></div><p>${risk.text}</p></article>`).join("");
-        $("#risk-count").textContent = `${risks.filter(risk => risk.tone !== "good").length} kohtaa`;
+        $("#risk-count").textContent = riskCountLabel(risks.filter(risk => risk.tone !== "good").length);
       }
 
       function renderSource() {
