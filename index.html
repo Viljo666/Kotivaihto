@@ -5,10 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Kotivaihto auttaa vertaamaan nykyistä kotia ja seuraavaa kotia. Laskelma käyttää postinumeroalueen hintatasoa ja kuntaindeksiä selkeästi erillään.">
   <meta name="theme-color" content="#063d33">
+  <meta name="site-url" content="https://kotivaihto.fi">
+  <meta name="publisher-name" content="">
+  <meta name="publisher-id" content="">
+  <meta name="contact-email" content="">
   <meta name="adsense-client" content="">
   <meta name="adsense-slot-mid-page" content="">
   <meta name="adsense-slot-footer" content="">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fi_FI">
+  <meta property="og:title" content="Kotivaihto — muuton rahoitus ja aluevertailu">
+  <meta property="og:description" content="Näe muuton rahavaikutus ennen näyttöjä. Vertaa alueita, rahoitustarvetta ja kuukausimenoja ilman ennusteita.">
+  <meta property="og:url" content="https://kotivaihto.fi/">
+  <meta property="og:image" content="https://kotivaihto.fi/assets/kotivaihto-share.png">
+  <meta property="og:image:width" content="1731">
+  <meta property="og:image:height" content="909">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://kotivaihto.fi/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
   <title>Kotivaihto — muuton rahoitus ja aluevertailu</title>
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"Kotivaihto","url":"https://kotivaihto.fi/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fi","description":"Muuton rahoitustarpeen, kuukausimenojen ja alueiden julkaistujen hintatasojen vertailu."}
+  </script>
   <style>
     :root {
       --ink: #102b25;
@@ -580,6 +599,10 @@
       <h3>Mainokset ja evästeet</h3>
       <p id="privacy-ad-status" class="privacy-status">Mainosasetus tarkistetaan, kun avaat tämän ikkunan.</p>
       <p>Ennen kuin mainokset voidaan ottaa käyttöön Suomessa tai muualla ETA-alueella, sivustolle tulee määrittää julkaisijan oma tietosuojateksti ja Googlen vaatimusten mukainen sertifioitu suostumusalusta. Tämä näkymä ei korvaa sitä suostumusalustaa.</p>
+      <h3>Rekisterinpitäjä ja yhteydenotot</h3>
+      <p id="privacy-controller">Julkaisija- ja yhteystiedot lisätään ennen julkista julkaisua.</p>
+      <h3>Käyttöehdot</h3>
+      <p>Kotivaihto on päätöksenteon tuki. Se ei ole kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo, eikä laskelma ole tarjous tai luottopäätös. Tarkista aina kohteen asiakirjat, hinnat, kulut ja rahoitus omista lähteistäsi ennen päätöstä.</p>
     </div>
   </dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -609,6 +632,11 @@
           "mid-page": document.querySelector('meta[name="adsense-slot-mid-page"]')?.content.trim() || "",
           footer: document.querySelector('meta[name="adsense-slot-footer"]')?.content.trim() || ""
         }
+      };
+      const launchConfig = {
+        publisherName: document.querySelector('meta[name="publisher-name"]')?.content.trim() || "",
+        publisherId: document.querySelector('meta[name="publisher-id"]')?.content.trim() || "",
+        contactEmail: document.querySelector('meta[name="contact-email"]')?.content.trim() || ""
       };
       let data;
       let state;
@@ -893,6 +921,10 @@
         $("#privacy-ad-status").textContent = configured
           ? "Mainospaikat on määritetty, mutta Google-mainoksia ei ladata ennen sertifioidun suostumusalustan välittämää voimassa olevaa mainossuostumusta."
           : "Mainoksia ei ole käytössä: sivulla ei ole AdSense-julkaisijatunnusta tai mainospaikkoja, joten Google-mainoskoodia ei ladata.";
+        const identity = [launchConfig.publisherName, launchConfig.publisherId && `Y-tunnus ${launchConfig.publisherId}`, launchConfig.contactEmail && `Yhteys: ${launchConfig.contactEmail}`].filter(Boolean);
+        $("#privacy-controller").textContent = identity.length
+          ? identity.join(" · ")
+          : "Julkaisija- ja yhteystiedot lisätään ennen julkista julkaisua. Täydennä ne index.html-tiedoston publisher-name-, publisher-id- ja contact-email-asetuksiin.";
         const dialog = $("#privacy-dialog");
         if (typeof dialog.showModal === "function") dialog.showModal();
         else dialog.setAttribute("open", "");

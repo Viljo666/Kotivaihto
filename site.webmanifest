@@ -1,0 +1,19 @@
+{
+  "name": "Kotivaihto",
+  "short_name": "Kotivaihto",
+  "description": "Muuton rahoitustarpeen, kuukausimenojen ja alueiden hintatasojen vertailu.",
+  "lang": "fi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f1e8",
+  "theme_color": "#063d33",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
