@@ -269,6 +269,22 @@
     .legend-mark.green { background: var(--coral); }
     .chart-readout { min-height: 1.3rem; margin: .75rem 0 0; color: var(--ink); font-size: .8rem; font-variant-numeric: tabular-nums; }
     .index-note { margin: .82rem 0 0; color: var(--muted); font-size: .76rem; }
+    .market-scenario { margin-top: 1rem; padding: 1rem; border: 1px solid #d6e3d8; border-radius: 13px; background: linear-gradient(135deg, #f3f8f2, #fffdf9); }
+    .market-scenario-head { display: flex; align-items: start; justify-content: space-between; gap: .8rem; }
+    .market-scenario h3 { margin: 0; color: var(--plum); font-size: .98rem; }
+    .market-scenario-head p { margin: .22rem 0 0; color: var(--muted); font-size: .75rem; }
+    .scenario-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
+    .scenario-option { display: inline-flex; align-items: center; gap: .35rem; min-height: 35px; padding: .42rem .65rem; border: 1px solid #cbd9ce; border-radius: 9px; background: #fff; color: var(--ink); font: inherit; font-size: .74rem; font-weight: 750; cursor: pointer; }
+    .scenario-option span { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .scenario-option:hover { border-color: #8ab099; }
+    .scenario-option[aria-pressed="true"] { border-color: var(--green); background: var(--green); color: #fff; box-shadow: 0 4px 11px rgba(35, 110, 76, .18); }
+    .scenario-option[aria-pressed="true"] span { color: #d8eddd; }
+    .scenario-values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-top: .8rem; }
+    .scenario-value { padding: .72rem; border: 1px solid #dde7df; border-radius: 10px; background: rgba(255,255,255,.82); }
+    .scenario-value span { display: block; color: var(--muted); font-size: .68rem; }
+    .scenario-value strong { display: block; margin-top: .22rem; color: var(--plum); font-size: .98rem; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
+    .scenario-value small { display: block; margin-top: .22rem; color: var(--muted); font-size: .66rem; line-height: 1.35; }
+    .scenario-note { margin: .75rem 0 0; color: var(--muted); font-size: .73rem; line-height: 1.45; }
 
     .area-profile { background: linear-gradient(135deg, #f5f9f4, #fffdf9); }
     .area-profile-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(190px, .7fr); gap: .8rem; align-items: stretch; }
@@ -401,7 +417,7 @@
       .nav-actions .button-quiet { display: none; }
       .container { width: min(100% - 1.2rem, 1180px); }
       .hero { padding-top: 2.4rem; }
-      .home-grid, .risk-grid, .method-grid, .monthly-compare, .quick-start-grid, .area-profile-grid, .offer-summary-body, .lead-card { grid-template-columns: 1fr; }
+      .home-grid, .risk-grid, .method-grid, .monthly-compare, .quick-start-grid, .area-profile-grid, .offer-summary-body, .lead-card, .scenario-values { grid-template-columns: 1fr; }
       .finance-settings, .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .flow { grid-template-columns: 1fr; gap: .45rem; }
       .flow-step { min-height: auto; }
@@ -574,6 +590,12 @@
           <div class="chart-legend" id="chart-legend"></div>
           <p class="chart-readout" id="chart-readout" aria-live="polite"></p>
           <p class="index-note" id="index-note"></p>
+          <section class="market-scenario" aria-labelledby="market-scenario-title">
+            <div class="market-scenario-head"><div><h3 id="market-scenario-title">Mahdollinen 12 kk näkymä</h3><p>Valitse oma suunnitteluoletuksesi. Tämä ei ole markkinaennuste eikä kohteen hinta-arvio.</p></div><span class="section-tag">Suunnitteluun</span></div>
+            <div class="scenario-controls" role="group" aria-label="Valitse 12 kuukauden markkinaoletus"><button class="scenario-option" type="button" data-market-scenario="-5" aria-pressed="false">Varovainen <span>−5 %</span></button><button class="scenario-option" type="button" data-market-scenario="0" aria-pressed="true">Vakaa <span>0 %</span></button><button class="scenario-option" type="button" data-market-scenario="5" aria-pressed="false">Nousu <span>+5 %</span></button></div>
+            <div class="scenario-values" id="market-scenario-values" aria-live="polite"></div>
+            <p class="scenario-note" id="market-scenario-note"></p>
+          </section>
         </section>
 
         <section id="alue" class="card area-profile" aria-labelledby="area-profile-title">
@@ -688,7 +710,8 @@
       const defaultState = () => ({
         current: { area: null },
         target: { area: null, importedListing: null },
-        activeOption: { current: -1, target: -1 }
+        activeOption: { current: -1, target: -1 },
+        marketScenario: 0
       });
 
       async function init() {
@@ -749,6 +772,10 @@
         $("#lead-form").addEventListener("submit", submitLeadRequest);
         $("#close-lead").addEventListener("click", closeLeadDialog);
         $("#lead-dialog").addEventListener("close", () => $("#lead-form").reset());
+        $$("[data-market-scenario]").forEach(button => button.addEventListener("click", () => {
+          state.marketScenario = clamp(toNumber(button.dataset.marketScenario), -10, 10);
+          renderMarketScenario(calculate());
+        }));
         document.addEventListener("click", event => {
           if (event.target.closest("#copy-area-link")) copyAreaLink();
         });
@@ -1470,12 +1497,41 @@
         $("#monthly-note").textContent = "Kuukausivertailu ei sisällä esimerkiksi sähköä, kotivakuutusta tai muuttokuluja, ellei niitä ole lisätty kohtaan Muut asumismenot.";
       }
 
+      function renderMarketScenario(result) {
+        const assumption = clamp(toNumber(state.marketScenario), -10, 10);
+        state.marketScenario = assumption;
+        const changeLabel = `${assumption > 0 ? "+" : assumption < 0 ? "−" : ""}${number.format(Math.abs(assumption))} %`;
+        $$("[data-market-scenario]").forEach(button => button.setAttribute("aria-pressed", String(toNumber(button.dataset.marketScenario) === assumption)));
+        const currentPrice = result.current.price;
+        const targetPrice = result.target.price;
+        if (!(currentPrice > 0) || !(targetPrice > 0)) {
+          $("#market-scenario-values").innerHTML = `<article class="scenario-value"><span>Tarvitaan hinnat</span><strong>—</strong><small>Syötä nykyisen ja seuraavan kodin velaton hinta nähdäksesi suunnittelulaskelman.</small></article>`;
+          $("#market-scenario-note").textContent = "Skenaario ei käytä eikä muodosta tulevaisuuden markkinadataa.";
+          return;
+        }
+        const factor = 1 + assumption / 100;
+        const projectedCurrent = currentPrice * factor;
+        const projectedTarget = targetPrice * factor;
+        const projectedResult = calculateFor(
+          { ...result.current, price: projectedCurrent },
+          { ...result.target, price: projectedTarget },
+          { brokerPercent: result.brokerPercent, buyerCosts: result.buyerCosts, buffer: result.buffer }
+        );
+        $("#market-scenario-values").innerHTML = [
+          ["Nykyinen koti · 12 kk", projectedCurrent, `${changeLabel} · muutos ${signedEuro(projectedCurrent - currentPrice)}`],
+          ["Seuraava koti · 12 kk", projectedTarget, `${changeLabel} · muutos ${signedEuro(projectedTarget - targetPrice)}`],
+          ["Uusi rahoitustarve", projectedResult.financingNeed, `nykyiseen laskelmaan ${signedEuro(projectedResult.financingNeed - result.financingNeed)}`]
+        ].map(([label, value, detail]) => `<article class="scenario-value"><span>${label}</span><strong>${euro(value)}</strong><small>${detail}</small></article>`).join("");
+        $("#market-scenario-note").textContent = `Oletus ${changeLabel} sovelletaan samalla tavalla molempien kotien velattomaan hintaan 12 kuukauden ajalle. Kohteiden todellinen kehitys voi poiketa merkittävästi; tämä on oma suunnittelulaskelma, ei ennuste.`;
+      }
+
       function renderChart(result) {
         const currentMunicipality = result.current.area?.municipality;
         const targetMunicipality = result.target.area?.municipality;
         const municipalities = [currentMunicipality, targetMunicipality].filter((value, index, array) => value && array.indexOf(value) === index && data.municipalities[value]);
         const subtitles = municipalities.length ? municipalities.map(name => `${name} (${data.municipalities[name].indexBase})`).join(" ja ") : "Valitse kaksi aluetta nähdäksesi indeksisarjat.";
         $("#market-subtitle").textContent = `Näytetään ${subtitles}. Käyrät ovat julkaistuja havaintoja, eivät ennusteita.`;
+        renderMarketScenario(result);
         if (!municipalities.length) {
           $("#chart-wrap").innerHTML = "";
           $("#chart-legend").innerHTML = "";
