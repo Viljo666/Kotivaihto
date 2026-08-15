@@ -121,6 +121,7 @@
     .import-status.good { color: var(--green); }
     .import-status.warning { color: var(--amber); }
     .import-status.error { color: var(--red); }
+    .target-note-help { margin: .05rem 0 0; color: var(--muted); font-size: .7rem; line-height: 1.35; }
 
     .combobox { position: relative; }
     .combo-input { padding-right: 2.2rem; }
@@ -138,6 +139,21 @@
     .details summary { padding: .85rem 0 .2rem; color: var(--plum); cursor: pointer; font-size: .86rem; font-weight: 750; }
     .details-content { padding: .8rem 0 0; }
     .finance-settings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+    .saved-targets { margin-top: 1rem; padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); }
+    .saved-targets-head { display: flex; align-items: start; justify-content: space-between; gap: .9rem; }
+    .saved-targets-head h3 { margin: 0; font-size: .96rem; }
+    .saved-targets-head p { margin: .16rem 0 0; color: var(--muted); font-size: .74rem; }
+    .saved-targets-head .button { flex: 0 0 auto; min-height: 36px; font-size: .78rem; }
+    .saved-targets-list { display: grid; gap: .55rem; margin-top: .82rem; }
+    .saved-target { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .72rem; border: 1px solid #e3dce1; border-radius: 10px; background: #fff; }
+    .saved-target-main { min-width: 0; }
+    .saved-target-main strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .82rem; }
+    .saved-target-main span { display: block; margin-top: .13rem; color: var(--muted); font-size: .72rem; }
+    .saved-target-actions { display: flex; flex: 0 0 auto; gap: .4rem; }
+    .saved-target-actions button { min-height: 34px; padding: .35rem .54rem; font-size: .73rem; }
+    .saved-target-empty { margin: .82rem 0 0; color: var(--muted); font-size: .75rem; }
+    .saved-target-note, .saved-target-status { margin: .7rem 0 0; color: var(--muted); font-size: .71rem; }
+    .saved-target-status.good { color: var(--green); }
 
     .summary-wrap { position: sticky; top: 88px; }
     .summary-card { padding: 1.18rem; overflow: hidden; }
@@ -273,6 +289,8 @@
       .listing-import-row { display: grid; grid-template-columns: 1fr; }
       .import-steps { grid-template-columns: 1fr; }
       .import-steps li { min-height: 43px; }
+      .saved-targets-head, .saved-target { align-items: stretch; flex-direction: column; }
+      .saved-target-actions { justify-content: flex-end; }
     }
     @media print {
       body { background: #fff; }
@@ -365,10 +383,18 @@
                 <div class="field"><label for="target-other">Muut asumismenot</label><div class="input-with-unit"><input id="target-other" data-home="target" data-field="other" type="number" min="0" step="5" value="140"><span class="unit">€/kk</span></div></div>
                 <div class="field"><label for="target-rate">Lainan korko</label><div class="input-with-unit"><input id="target-rate" data-home="target" data-field="rate" type="number" min="0" max="25" step="0.05" value="3.30"><span class="unit">%</span></div></div>
                 <div class="field"><label for="target-years">Laina-aika</label><div class="input-with-unit"><input id="target-years" data-home="target" data-field="years" type="number" min="1" max="40" step="1" value="25"><span class="unit">v</span></div></div>
+                <div class="field wide"><label for="target-note">Oma nimi tai muistiinpano <span class="label-help">(valinnainen)</span></label><input id="target-note" type="text" maxlength="80" autocomplete="off" placeholder="Esim. Kulmakaksio, näyttö lauantaina"><p class="target-note-help">Muistiinpano tallennetaan vain tämän laitteen selaimeen, jos tallennat kohteen.</p></div>
               </div>
               <p class="area-status" id="target-area-status">Valitse alue nähdäksesi julkaistun hintatason.</p>
             </form>
           </div>
+          <section class="saved-targets" aria-labelledby="saved-targets-title">
+            <div class="saved-targets-head"><div><h3 id="saved-targets-title">Tallennetut kohteet <span class="label-help" id="saved-target-count">(0/4)</span></h3><p>Säilytä kiinnostavat vaihtoehdot ja avaa ne takaisin vertailuun.</p></div><button class="button" id="save-target-home" type="button">Tallenna seuraava koti</button></div>
+            <div class="saved-targets-list" id="saved-targets-list"></div>
+            <p class="saved-target-empty" id="saved-target-empty">Ei vielä tallennettuja kohteita.</p>
+            <p class="saved-target-note">Tallennetaan vain tämän laitteen selaimeen: alue, laskentakentät ja oma muistiinpano. Ilmoitustekstiä tai linkkiä ei tallenneta.</p>
+            <p class="saved-target-status" id="saved-target-status" role="status" aria-live="polite"></p>
+          </section>
           <details class="details"><summary>Myynnin ja oston lisäoletukset</summary><div class="details-content"><div class="finance-settings">
             <div class="field"><label for="broker-percent">Välityspalkkio</label><div class="input-with-unit"><input id="broker-percent" type="number" min="0" max="15" step="0.1" value="3.8"><span class="unit">%</span></div></div>
             <div class="field"><label for="buyer-costs">Oston muut kulut</label><div class="input-with-unit"><input id="buyer-costs" type="number" min="0" step="100" value="1000"><span class="unit">€</span></div></div>
@@ -431,10 +457,14 @@
       const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
       const toNumber = (value) => Number(String(value ?? "").replace(",", ".")) || 0;
       const safeText = (value) => String(value ?? "");
+      const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
       const euro = (value) => money.format(Number.isFinite(value) ? value : 0);
       const signedEuro = (value) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${euro(Math.abs(value))}`;
       const percent = (value) => `${value > 0 ? "+" : ""}${decimal.format(value)} %`;
       const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+      const savedTargetHomesKey = "kotivaihto-saved-target-homes-v1";
+      const maxSavedTargetHomes = 4;
+      const targetInputIds = ["target-size", "target-price", "target-company-loan", "target-maintenance", "target-company-charge", "target-other", "target-rate", "target-years"];
       let data;
       let state;
 
@@ -457,6 +487,7 @@
           selectArea("current", findArea("00100"), false);
           selectArea("target", findArea("02600"), false);
           updateAll();
+          renderSavedTargetHomes();
         } catch (error) {
           showLoadError(error);
         }
@@ -490,6 +521,7 @@
         $("#import-listing").addEventListener("click", importListing);
         $("#paste-listing").addEventListener("click", pasteListingFromClipboard);
         $("#show-paste-area").addEventListener("click", showListingTextArea);
+        $("#save-target-home").addEventListener("click", saveTargetHome);
         $("#listing-url").addEventListener("keydown", event => {
           if (event.key === "Enter") { event.preventDefault(); openListing(); }
         });
@@ -561,6 +593,129 @@
         }
         updateAll();
         if (focus) $(`#${home}-size`).focus();
+      }
+
+      function setSavedTargetStatus(message, tone = "") {
+        const element = $("#saved-target-status");
+        element.textContent = message;
+        element.className = `saved-target-status ${tone}`;
+      }
+
+      function readSavedTargetHomes() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(savedTargetHomesKey) || "[]");
+          if (!Array.isArray(parsed)) return [];
+          return parsed.filter(item => item && typeof item.id === "string" && item.values && typeof item.values === "object").slice(0, maxSavedTargetHomes);
+        } catch (_) {
+          return [];
+        }
+      }
+
+      function writeSavedTargetHomes(homes) {
+        localStorage.setItem(savedTargetHomesKey, JSON.stringify(homes.slice(0, maxSavedTargetHomes)));
+      }
+
+      function savedTargetSignature(postcode, values) {
+        return [postcode || "", ...targetInputIds.map(id => String(values[id] ?? ""))].join("|");
+      }
+
+      function createSavedTargetHome() {
+        const values = Object.fromEntries(targetInputIds.map(id => [id, $(`#${id}`).value]));
+        const postcode = state.target.area?.postcode || null;
+        return {
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          savedAt: new Date().toISOString(),
+          postcode,
+          note: $("#target-note").value.trim().slice(0, 80),
+          values,
+          signature: savedTargetSignature(postcode, values)
+        };
+      }
+
+      function describeSavedTarget(item) {
+        const area = item.postcode ? findArea(item.postcode) : null;
+        const price = toNumber(item.values?.["target-price"]);
+        const size = toNumber(item.values?.["target-size"]);
+        const areaTitle = area ? `${area.postcode} · ${area.area}, ${area.municipality}` : item.postcode ? `${item.postcode} · aluetta ei enää löydy` : "Kohde ilman aluetta";
+        const title = item.note || areaTitle;
+        const details = [item.note ? areaTitle : "", price > 0 ? `Velaton hinta ${euro(price)}` : "Velaton hinta puuttuu", size > 0 ? `${number.format(size)} m²` : "Pinta-ala puuttuu"].filter(Boolean).join(" · ");
+        return { title, details };
+      }
+
+      function renderSavedTargetHomes() {
+        const homes = readSavedTargetHomes();
+        $("#saved-target-count").textContent = `(${homes.length}/${maxSavedTargetHomes})`;
+        $("#saved-target-empty").hidden = homes.length > 0;
+        $("#save-target-home").textContent = homes.length >= maxSavedTargetHomes ? "Tallenna / päivitä" : "Tallenna seuraava koti";
+        $("#saved-targets-list").innerHTML = homes.map(item => {
+          const description = describeSavedTarget(item);
+          return `<article class="saved-target"><div class="saved-target-main"><strong>${escapeHTML(description.title)}</strong><span>${escapeHTML(description.details)}</span></div><div class="saved-target-actions"><button class="button-quiet" type="button" data-load-target="${escapeHTML(item.id)}">Avaa</button><button class="button-quiet" type="button" data-remove-target="${escapeHTML(item.id)}">Poista</button></div></article>`;
+        }).join("");
+        $$('[data-load-target]').forEach(button => button.addEventListener("click", () => loadSavedTargetHome(button.dataset.loadTarget)));
+        $$('[data-remove-target]').forEach(button => button.addEventListener("click", () => removeSavedTargetHome(button.dataset.removeTarget)));
+      }
+
+      function saveTargetHome() {
+        try {
+          const snapshot = createSavedTargetHome();
+          const homes = readSavedTargetHomes();
+          const existing = homes.findIndex(item => item.signature === snapshot.signature);
+          if (existing >= 0) {
+            homes[existing] = { ...snapshot, id: homes[existing].id };
+            writeSavedTargetHomes(homes);
+            renderSavedTargetHomes();
+            setSavedTargetStatus("Kohteen tallennettu versio päivitettiin tälle laitteelle.", "good");
+            toast("Tallennettu kohde päivitettiin.");
+            return;
+          }
+          if (homes.length >= maxSavedTargetHomes) {
+            setSavedTargetStatus("Tallenna enintään neljä kohdetta. Poista ensin yksi, jos haluat tallentaa uuden.");
+            return;
+          }
+          homes.unshift(snapshot);
+          writeSavedTargetHomes(homes);
+          renderSavedTargetHomes();
+          setSavedTargetStatus("Kohde tallennettiin vain tälle laitteelle. Ilmoitustekstiä tai linkkiä ei tallennettu.", "good");
+          toast("Seuraava koti tallennettiin.");
+        } catch (_) {
+          setSavedTargetStatus("Kohteen tallennus ei ole käytettävissä tässä selaimessa.");
+        }
+      }
+
+      function loadSavedTargetHome(id) {
+        const snapshot = readSavedTargetHomes().find(item => item.id === id);
+        if (!snapshot) return;
+        const area = snapshot.postcode ? findArea(snapshot.postcode) : null;
+        if (area) selectArea("target", area, false);
+        else {
+          state.target.area = null;
+          $("#target-area-search").value = snapshot.postcode ? `${snapshot.postcode} · aluetta ei enää löydy` : "";
+        }
+        targetInputIds.forEach(inputId => {
+          if (typeof snapshot.values[inputId] === "string") $(`#${inputId}`).value = snapshot.values[inputId];
+        });
+        $("#target-note").value = typeof snapshot.note === "string" ? snapshot.note : "";
+        state.target.importedListing = null;
+        $("#listing-url").value = "";
+        $("#listing-text").value = "";
+        $("#listing-text-field").hidden = true;
+        setImportStatus("");
+        updateAll();
+        const description = describeSavedTarget(snapshot);
+        setSavedTargetStatus(`${description.title} avattiin takaisin vertailuun.`, "good");
+        toast("Tallennettu kohde avattiin.");
+      }
+
+      function removeSavedTargetHome(id) {
+        try {
+          const homes = readSavedTargetHomes();
+          writeSavedTargetHomes(homes.filter(item => item.id !== id));
+          renderSavedTargetHomes();
+          setSavedTargetStatus("Tallennettu kohde poistettiin tältä laitteelta.");
+          toast("Tallennettu kohde poistettiin.");
+        } catch (_) {
+          setSavedTargetStatus("Tallennetun kohteen poistaminen ei onnistunut tässä selaimessa.");
+        }
       }
 
       function setImportStatus(message, tone = "") {
@@ -917,7 +1072,7 @@
         $("#current-size").value = 52; $("#current-private-loan").value = 98000; $("#current-maintenance").value = 260; $("#current-company-charge").value = 0; $("#current-mortgage-payment").value = 740; $("#current-other").value = 120;
         $("#target-size").value = 62; $("#target-company-loan").value = 30000; $("#target-maintenance").value = 320; $("#target-company-charge").value = 160; $("#target-other").value = 140; $("#target-rate").value = 3.3; $("#target-years").value = 25;
         $("#broker-percent").value = 3.8; $("#buyer-costs").value = 1000; $("#buffer").value = 5000;
-        $("#listing-url").value = ""; $("#listing-text").value = ""; $("#listing-text-field").hidden = true; $("#listing-import").open = true; setImportStatus("");
+        $("#listing-url").value = ""; $("#listing-text").value = ""; $("#target-note").value = ""; $("#listing-text-field").hidden = true; $("#listing-import").open = true; setImportStatus("");
         selectArea("current", findArea("00100"), false); selectArea("target", findArea("02600"), false);
         toast("Esimerkkitiedot palautettiin.");
       }
