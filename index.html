@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Kotivaihto auttaa vertaamaan nykyistä kotia ja seuraavaa kotia. Laskelma käyttää postinumeroalueen hintatasoa ja kuntaindeksiä selkeästi erillään.">
   <meta name="theme-color" content="#063d33">
+  <meta name="adsense-client" content="">
+  <meta name="adsense-slot-mid-page" content="">
+  <meta name="adsense-slot-footer" content="">
   <title>Kotivaihto — muuton rahoitus ja aluevertailu</title>
   <style>
     :root {
@@ -256,6 +259,11 @@
     .source-line { margin: 1rem 0 0; color: var(--muted); font-size: .76rem; }
     .source-line a { color: var(--plum-2); font-weight: 700; }
 
+    .ad-slot { margin: .1rem auto 1.35rem; padding: .75rem 0; }
+    .ad-slot[hidden] { display: none; }
+    .ad-slot-label { display: block; margin: 0 0 .42rem; color: var(--muted); font-size: .62rem; font-weight: 800; letter-spacing: .12em; text-align: center; }
+    .ad-slot .adsbygoogle { display: block; min-height: 90px; overflow: hidden; border-radius: 12px; }
+
     footer { margin-top: 1rem; padding: 1.7rem 0 2.4rem; background: var(--plum); color: #d4e2d8; font-size: .78rem; }
     .footer-inner { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid rgba(231, 242, 234, .18); }
     .footer-inner p { max-width: 810px; margin: 0; }
@@ -425,6 +433,11 @@
           <p class="calculation-note" id="monthly-note"></p>
         </section>
 
+        <section class="ad-slot" data-ad-placement="mid-page" hidden aria-label="Mainos">
+          <span class="ad-slot-label">MAINOS</span>
+          <ins class="adsbygoogle" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        </section>
+
         <section id="markkina" class="card chart-card" aria-labelledby="market-title">
           <div class="section-heading"><div><h2 id="market-title">Kuntatason indeksin historiallinen muutos</h2><p id="market-subtitle">Valitse kaksi aluetta nähdäksesi niiden kuntatasoisen indeksisarjan.</p></div><span class="section-tag">Ei ennusteita</span></div>
           <div class="chart-shell" id="chart-wrap"></div>
@@ -453,6 +466,11 @@
     </div>
   </main>
 
+  <section class="ad-slot container" data-ad-placement="footer" hidden aria-label="Mainos">
+    <span class="ad-slot-label">MAINOS</span>
+    <ins class="adsbygoogle" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </section>
+
   <footer><div class="container footer-inner"><p>© Kotivaihto. Laskelma on suuntaa-antava päätöksenteon tuki, ei kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo. Varainsiirtovero on laskettu asunto-osakkeelle 1,5 %:n oletuksella velattomasta hinnasta.</p><p>Ei ennusteita · Salaukset näkyviin</p></div></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -475,6 +493,13 @@
       const maxSavedTargetHomes = 4;
       const targetInputIds = ["target-size", "target-price", "target-company-loan", "target-maintenance", "target-company-charge", "target-other", "target-rate", "target-years"];
       const sharedInputIds = ["current-size", "current-price", "current-company-loan", "current-private-loan", "current-maintenance", "current-company-charge", "current-mortgage-payment", "current-other", ...targetInputIds, "broker-percent", "buyer-costs", "buffer"];
+      const adSenseConfig = {
+        client: document.querySelector('meta[name="adsense-client"]')?.content.trim() || "",
+        slots: {
+          "mid-page": document.querySelector('meta[name="adsense-slot-mid-page"]')?.content.trim() || "",
+          footer: document.querySelector('meta[name="adsense-slot-footer"]')?.content.trim() || ""
+        }
+      };
       let data;
       let state;
 
@@ -500,6 +525,7 @@
           }
           updateAll();
           renderSavedTargetHomes();
+          initializeAdSense();
         } catch (error) {
           showLoadError(error);
         }
@@ -657,6 +683,49 @@
         const url = new URL(location.href);
         url.searchParams.set("comparison", JSON.stringify(createSharedComparison()));
         return url.href;
+      }
+
+      function hasAdSenseConfiguration() {
+        return /^ca-pub-\d+$/.test(adSenseConfig.client) && Object.values(adSenseConfig.slots).some(slot => /^\d+$/.test(slot));
+      }
+
+      function revealAdSenseSlots() {
+        $$('[data-ad-placement]').forEach(placement => {
+          const slot = adSenseConfig.slots[placement.dataset.adPlacement];
+          const ad = $(".adsbygoogle", placement);
+          if (!/^\d+$/.test(slot) || !ad || ad.dataset.adsenseLoaded) return;
+          ad.dataset.adClient = adSenseConfig.client;
+          ad.dataset.adSlot = slot;
+          placement.hidden = false;
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            ad.dataset.adsenseLoaded = "true";
+          } catch (_) {
+            placement.hidden = true;
+          }
+        });
+      }
+
+      function loadAdSenseScript() {
+        const existing = document.querySelector('script[data-kotivaihto-adsense]');
+        if (existing) { revealAdSenseSlots(); return; }
+        const script = document.createElement("script");
+        script.async = true;
+        script.dataset.kotivaihtoAdsense = "true";
+        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(adSenseConfig.client)}`;
+        script.crossOrigin = "anonymous";
+        script.addEventListener("load", revealAdSenseSlots, { once: true });
+        script.addEventListener("error", () => $$('[data-ad-placement]').forEach(placement => { placement.hidden = true; }), { once: true });
+        document.head.append(script);
+      }
+
+      function initializeAdSense() {
+        if (!hasAdSenseConfiguration()) return;
+        /* A Google-certified CMP must set this flag only after valid advertising consent. */
+        if (window.KotivaihtoAdsConsent === true) { loadAdSenseScript(); return; }
+        window.addEventListener("kotivaihto:ads-consent", () => {
+          if (window.KotivaihtoAdsConsent === true) loadAdSenseScript();
+        }, { once: true });
       }
 
       function setSavedTargetStatus(message, tone = "") {
