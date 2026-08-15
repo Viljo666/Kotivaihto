@@ -6,12 +6,11 @@ const fail = message => { throw new Error(`Validation failed: ${message}`); };
 
 const data = JSON.parse(read("data/hinnat.json"));
 const html = read("index.html");
-const requiredFiles = ["assets/favicon.svg", "assets/kotivaihto-mark.svg", "assets/kotivaihto-share.png", "site.webmanifest", "robots.txt", "sitemap.xml"];
+const requiredFiles = ["assets/favicon.svg", "assets/kotivaihto-share.png", "site.webmanifest", "robots.txt", "sitemap.xml"];
 const requiredMarkup = [
   'lang="fi"',
   'meta property="og:image"',
   'link rel="canonical"',
-  'src="assets/kotivaihto-mark.svg"',
   'id="privacy-dialog"',
   'id="offer-summary-body"',
   'id="lead-dialog"',

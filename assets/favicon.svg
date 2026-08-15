@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kotivaihto">
-  <path fill="#b7d3a7" d="M4 24 20 11l16 13v28H25V34H15v18H4V24Z"/>
-  <path fill="#efd29d" d="m18 17 15-12 16 13v34H38V32H28v20H18V17Z"/>
-  <path fill="#ec7057" d="m37 27 14-11 9 8v28H49V35h-5v17h-7V27Z"/>
-  <path fill="#063d33" d="M28 32h10v20H28z"/>
+  <path fill="#063d33" d="M7 28 32 8l25 20v27H39V36H25v19H7z"/>
+  <path fill="#ec7057" d="M42 20v17h10V20l-5-4z"/>
+  <path fill="#b7d3a7" d="M12 28 32 12l12 10v8L32 20 20 30v20H12z"/>
 </svg>
