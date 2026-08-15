@@ -170,6 +170,8 @@
     .summary-footnote { margin: 1rem 0 0; color: var(--muted); font-size: .72rem; }
     .summary-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: 1rem; }
     .summary-actions button { min-width: 0; }
+    .shared-comparison-status { min-height: 1.2rem; margin: .8rem 0 0; color: var(--muted); font-size: .72rem; }
+    .shared-comparison-status.good { color: var(--green); }
 
     .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
     .metric { padding: .92rem; border-radius: 11px; background: var(--soft); }
@@ -309,7 +311,7 @@
     <nav class="nav" aria-label="Päävalikko">
       <a class="brand" href="#alku" aria-label="Kotivaihto, alkuun"><span class="brand-mark" aria-hidden="true">K</span> Kotivaihto</a>
       <div class="nav-links"><a href="#markkina">Markkina</a><a href="#rahoitus">Rahoitus</a><a href="#kuukausi">Kuukausi</a><a href="#tarkistus">Tarkistus</a><a href="#menetelma">Menetelmä</a></div>
-      <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton">Jaa</button><button class="button" type="button" id="printButton">Tulosta</button></div>
+      <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton" title="Jaettava linkki sisältää laskelman luvut, ei ilmoitustekstiä, kohdelinkkiä tai omaa muistiinpanoa.">Jaa vertailu</button><button class="button" type="button" id="printButton">Tulosta</button></div>
     </nav>
   </header>
 
@@ -440,7 +442,7 @@
         </section>
       </section>
 
-      <aside class="summary-wrap" aria-label="Laskelman yhteenveto"><section class="summary-card" id="summary-card"><header><h2>Yhteenveto</h2><p class="summary-kicker">Päivittyy jokaisella muutoksella</p></header><div><p class="headline" id="summary-financing">—</p><p class="headline-label">uuden rahoituksen tarve</p></div><ul class="summary-list" id="summary-list"></ul><p class="summary-footnote">Asuntolainaerä on annuiteettilaskelma valitulla korolla ja laina-ajalla. Se ei ole pankin lainatarjous.</p><div class="summary-actions"><button class="button-quiet" type="button" id="resetButton">Palauta esimerkki</button><button class="button" type="button" id="scrollButton">Tarkista kohdat</button></div></section></aside>
+      <aside class="summary-wrap" aria-label="Laskelman yhteenveto"><section class="summary-card" id="summary-card"><header><h2>Yhteenveto</h2><p class="summary-kicker">Päivittyy jokaisella muutoksella</p></header><div><p class="headline" id="summary-financing">—</p><p class="headline-label">uuden rahoituksen tarve</p></div><ul class="summary-list" id="summary-list"></ul><p class="summary-footnote">Asuntolainaerä on annuiteettilaskelma valitulla korolla ja laina-ajalla. Se ei ole pankin lainatarjous.</p><div class="summary-actions"><button class="button-quiet" type="button" id="resetButton">Palauta esimerkki</button><button class="button" type="button" id="scrollButton">Tarkista kohdat</button></div><p class="shared-comparison-status" id="shared-comparison-status" role="status" aria-live="polite"></p></section></aside>
     </div>
   </main>
 
@@ -465,6 +467,7 @@
       const savedTargetHomesKey = "kotivaihto-saved-target-homes-v1";
       const maxSavedTargetHomes = 4;
       const targetInputIds = ["target-size", "target-price", "target-company-loan", "target-maintenance", "target-company-charge", "target-other", "target-rate", "target-years"];
+      const sharedInputIds = ["current-size", "current-price", "current-company-loan", "current-private-loan", "current-maintenance", "current-company-charge", "current-mortgage-payment", "current-other", ...targetInputIds, "broker-percent", "buyer-costs", "buffer"];
       let data;
       let state;
 
@@ -484,8 +487,10 @@
           bindInputs();
           setupCombobox("current");
           setupCombobox("target");
-          selectArea("current", findArea("00100"), false);
-          selectArea("target", findArea("02600"), false);
+          if (!restoreSharedComparison()) {
+            selectArea("current", findArea("00100"), false);
+            selectArea("target", findArea("02600"), false);
+          }
           updateAll();
           renderSavedTargetHomes();
         } catch (error) {
@@ -593,6 +598,58 @@
         }
         updateAll();
         if (focus) $(`#${home}-size`).focus();
+      }
+
+      function setSharedComparisonStatus(message, tone = "") {
+        const element = $("#shared-comparison-status");
+        element.textContent = message;
+        element.className = `shared-comparison-status ${tone}`;
+      }
+
+      function createSharedComparison() {
+        return {
+          version: 1,
+          currentPostcode: state.current.area?.postcode || null,
+          targetPostcode: state.target.area?.postcode || null,
+          values: Object.fromEntries(sharedInputIds.map(id => [id, $(`#${id}`).value]))
+        };
+      }
+
+      function applySharedComparison(snapshot) {
+        if (snapshot?.version !== 1 || !snapshot.values || typeof snapshot.values !== "object") return false;
+        const currentArea = snapshot.currentPostcode ? findArea(snapshot.currentPostcode) : null;
+        const targetArea = snapshot.targetPostcode ? findArea(snapshot.targetPostcode) : null;
+        if (!currentArea || !targetArea) return false;
+        selectArea("current", currentArea, false);
+        selectArea("target", targetArea, false);
+        sharedInputIds.forEach(id => {
+          if (typeof snapshot.values[id] === "string") $(`#${id}`).value = snapshot.values[id];
+        });
+        $("#target-note").value = "";
+        $("#listing-url").value = "";
+        $("#listing-text").value = "";
+        $("#listing-text-field").hidden = true;
+        state.target.importedListing = null;
+        setImportStatus("");
+        return true;
+      }
+
+      function restoreSharedComparison() {
+        try {
+          const encoded = new URL(location.href).searchParams.get("comparison");
+          if (!encoded) return false;
+          const restored = applySharedComparison(JSON.parse(encoded));
+          if (restored) setSharedComparisonStatus("Jaettu vertailu avattiin. Sitä ei tallennettu tälle laitteelle.", "good");
+          return restored;
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function createShareUrl() {
+        const url = new URL(location.href);
+        url.searchParams.set("comparison", JSON.stringify(createSharedComparison()));
+        return url.href;
       }
 
       function setSavedTargetStatus(message, tone = "") {
@@ -1073,16 +1130,25 @@
         $("#target-size").value = 62; $("#target-company-loan").value = 30000; $("#target-maintenance").value = 320; $("#target-company-charge").value = 160; $("#target-other").value = 140; $("#target-rate").value = 3.3; $("#target-years").value = 25;
         $("#broker-percent").value = 3.8; $("#buyer-costs").value = 1000; $("#buffer").value = 5000;
         $("#listing-url").value = ""; $("#listing-text").value = ""; $("#target-note").value = ""; $("#listing-text-field").hidden = true; $("#listing-import").open = true; setImportStatus("");
+        setSharedComparisonStatus("");
         selectArea("current", findArea("00100"), false); selectArea("target", findArea("02600"), false);
         toast("Esimerkkitiedot palautettiin.");
       }
 
       async function sharePage() {
-        const payload = { title: document.title, text: "Kotivaihto – muuton rahoitus ja aluevertailu", url: location.href };
+        const result = calculate();
+        const target = result.target.area ? `${result.target.area.area}, ${result.target.area.municipality}` : "seuraava koti";
+        const direction = result.monthlyDelta > 0 ? "kasvavat" : result.monthlyDelta < 0 ? "pienenevät" : "pysyvät samoina";
+        const text = `Kotivaihto-yhteenveto\nKohde: ${target}\nUusi rahoitustarve: ${euro(result.financingNeed)}\nAsumismenot ${direction}: ${signedEuro(result.monthlyDelta)}/kk\nLaskelma on suuntaa-antava, ei lainatarjous.`;
+        const payload = { title: document.title, text, url: createShareUrl() };
         try {
-          if (navigator.share) { await navigator.share(payload); return; }
-          await navigator.clipboard.writeText(location.href);
-          toast("Sivun osoite kopioitiin leikepöydälle.");
+          if (navigator.share) {
+            await navigator.share(payload);
+            toast("Jaettu linkki sisältää tämän laskelman luvut, ei ilmoitustekstiä, kohdelinkkiä tai omaa muistiinpanoa.");
+            return;
+          }
+          await navigator.clipboard.writeText(`${text}\n${payload.url}`);
+          toast("Yhteenveto ja jaettava vertailulinkki kopioitiin leikepöydälle.");
         } catch (_) { toast("Jakaminen keskeytettiin."); }
       }
 
