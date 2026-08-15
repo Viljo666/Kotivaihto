@@ -70,6 +70,17 @@
     .hero-note { margin: 0; padding: 1.2rem 1.25rem; background: rgba(255, 253, 249, .96); border: 1px solid rgba(255,255,255,.45); border-radius: var(--radius); color: var(--muted); font-size: .9rem; box-shadow: 0 18px 34px rgba(0, 22, 17, .2); }
     .hero-note strong { display: block; margin-bottom: .35rem; color: var(--plum); }
 
+    .quick-start { margin: 0 0 1.7rem; padding: 1.08rem; border: 1px solid #cbded0; border-radius: var(--radius); background: linear-gradient(135deg, #eef6ef, #fffdf9); box-shadow: var(--shadow-small); }
+    .quick-start-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
+    .quick-start h2 { margin: 0; color: var(--plum); font-size: 1.08rem; letter-spacing: -.03em; }
+    .quick-start p { margin: .18rem 0 0; color: var(--muted); font-size: .8rem; }
+    .quick-start-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; margin-top: .85rem; }
+    .guide-step { display: grid; grid-template-columns: auto 1fr; gap: .65rem; align-items: center; width: 100%; padding: .78rem; border: 1px solid #dce6dd; border-radius: 12px; color: var(--ink); text-align: left; background: #fffefb; }
+    .guide-step:hover { border-color: #9fc3aa; background: #f7fbf7; }
+    .guide-number { width: 1.65rem; height: 1.65rem; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--plum); font-size: .78rem; font-weight: 850; }
+    .guide-step strong { display: block; font-size: .82rem; }
+    .guide-step span { display: block; margin-top: .08rem; color: var(--muted); font-size: .72rem; line-height: 1.3; }
+
     .app-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; align-items: start; gap: 1.35rem; padding-bottom: 1.6rem; }
     .app-grid > * { min-width: 0; }
     .content { display: grid; gap: 1.35rem; }
@@ -162,6 +173,23 @@
     .saved-target-empty { margin: .82rem 0 0; color: var(--muted); font-size: .75rem; }
     .saved-target-note, .saved-target-status { margin: .7rem 0 0; color: var(--muted); font-size: .71rem; }
     .saved-target-status.good { color: var(--green); }
+    .saved-target-compare { margin-top: .82rem; padding-top: .8rem; border-top: 1px solid #d8e4da; }
+    .saved-target-compare-head { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; }
+    .saved-target-compare h4 { margin: 0; color: var(--plum); font-size: .84rem; }
+    .saved-target-compare p { margin: .1rem 0 0; color: var(--muted); font-size: .71rem; }
+    .saved-target-compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin-top: .65rem; }
+    .saved-compare-card { padding: .72rem; border: 1px solid #d8e4da; border-radius: 10px; background: #fff; }
+    .saved-compare-card.active { border-color: #80af90; box-shadow: inset 0 0 0 1px #80af90; }
+    .saved-compare-card header { display: flex; align-items: start; justify-content: space-between; gap: .5rem; }
+    .saved-compare-card h5 { margin: 0; font-size: .78rem; line-height: 1.25; }
+    .saved-compare-card header span { display: block; margin-top: .12rem; color: var(--muted); font-size: .66rem; }
+    .saved-compare-card .button-quiet { min-height: 30px; padding: .28rem .42rem; font-size: .68rem; }
+    .saved-compare-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .42rem; margin: .62rem 0 0; }
+    .saved-compare-metric { padding: .45rem; border-radius: 8px; background: var(--soft); }
+    .saved-compare-metric span { display: block; color: var(--muted); font-size: .61rem; line-height: 1.2; }
+    .saved-compare-metric strong { display: block; margin-top: .17rem; color: var(--ink); font-size: .75rem; font-variant-numeric: tabular-nums; }
+    .saved-compare-metric strong.positive { color: var(--red); }
+    .saved-compare-metric strong.negative { color: var(--green); }
 
     .summary-wrap { position: sticky; top: 88px; }
     .summary-card { padding: 1.18rem; overflow: hidden; background: linear-gradient(150deg, #063d33, #082d26); border-color: transparent; color: #fffdf9; box-shadow: 0 18px 38px rgba(6, 61, 51, .2); }
@@ -219,6 +247,20 @@
     .chart-readout { min-height: 1.3rem; margin: .75rem 0 0; color: var(--ink); font-size: .8rem; font-variant-numeric: tabular-nums; }
     .index-note { margin: .82rem 0 0; color: var(--muted); font-size: .76rem; }
 
+    .area-profile { background: linear-gradient(135deg, #f5f9f4, #fffdf9); }
+    .area-profile-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(190px, .7fr); gap: .8rem; align-items: stretch; }
+    .area-profile-main { padding: .95rem; border-radius: 12px; background: #fff; border: 1px solid #dce6dd; }
+    .area-profile-main h3 { margin: 0; font-size: 1rem; letter-spacing: -.025em; }
+    .area-profile-main p { margin: .35rem 0 0; color: var(--muted); font-size: .77rem; }
+    .area-profile-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .55rem; margin-top: .8rem; }
+    .area-profile-metric { padding: .6rem; border-radius: 9px; background: var(--soft); }
+    .area-profile-metric span { display: block; color: var(--muted); font-size: .66rem; }
+    .area-profile-metric strong { display: block; margin-top: .18rem; color: var(--plum); font-size: .84rem; line-height: 1.25; }
+    .area-profile-share { display: flex; flex-direction: column; justify-content: space-between; gap: .8rem; padding: .95rem; border-radius: 12px; color: #fff; background: var(--plum); }
+    .area-profile-share p { margin: 0; color: #d2e4d7; font-size: .75rem; }
+    .area-profile-share .button-quiet { align-self: start; border-color: rgba(255,255,255,.38); color: #fff; }
+    .area-profile-share .button-quiet:hover { background: rgba(255,255,255,.1); }
+
     .monthly-compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
     .monthly-home { padding: 1rem; border: 1px solid var(--line); border-radius: 11px; background: #fffefb; }
     .monthly-home.target { border-color: #b7d3c2; background: #f6faf6; }
@@ -251,6 +293,21 @@
     .risk.good { background: #fbfefc; border-color: #cde9d9; }
     .risk.good .risk-icon { color: var(--green); background: var(--green-soft); }
 
+    .offer-summary { background: #fffdf9; }
+    .offer-summary-body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(230px, .85fr); gap: .8rem; }
+    .offer-summary-section { padding: .95rem; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+    .offer-summary-section h3 { margin: 0; color: var(--plum); font-size: .92rem; }
+    .offer-summary-section p { margin: .35rem 0 0; color: var(--muted); font-size: .75rem; }
+    .offer-summary-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin-top: .75rem; }
+    .offer-summary-metric { padding: .6rem; border-radius: 9px; background: var(--soft); }
+    .offer-summary-metric span { display: block; color: var(--muted); font-size: .66rem; line-height: 1.25; }
+    .offer-summary-metric strong { display: block; margin-top: .17rem; color: var(--ink); font-size: .88rem; font-variant-numeric: tabular-nums; }
+    .offer-summary-checks { margin: .7rem 0 0; padding: 0; list-style: none; }
+    .offer-summary-checks li { padding: .46rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; }
+    .offer-summary-checks strong { color: var(--ink); }
+    .offer-summary-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .9rem; }
+    .offer-summary-actions p { flex-basis: 100%; margin: 0; color: var(--muted); font-size: .7rem; }
+
     .method-card { padding-bottom: 1.25rem; }
     .method-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
     .method { padding: .9rem; border-left: 3px solid var(--coral); background: var(--soft); border-radius: 0 10px 10px 0; }
@@ -258,6 +315,10 @@
     .method p { margin: 0; color: var(--muted); font-size: .77rem; }
     .source-line { margin: 1rem 0 0; color: var(--muted); font-size: .76rem; }
     .source-line a { color: var(--plum-2); font-weight: 700; }
+    .data-freshness { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-top: 1rem; }
+    .freshness-item { padding: .7rem; border-radius: 10px; background: #f4f8f3; }
+    .freshness-item span { display: block; color: var(--muted); font-size: .66rem; }
+    .freshness-item strong { display: block; margin-top: .18rem; color: var(--plum); font-size: .8rem; }
 
     .ad-slot { margin: .1rem auto 1.35rem; padding: .75rem 0; }
     .ad-slot[hidden] { display: none; }
@@ -267,6 +328,17 @@
     footer { margin-top: 1rem; padding: 1.7rem 0 2.4rem; background: var(--plum); color: #d4e2d8; font-size: .78rem; }
     .footer-inner { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid rgba(231, 242, 234, .18); }
     .footer-inner p { max-width: 810px; margin: 0; }
+    .footer-inner button { min-height: auto; padding: 0; border: 0; color: #d4e2d8; background: transparent; font-weight: 750; text-decoration: underline; }
+    dialog { width: min(620px, calc(100% - 2rem)); max-height: min(740px, calc(100vh - 2rem)); padding: 0; border: 0; border-radius: 16px; color: var(--ink); box-shadow: 0 25px 70px rgba(0, 30, 22, .3); }
+    dialog::backdrop { background: rgba(2, 31, 24, .58); }
+    .privacy-dialog { padding: 1.15rem; }
+    .privacy-dialog header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+    .privacy-dialog h2 { margin: 0; color: var(--plum); font-size: 1.18rem; }
+    .privacy-dialog h3 { margin: 1rem 0 .35rem; color: var(--plum); font-size: .9rem; }
+    .privacy-dialog p, .privacy-dialog li { color: var(--muted); font-size: .79rem; }
+    .privacy-dialog ul { margin: .4rem 0 0; padding-left: 1.2rem; }
+    .privacy-status { margin: .7rem 0 0; padding: .68rem; border-radius: 9px; background: var(--green-soft); color: #245c42 !important; }
+    .privacy-dialog .button-quiet { min-height: 34px; padding: .34rem .56rem; font-size: .73rem; }
     .toast { position: fixed; z-index: 30; left: 50%; bottom: 1.25rem; transform: translate(-50%, 130%); padding: .7rem .95rem; border-radius: 10px; background: var(--plum); color: #fffdf9; box-shadow: var(--shadow); font-size: .85rem; transition: transform .25s ease; }
     .toast.show { transform: translate(-50%, 0); }
     .load-error { padding: 1rem; border-radius: 12px; background: var(--red-soft); color: #7d242b; }
@@ -288,7 +360,7 @@
       .nav-actions .button-quiet { display: none; }
       .container { width: min(100% - 1.2rem, 1180px); }
       .hero { padding-top: 2.4rem; }
-      .home-grid, .risk-grid, .method-grid, .monthly-compare { grid-template-columns: 1fr; }
+      .home-grid, .risk-grid, .method-grid, .monthly-compare, .quick-start-grid, .area-profile-grid, .offer-summary-body { grid-template-columns: 1fr; }
       .finance-settings, .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .flow { grid-template-columns: 1fr; gap: .45rem; }
       .flow-step { min-height: auto; }
@@ -299,7 +371,7 @@
       .footer-inner p + p { margin-top: .7rem; }
     }
     @media (max-width: 430px) {
-      .input-grid, .finance-settings, .metrics { grid-template-columns: 1fr; }
+      .input-grid, .finance-settings, .metrics, .saved-target-compare-grid, .area-profile-metrics, .offer-summary-metrics, .data-freshness { grid-template-columns: 1fr; }
       .field.wide { grid-column: auto; }
       .section-heading { display: block; }
       .section-tag { display: inline-block; margin-top: .6rem; }
@@ -317,6 +389,12 @@
       .summary-wrap { position: static; margin-bottom: 1rem; }
       .card, .summary-card { box-shadow: none; break-inside: avoid; }
       .details { display: none; }
+      body.print-offer .hero, body.print-offer .summary-wrap, body.print-offer .ad-slot, body.print-offer footer, body.print-offer .quick-start { display: none !important; }
+      body.print-offer main.container { width: auto; margin: 0; }
+      body.print-offer #app { display: block; }
+      body.print-offer #laskuri > section:not(#offer-summary) { display: none !important; }
+      body.print-offer .offer-summary { display: block !important; padding: 0; border: 0; }
+      body.print-offer .offer-summary-actions { display: none !important; }
     }
   </style>
 </head>
@@ -338,6 +416,15 @@
         <p class="hero-copy">Vertaa nykyistä kotiasi seuraavaan kotiin. Kotivaihto erottaa alueen hintatason ja kuntaindeksin historiallisen muutoksen – eikä näytä ennusteita.</p>
       </div>
       <p class="hero-note"><strong>Ei hinta-arvio eikä lainatarjous.</strong> Laskelma on päätöksenteon tuki. Tarkista kohteen velaton hinta, yhtiölaina, vastikkeet ja rahoitus aina asiakirjoista sekä rahoittajalta.</p>
+    </section>
+
+    <section class="quick-start" aria-labelledby="quick-start-title">
+      <div class="quick-start-head"><div><h2 id="quick-start-title">Aloita kolmessa vaiheessa</h2><p>Voit tehdä ensimmäisen vertailun ilman, että täytät kaikkea kerralla.</p></div></div>
+      <div class="quick-start-grid">
+        <button class="guide-step" type="button" data-guide-step="current"><span class="guide-number">1</span><span><strong>Valitse nykyinen alue</strong><span>Aloita postinumerosta ja lisää omat luvut rauhassa.</span></span></button>
+        <button class="guide-step" type="button" data-guide-step="target"><span class="guide-number">2</span><span><strong>Liitä seuraava kohde</strong><span>Kopioi ilmoituksen perustiedot tai täytä vain tärkeimmät kentät.</span></span></button>
+        <button class="guide-step" type="button" data-guide-step="result"><span class="guide-number">3</span><span><strong>Näe raha­vaikutus</strong><span>Katso uusi rahoitustarve ja kuukausimenojen muutos.</span></span></button>
+      </div>
     </section>
 
     <div id="app" class="app-grid" aria-live="polite">
@@ -410,6 +497,7 @@
             <div class="saved-targets-list" id="saved-targets-list"></div>
             <p class="saved-target-empty" id="saved-target-empty">Ei vielä tallennettuja kohteita.</p>
             <p class="saved-target-note">Tallennetaan vain tämän laitteen selaimeen: alue, laskentakentät ja oma muistiinpano. Ilmoitustekstiä tai linkkiä ei tallenneta.</p>
+            <div class="saved-target-compare" id="saved-target-compare" aria-live="polite"></div>
             <p class="saved-target-status" id="saved-target-status" role="status" aria-live="polite"></p>
           </section>
           <details class="details"><summary>Myynnin ja oston lisäoletukset</summary><div class="details-content"><div class="finance-settings">
@@ -446,9 +534,20 @@
           <p class="index-note" id="index-note"></p>
         </section>
 
+        <section id="alue" class="card area-profile" aria-labelledby="area-profile-title">
+          <div class="section-heading"><div><h2 id="area-profile-title">Alueen näkymä</h2><p>Jaa valitun seuraavan alueen julkaistu hintataso ja kuntaindeksin viimeisin havainto ilman omia laskelmalukuja.</p></div><span class="section-tag">Jaettava alue</span></div>
+          <div class="area-profile-grid" id="area-profile"></div>
+        </section>
+
         <section id="tarkistus" class="card" aria-labelledby="risk-title">
           <div class="section-heading"><div><h2 id="risk-title">Tarkista ennen tarjousta</h2><p>Nämä nostot eivät ole luottopäätöksiä. Ne auttavat tekemään näkyväksi kohdat, jotka kannattaa varmistaa asiakirjoista tai asiantuntijalta.</p></div><span class="section-tag" id="risk-count">0 kohtaa</span></div>
           <div class="risk-grid" id="risk-grid"></div>
+        </section>
+
+        <section id="tarjous" class="card offer-summary" aria-labelledby="offer-summary-title">
+          <div class="section-heading"><div><h2 id="offer-summary-title">Tarjousyhteenveto</h2><p>Kokoa juuri tämän laskelman avainluvut ja tarkistettavat kohdat yhdelle tulostettavalle sivulle.</p></div><span class="section-tag">Ei tarjouksen korvike</span></div>
+          <div class="offer-summary-body" id="offer-summary-body"></div>
+          <div class="offer-summary-actions"><button class="button" id="print-offer-summary" type="button">Tulosta tarjousyhteenveto</button><button class="button-quiet" id="copy-offer-summary" type="button">Kopioi yhteenveto</button><p>Yhteenveto ei sisällä ilmoitustekstiä, kohdelinkkiä eikä omaa muistiinpanoasi.</p></div>
         </section>
 
         <section id="menetelma" class="card method-card" aria-labelledby="method-title">
@@ -458,11 +557,12 @@
             <article class="method"><strong>2. Ajallinen muutos</strong><p>Historiakuvio käyttää vain kunta-/aluekohtaista laatuvakioitua hintaindeksiä. Neliöhintoja ei käytetä ajan muutoksen laskentaan.</p></article>
             <article class="method"><strong>3. Salatut ja puuttuvat tiedot</strong><p>Salattu neliöhinta näytetään salattuna. Kotivaihto ei arvioi puuttuvaa lukua eikä esitä ennusteita.</p></article>
           </div>
+          <div class="data-freshness" id="data-freshness" aria-label="Tietojen ajantasaisuus"></div>
           <p class="source-line" id="source-line">Ladataan lähde- ja kattavuustietoja…</p>
         </section>
       </section>
 
-      <aside class="summary-wrap" aria-label="Laskelman yhteenveto"><section class="summary-card" id="summary-card"><header><h2>Yhteenveto</h2><p class="summary-kicker">Päivittyy jokaisella muutoksella</p></header><div><p class="headline" id="summary-financing">—</p><p class="headline-label">uuden rahoituksen tarve</p></div><ul class="summary-list" id="summary-list"></ul><p class="summary-footnote">Asuntolainaerä on annuiteettilaskelma valitulla korolla ja laina-ajalla. Se ei ole pankin lainatarjous.</p><div class="summary-actions"><button class="button-quiet" type="button" id="resetButton">Palauta esimerkki</button><button class="button" type="button" id="scrollButton">Tarkista kohdat</button></div><p class="shared-comparison-status" id="shared-comparison-status" role="status" aria-live="polite"></p></section></aside>
+      <aside class="summary-wrap" aria-label="Laskelman yhteenveto"><section class="summary-card" id="summary-card" tabindex="-1"><header><h2>Yhteenveto</h2><p class="summary-kicker">Päivittyy jokaisella muutoksella</p></header><div><p class="headline" id="summary-financing">—</p><p class="headline-label">uuden rahoituksen tarve</p></div><ul class="summary-list" id="summary-list"></ul><p class="summary-footnote">Asuntolainaerä on annuiteettilaskelma valitulla korolla ja laina-ajalla. Se ei ole pankin lainatarjous.</p><div class="summary-actions"><button class="button-quiet" type="button" id="resetButton">Palauta esimerkki</button><button class="button" type="button" id="scrollButton">Tarkista kohdat</button></div><p class="shared-comparison-status" id="shared-comparison-status" role="status" aria-live="polite"></p></section></aside>
     </div>
   </main>
 
@@ -471,7 +571,17 @@
     <ins class="adsbygoogle" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </section>
 
-  <footer><div class="container footer-inner"><p>© Kotivaihto. Laskelma on suuntaa-antava päätöksenteon tuki, ei kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo. Varainsiirtovero on laskettu asunto-osakkeelle 1,5 %:n oletuksella velattomasta hinnasta.</p><p>Ei ennusteita · Salaukset näkyviin</p></div></footer>
+  <footer><div class="container footer-inner"><p>© Kotivaihto. Laskelma on suuntaa-antava päätöksenteon tuki, ei kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo. Varainsiirtovero on laskettu asunto-osakkeelle 1,5 %:n oletuksella velattomasta hinnasta.</p><p>Ei ennusteita · Salaukset näkyviin · <button type="button" id="privacy-button">Tietosuoja ja mainosasetukset</button></p></div></footer>
+  <dialog id="privacy-dialog" aria-labelledby="privacy-title">
+    <div class="privacy-dialog">
+      <header><div><h2 id="privacy-title">Tietosuoja ja mainosasetukset</h2><p>Selkeä kuva siitä, mitä Kotivaihto säilyttää ja mitä se ei tee.</p></div><button class="button-quiet" id="close-privacy" type="button">Sulje</button></header>
+      <h3>Tämän laitteen tallennukset</h3>
+      <ul><li>Voit tallentaa enintään neljä seuraavaa kotia oman selaimesi muistiin. Tallenne sisältää alueen, laskentakentät ja oman lyhyen muistiinpanon.</li><li>Tallennettuihin kohteisiin ei sisälly ilmoitustekstiä eikä Etuovi- tai Oikotie-linkkiä.</li><li>Jaettu vertailulinkki sisältää vain laskelmaan valitut alueet ja numerot. Se ei sisällä muistiinpanoa, ilmoitustekstiä tai kohdelinkkiä.</li></ul>
+      <h3>Mainokset ja evästeet</h3>
+      <p id="privacy-ad-status" class="privacy-status">Mainosasetus tarkistetaan, kun avaat tämän ikkunan.</p>
+      <p>Ennen kuin mainokset voidaan ottaa käyttöön Suomessa tai muualla ETA-alueella, sivustolle tulee määrittää julkaisijan oma tietosuojateksti ja Googlen vaatimusten mukainen sertifioitu suostumusalusta. Tämä näkymä ei korvaa sitä suostumusalustaa.</p>
+    </div>
+  </dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -521,7 +631,7 @@
           setupCombobox("target");
           if (!restoreSharedComparison()) {
             selectArea("current", findArea("00100"), false);
-            selectArea("target", findArea("02600"), false);
+            selectArea("target", restoreAreaView() || findArea("02600"), false);
           }
           updateAll();
           renderSavedTargetHomes();
@@ -560,9 +670,30 @@
         $("#paste-listing").addEventListener("click", pasteListingFromClipboard);
         $("#show-paste-area").addEventListener("click", showListingTextArea);
         $("#save-target-home").addEventListener("click", saveTargetHome);
+        $$("[data-guide-step]").forEach(button => button.addEventListener("click", () => runGuideStep(button.dataset.guideStep)));
+        $("#print-offer-summary").addEventListener("click", printOfferSummary);
+        $("#copy-offer-summary").addEventListener("click", copyOfferSummary);
+        document.addEventListener("click", event => {
+          if (event.target.closest("#copy-area-link")) copyAreaLink();
+        });
+        $("#privacy-button").addEventListener("click", openPrivacyDialog);
+        $("#close-privacy").addEventListener("click", closePrivacyDialog);
         $("#listing-url").addEventListener("keydown", event => {
           if (event.key === "Enter") { event.preventDefault(); openListing(); }
         });
+      }
+
+      function runGuideStep(step) {
+        const actions = {
+          current: () => ({ container: $("#currentForm"), focus: $("#current-area-search") }),
+          target: () => { $("#listing-import").open = true; return { container: $("#listing-import"), focus: $("#paste-listing") }; },
+          result: () => ({ container: $("#summary-card"), focus: $("#summary-card") })
+        };
+        const action = actions[step];
+        if (!action) return;
+        const target = action();
+        target.container.scrollIntoView({ behavior: "smooth", block: "center" });
+        window.setTimeout(() => target.focus?.focus({ preventScroll: true }), 420);
       }
 
       function setupCombobox(home) {
@@ -685,6 +816,35 @@
         return url.href;
       }
 
+      function restoreAreaView() {
+        try {
+          const postcode = new URL(location.href).searchParams.get("area");
+          return postcode ? findArea(postcode) : null;
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function createAreaUrl(area = state.target.area) {
+        const url = new URL(location.href);
+        url.searchParams.delete("comparison");
+        if (area?.postcode) url.searchParams.set("area", area.postcode);
+        else url.searchParams.delete("area");
+        url.hash = "alue";
+        return url.href;
+      }
+
+      async function copyAreaLink() {
+        const area = state.target.area;
+        if (!area) { toast("Valitse ensin seuraavan kodin alue."); return; }
+        try {
+          await navigator.clipboard.writeText(createAreaUrl(area));
+          toast("Alueen linkki kopioitiin. Se ei sisällä omia laskelmalukuja.");
+        } catch (_) {
+          toast("Aluelinkin kopiointi ei onnistunut tässä selaimessa.");
+        }
+      }
+
       function hasAdSenseConfiguration() {
         return /^ca-pub-\d+$/.test(adSenseConfig.client) && Object.values(adSenseConfig.slots).some(slot => /^\d+$/.test(slot));
       }
@@ -726,6 +886,22 @@
         window.addEventListener("kotivaihto:ads-consent", () => {
           if (window.KotivaihtoAdsConsent === true) loadAdSenseScript();
         }, { once: true });
+      }
+
+      function openPrivacyDialog() {
+        const configured = hasAdSenseConfiguration();
+        $("#privacy-ad-status").textContent = configured
+          ? "Mainospaikat on määritetty, mutta Google-mainoksia ei ladata ennen sertifioidun suostumusalustan välittämää voimassa olevaa mainossuostumusta."
+          : "Mainoksia ei ole käytössä: sivulla ei ole AdSense-julkaisijatunnusta tai mainospaikkoja, joten Google-mainoskoodia ei ladata.";
+        const dialog = $("#privacy-dialog");
+        if (typeof dialog.showModal === "function") dialog.showModal();
+        else dialog.setAttribute("open", "");
+      }
+
+      function closePrivacyDialog() {
+        const dialog = $("#privacy-dialog");
+        if (typeof dialog.close === "function") dialog.close();
+        else dialog.removeAttribute("open");
       }
 
       function setSavedTargetStatus(message, tone = "") {
@@ -775,6 +951,35 @@
         return { title, details };
       }
 
+      function readSavedTarget(item) {
+        const read = field => toNumber(item.values?.[`target-${field}`]);
+        return {
+          area: item.postcode ? findArea(item.postcode) : null,
+          size: read("size"), price: read("price"), companyLoan: read("company-loan"), maintenance: read("maintenance"), companyCharge: read("company-charge"), other: read("other"),
+          privateLoan: 0, mortgagePayment: 0, rate: read("rate"), years: read("years")
+        };
+      }
+
+      function currentTargetSignature() {
+        return savedTargetSignature(state.target.area?.postcode || null, Object.fromEntries(targetInputIds.map(id => [id, $(`#${id}`).value])));
+      }
+
+      function renderSavedTargetComparison() {
+        const container = $("#saved-target-compare");
+        const homes = readSavedTargetHomes();
+        if (!homes.length) { container.innerHTML = ""; return; }
+        const current = readHome("current");
+        const settings = readFinanceSettings();
+        const activeSignature = currentTargetSignature();
+        container.innerHTML = `<div class="saved-target-compare-head"><div><h4>Vaihtoehdot rinnakkain</h4><p>Rahoitustarve ja kuukausivaikutus lasketaan samoilla nykyisen kodin ja rahoituksen oletuksilla.</p></div></div><div class="saved-target-compare-grid">${homes.map(item => {
+          const description = describeSavedTarget(item);
+          const result = calculateFor(current, readSavedTarget(item), settings);
+          const active = item.signature === activeSignature;
+          return `<article class="saved-compare-card ${active ? "active" : ""}"><header><div><h5>${escapeHTML(description.title)}</h5><span>${escapeHTML(item.postcode || "Alue puuttuu")}${active ? " · avoinna" : ""}</span></div><button class="button-quiet" type="button" data-load-target="${escapeHTML(item.id)}">Avaa</button></header><div class="saved-compare-metrics"><div class="saved-compare-metric"><span>Velaton hinta</span><strong>${euro(result.target.price)}</strong></div><div class="saved-compare-metric"><span>Uusi rahoitustarve</span><strong>${euro(result.financingNeed)}</strong></div><div class="saved-compare-metric"><span>Asumismenot</span><strong>${euro(result.targetMonthly)}/kk</strong></div><div class="saved-compare-metric"><span>Vaikutus / kk</span><strong class="${result.monthlyDelta > 0 ? "positive" : result.monthlyDelta < 0 ? "negative" : ""}">${signedEuro(result.monthlyDelta)}/kk</strong></div></div></article>`;
+        }).join("")}</div>`;
+        $$('[data-load-target]', container).forEach(button => button.addEventListener("click", () => loadSavedTargetHome(button.dataset.loadTarget)));
+      }
+
       function renderSavedTargetHomes() {
         const homes = readSavedTargetHomes();
         $("#saved-target-count").textContent = `(${homes.length}/${maxSavedTargetHomes})`;
@@ -786,6 +991,7 @@
         }).join("");
         $$('[data-load-target]').forEach(button => button.addEventListener("click", () => loadSavedTargetHome(button.dataset.loadTarget)));
         $$('[data-remove-target]').forEach(button => button.addEventListener("click", () => removeSavedTargetHome(button.dataset.removeTarget)));
+        renderSavedTargetComparison();
       }
 
       function saveTargetHome() {
@@ -985,9 +1191,19 @@
       function calculate() {
         const current = readHome("current");
         const target = readHome("target");
-        const brokerPercent = toNumber($("#broker-percent").value) / 100;
-        const buyerCosts = toNumber($("#buyer-costs").value);
-        const buffer = toNumber($("#buffer").value);
+        return calculateFor(current, target, readFinanceSettings());
+      }
+
+      function readFinanceSettings() {
+        return {
+          brokerPercent: toNumber($("#broker-percent").value) / 100,
+          buyerCosts: toNumber($("#buyer-costs").value),
+          buffer: toNumber($("#buffer").value)
+        };
+      }
+
+      function calculateFor(current, target, settings) {
+        const { brokerPercent, buyerCosts, buffer } = settings;
         const brokerFee = current.price * brokerPercent;
         const currentSharePrice = current.price - current.companyLoan;
         const equityAfterSale = currentSharePrice - current.privateLoan - brokerFee;
@@ -1018,7 +1234,10 @@
         renderFinance(result);
         renderMonthly(result);
         renderChart(result);
+        renderAreaProfile(result);
         renderRisks(result);
+        renderOfferSummary(result);
+        renderSavedTargetComparison();
         renderSource();
       }
 
@@ -1166,6 +1385,55 @@
         $("#index-note").textContent = "Indeksi kuvaa alueen laatuvakioitua hintamuutosta perusjaksoon nähden. Postinumeroalueen neliöhintaa käytetään sivulla vain hintatason vertailuun, ei tämän käyrän tai hintamuutoksen laskentaan.";
       }
 
+      function renderAreaProfile(result) {
+        const area = result.target.area;
+        const profile = $("#area-profile");
+        const description = document.querySelector('meta[name="description"]');
+        if (!area) {
+          document.title = "Kotivaihto — muuton rahoitus ja aluevertailu";
+          if (description) description.content = "Kotivaihto auttaa vertaamaan nykyistä kotia ja seuraavaa kotia. Laskelma käyttää postinumeroalueen hintatasoa ja kuntaindeksiä selkeästi erillään.";
+          profile.innerHTML = `<div class="area-profile-main"><h3>Valitse seuraavan kodin alue</h3><p>Kun valitset postinumeroalueen, saat tänne jaettavan alueen näkymän. Linkki sisältää vain alueen tunnisteen, ei omia laskelmalukuja.</p></div><div class="area-profile-share"><p>Alueen linkki voidaan jakaa vasta, kun seuraavan kodin postinumeroalue on valittu.</p></div>`;
+          return;
+        }
+        const series = data.municipalities[area.municipality]?.series || [];
+        const latest = series.at(-1);
+        const price = area.suppressed ? "Salattu" : `${number.format(area.pricePerSqm)} €/m²`;
+        document.title = `Kotivaihto – ${area.postcode} ${area.area} | hintataso ja muuton laskuri`;
+        if (description) description.content = `${area.postcode} ${area.area}, ${area.municipality}: julkaistu hintataso ja kuntaindeksin viimeisin havainto Kotivaihdossa. Ei ennusteita.`;
+        profile.innerHTML = `<div class="area-profile-main"><h3>${escapeHTML(area.postcode)} · ${escapeHTML(area.area)}, ${escapeHTML(area.municipality)}</h3><p>Julkaistu postinumeroalueen hintataso ja kuntatason indeksihavainto. Ne eivät ole kohteen hinta-arvioita tai ennusteita.</p><div class="area-profile-metrics"><div class="area-profile-metric"><span>Hintataso</span><strong>${price}</strong></div><div class="area-profile-metric"><span>Kauppoja havainnossa</span><strong>${number.format(area.sales)}</strong></div><div class="area-profile-metric"><span>Indeksin viimeisin havainto</span><strong>${latest ? `${latest.period} · ${decimal.format(latest.index)}` : "Ei saatavilla"}</strong></div></div></div><aside class="area-profile-share"><p>Jaa tämä alueen näkymä. Linkki ei sisällä sinun hinta-, laina- tai muistiinpanotietojasi.</p><button class="button-quiet" id="copy-area-link" type="button">Kopioi aluelinkki</button></aside>`;
+      }
+
+      function offerSummaryText(result) {
+        const currentArea = result.current.area ? `${result.current.area.postcode} ${result.current.area.area}` : "ei valittu";
+        const targetArea = result.target.area ? `${result.target.area.postcode} ${result.target.area.area}` : "ei valittu";
+        const checks = buildRisks(result).filter(risk => risk.tone !== "good").map(risk => `- ${risk.title}`).join("\n") || "- Ei automaattisia tarkistuskohtia";
+        return `Kotivaihto – tarjousyhteenveto\nNykyinen alue: ${currentArea}\nSeuraava alue: ${targetArea}\n\nVelaton hinta: ${euro(result.target.price)}\nYhtiölaina: ${euro(result.target.companyLoan)}\nVarainsiirtovero (1,5 %): ${euro(result.transferTax)}\nUusi rahoitustarve: ${euro(result.financingNeed)}\nUudet asumismenot: ${euro(result.targetMonthly)}/kk\nKuukausivaikutus: ${signedEuro(result.monthlyDelta)}/kk\n\nTarkista ennen tarjousta:\n${checks}\n\nLaskelma on suuntaa-antava päätöksenteon tuki, ei hinta-arvio tai lainatarjous.`;
+      }
+
+      function renderOfferSummary(result) {
+        const currentArea = result.current.area ? `${result.current.area.postcode} · ${result.current.area.area}` : "Alue puuttuu";
+        const targetArea = result.target.area ? `${result.target.area.postcode} · ${result.target.area.area}` : "Alue puuttuu";
+        const checks = buildRisks(result).filter(risk => risk.tone !== "good");
+        $("#offer-summary-body").innerHTML = `<section class="offer-summary-section"><h3>Rahoitus yhdellä silmäyksellä</h3><p>Nykyinen: ${escapeHTML(currentArea)} · Seuraava: ${escapeHTML(targetArea)}</p><div class="offer-summary-metrics"><div class="offer-summary-metric"><span>Velaton hinta</span><strong>${euro(result.target.price)}</strong></div><div class="offer-summary-metric"><span>Yhtiölaina</span><strong>${euro(result.target.companyLoan)}</strong></div><div class="offer-summary-metric"><span>Varainsiirtovero (1,5 %)</span><strong>${euro(result.transferTax)}</strong></div><div class="offer-summary-metric"><span>Uusi rahoitustarve</span><strong>${euro(result.financingNeed)}</strong></div><div class="offer-summary-metric"><span>Uudet asumismenot</span><strong>${euro(result.targetMonthly)}/kk</strong></div><div class="offer-summary-metric"><span>Vaikutus nykyiseen</span><strong>${signedEuro(result.monthlyDelta)}/kk</strong></div></div></section><section class="offer-summary-section"><h3>Varmista ennen tarjousta</h3><p>Alla näkyvät tämän laskelman automaattiset nostot. Tarkista aina myös asiakirjat ja rahoitus.</p><ul class="offer-summary-checks">${checks.length ? checks.map(risk => `<li><strong>${escapeHTML(risk.title)}</strong><br>${escapeHTML(risk.text)}</li>`).join("") : "<li><strong>Ei automaattisia tarkistuskohtia.</strong><br>Tämä ei korvaa kohde- tai asiakirjatarkastusta.</li>"}</ul></section>`;
+      }
+
+      function printOfferSummary() {
+        document.body.classList.add("print-offer");
+        const cleanup = () => document.body.classList.remove("print-offer");
+        window.addEventListener("afterprint", cleanup, { once: true });
+        window.setTimeout(cleanup, 10000);
+        window.print();
+      }
+
+      async function copyOfferSummary() {
+        try {
+          await navigator.clipboard.writeText(offerSummaryText(calculate()));
+          toast("Tarjousyhteenveto kopioitiin ilman ilmoitustekstiä, linkkiä tai muistiinpanoa.");
+        } catch (_) {
+          toast("Yhteenvedon kopiointi ei onnistunut tässä selaimessa.");
+        }
+      }
+
       function buildRisks(result) {
         const risks = [];
         const suppressed = [result.current.area, result.target.area].filter(area => area?.suppressed);
@@ -1196,6 +1464,7 @@
       function renderSource() {
         const metadata = data.metadata;
         $("#dataObservation").textContent = `Hintataso ${metadata.postalPriceObservation}`;
+        $("#data-freshness").innerHTML = `<div class="freshness-item"><span>Hintatason havainto</span><strong>${escapeHTML(metadata.postalPriceObservation)}</strong></div><div class="freshness-item"><span>Kuntaindeksin havainto</span><strong>${escapeHTML(metadata.municipalityIndexObservation)}</strong></div><div class="freshness-item"><span>Tietotiedosto muodostettu</span><strong>${escapeHTML(metadata.generatedAt)}</strong></div>`;
         $("#source-line").innerHTML = `Lähde: <a href="${metadata.source.postalPriceUrl}" target="_blank" rel="noopener">${metadata.source.publisher}, ${metadata.source.postalPriceTable}</a> (${metadata.postalPriceObservation}) ja <a href="${metadata.source.municipalityIndexUrl}" target="_blank" rel="noopener">${metadata.source.municipalityIndexTable}</a> (${metadata.municipalityIndexObservation}). ${metadata.coverageNotice}`;
       }
 
