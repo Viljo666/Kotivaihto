@@ -11,6 +11,7 @@ const requiredMarkup = [
   'lang="fi"',
   'meta property="og:image"',
   'link rel="canonical"',
+  'src="assets/favicon.svg"',
   'id="privacy-dialog"',
   'id="offer-summary-body"',
   'id="lead-dialog"',
