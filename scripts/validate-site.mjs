@@ -13,6 +13,9 @@ const requiredMarkup = [
   'link rel="canonical"',
   'id="privacy-dialog"',
   'id="offer-summary-body"',
+  'id="lead-dialog"',
+  'data-lead-type="finance"',
+  'data-lead-type="valuation"',
   'data-ad-placement="mid-page"'
 ];
 

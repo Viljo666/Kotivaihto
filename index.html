@@ -9,6 +9,10 @@
   <meta name="publisher-name" content="">
   <meta name="publisher-id" content="">
   <meta name="contact-email" content="">
+  <meta name="lead-finance-email" content="">
+  <meta name="lead-finance-partner" content="">
+  <meta name="lead-valuation-email" content="">
+  <meta name="lead-valuation-partner" content="">
   <meta name="adsense-client" content="">
   <meta name="adsense-slot-mid-page" content="">
   <meta name="adsense-slot-footer" content="">
@@ -326,6 +330,12 @@
     .offer-summary-checks strong { color: var(--ink); }
     .offer-summary-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .9rem; }
     .offer-summary-actions p { flex-basis: 100%; margin: 0; color: var(--muted); font-size: .7rem; }
+    .lead-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: center; margin-top: .9rem; padding: 1rem; border: 1px solid #bed7c4; border-radius: 13px; color: #fff; background: linear-gradient(120deg, #063d33, #0b5546); }
+    .lead-card h3 { margin: 0; color: #fff; font-size: .97rem; }
+    .lead-card p { margin: .24rem 0 0; color: #d4e5d8; font-size: .76rem; }
+    .lead-card-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; }
+    .lead-card .button-quiet { border-color: rgba(255,255,255,.38); color: #fff; }
+    .lead-card .button-quiet:hover { background: rgba(255,255,255,.1); }
 
     .method-card { padding-bottom: 1.25rem; }
     .method-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
@@ -358,6 +368,18 @@
     .privacy-dialog ul { margin: .4rem 0 0; padding-left: 1.2rem; }
     .privacy-status { margin: .7rem 0 0; padding: .68rem; border-radius: 9px; background: var(--green-soft); color: #245c42 !important; }
     .privacy-dialog .button-quiet { min-height: 34px; padding: .34rem .56rem; font-size: .73rem; }
+    .lead-dialog { padding: 1.15rem; }
+    .lead-dialog header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+    .lead-dialog h2 { margin: 0; color: var(--plum); font-size: 1.18rem; }
+    .lead-dialog-copy { margin: .35rem 0 0; color: var(--muted); font-size: .8rem; }
+    .lead-dialog form { display: grid; gap: .75rem; margin-top: 1rem; }
+    .lead-dialog .field { margin: 0; }
+    .lead-dialog .field input { width: 100%; }
+    .lead-consent { display: flex; align-items: start; gap: .55rem; padding: .72rem; border-radius: 9px; background: var(--soft); color: var(--muted); font-size: .74rem; line-height: 1.35; }
+    .lead-consent input { width: auto; margin: .16rem 0 0; }
+    .lead-status { min-height: 1.2rem; margin: 0; color: var(--muted); font-size: .74rem; }
+    .lead-status.ready { color: var(--green); }
+    .lead-status.pending { color: var(--amber); }
     .toast { position: fixed; z-index: 30; left: 50%; bottom: 1.25rem; transform: translate(-50%, 130%); padding: .7rem .95rem; border-radius: 10px; background: var(--plum); color: #fffdf9; box-shadow: var(--shadow); font-size: .85rem; transition: transform .25s ease; }
     .toast.show { transform: translate(-50%, 0); }
     .load-error { padding: 1rem; border-radius: 12px; background: var(--red-soft); color: #7d242b; }
@@ -379,7 +401,7 @@
       .nav-actions .button-quiet { display: none; }
       .container { width: min(100% - 1.2rem, 1180px); }
       .hero { padding-top: 2.4rem; }
-      .home-grid, .risk-grid, .method-grid, .monthly-compare, .quick-start-grid, .area-profile-grid, .offer-summary-body { grid-template-columns: 1fr; }
+      .home-grid, .risk-grid, .method-grid, .monthly-compare, .quick-start-grid, .area-profile-grid, .offer-summary-body, .lead-card { grid-template-columns: 1fr; }
       .finance-settings, .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .flow { grid-template-columns: 1fr; gap: .45rem; }
       .flow-step { min-height: auto; }
@@ -414,6 +436,7 @@
       body.print-offer #laskuri > section:not(#offer-summary) { display: none !important; }
       body.print-offer .offer-summary { display: block !important; padding: 0; border: 0; }
       body.print-offer .offer-summary-actions { display: none !important; }
+      body.print-offer .lead-card { display: none !important; }
     }
   </style>
 </head>
@@ -566,6 +589,7 @@
         <section id="tarjous" class="card offer-summary" aria-labelledby="offer-summary-title">
           <div class="section-heading"><div><h2 id="offer-summary-title">Tarjousyhteenveto</h2><p>Kokoa juuri tämän laskelman avainluvut ja tarkistettavat kohdat yhdelle tulostettavalle sivulle.</p></div><span class="section-tag">Ei tarjouksen korvike</span></div>
           <div class="offer-summary-body" id="offer-summary-body"></div>
+          <section class="lead-card" aria-labelledby="lead-card-title"><div><h3 id="lead-card-title">Haluatko jatkaa asiantuntijan kanssa?</h3><p>Pyydä yhteydenottoa rahoituksen kilpailutukseen tai nykyisen kodin myyntiarvioon. Laskelman omia numeroita ei välitetä pyynnössä.</p></div><div class="lead-card-actions"><button class="button" type="button" data-lead-type="finance">Pyydä rahoitusvertailua</button><button class="button-quiet" type="button" data-lead-type="valuation">Pyydä myyntiarviota</button></div></section>
           <div class="offer-summary-actions"><button class="button" id="print-offer-summary" type="button">Tulosta tarjousyhteenveto</button><button class="button-quiet" id="copy-offer-summary" type="button">Kopioi yhteenveto</button><p>Yhteenveto ei sisällä ilmoitustekstiä, kohdelinkkiä eikä omaa muistiinpanoasi.</p></div>
         </section>
 
@@ -601,8 +625,23 @@
       <p>Ennen kuin mainokset voidaan ottaa käyttöön Suomessa tai muualla ETA-alueella, sivustolle tulee määrittää julkaisijan oma tietosuojateksti ja Googlen vaatimusten mukainen sertifioitu suostumusalusta. Tämä näkymä ei korvaa sitä suostumusalustaa.</p>
       <h3>Rekisterinpitäjä ja yhteydenotot</h3>
       <p id="privacy-controller">Julkaisija- ja yhteystiedot lisätään ennen julkista julkaisua.</p>
+      <h3>Yhteydenottopyynnöt</h3>
+      <p>Rahoitusvertailu- tai myyntiarviopyyntö ei välitä laskurin hinta-, laina- tai muita taloustietoja. Pyyntö muodostaa käyttäjän omassa sähköpostisovelluksessa viestin vain siihen vastaanottajaan, joka on kerrottu pyynnön yhteydessä. Kotivaihto ei tallenna lomakekenttiä selaimeen.</p>
       <h3>Käyttöehdot</h3>
       <p>Kotivaihto on päätöksenteon tuki. Se ei ole kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo, eikä laskelma ole tarjous tai luottopäätös. Tarkista aina kohteen asiakirjat, hinnat, kulut ja rahoitus omista lähteistäsi ennen päätöstä.</p>
+    </div>
+  </dialog>
+  <dialog id="lead-dialog" aria-labelledby="lead-dialog-title">
+    <div class="lead-dialog">
+      <header><div><h2 id="lead-dialog-title">Pyydä yhteydenottoa</h2><p class="lead-dialog-copy" id="lead-dialog-copy"></p></div><button class="button-quiet" id="close-lead" type="button">Sulje</button></header>
+      <form id="lead-form" novalidate>
+        <div class="field"><label for="lead-name">Nimi</label><input id="lead-name" name="name" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="lead-email">Sähköposti</label><input id="lead-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="lead-phone">Puhelin <span class="label-help">(valinnainen)</span></label><input id="lead-phone" name="phone" type="tel" autocomplete="tel"></div>
+        <label class="lead-consent"><input id="lead-consent" type="checkbox" required><span id="lead-consent-text">Hyväksyn, että vastaanottaja saa ottaa minuun yhteyttä tämän pyynnön vuoksi. Laskelman talouslukuja ei välitetä.</span></label>
+        <p class="lead-status" id="lead-status" role="status" aria-live="polite"></p>
+        <button class="button" id="lead-submit" type="submit">Avaa yhteydenottoviesti</button>
+      </form>
     </div>
   </dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -636,10 +675,15 @@
       const launchConfig = {
         publisherName: document.querySelector('meta[name="publisher-name"]')?.content.trim() || "",
         publisherId: document.querySelector('meta[name="publisher-id"]')?.content.trim() || "",
-        contactEmail: document.querySelector('meta[name="contact-email"]')?.content.trim() || ""
+        contactEmail: document.querySelector('meta[name="contact-email"]')?.content.trim() || "",
+        leadFinanceEmail: document.querySelector('meta[name="lead-finance-email"]')?.content.trim() || "",
+        leadFinancePartner: document.querySelector('meta[name="lead-finance-partner"]')?.content.trim() || "",
+        leadValuationEmail: document.querySelector('meta[name="lead-valuation-email"]')?.content.trim() || "",
+        leadValuationPartner: document.querySelector('meta[name="lead-valuation-partner"]')?.content.trim() || ""
       };
       let data;
       let state;
+      let activeLeadType = "finance";
 
       const defaultState = () => ({
         current: { area: null },
@@ -701,6 +745,10 @@
         $$("[data-guide-step]").forEach(button => button.addEventListener("click", () => runGuideStep(button.dataset.guideStep)));
         $("#print-offer-summary").addEventListener("click", printOfferSummary);
         $("#copy-offer-summary").addEventListener("click", copyOfferSummary);
+        $$("[data-lead-type]").forEach(button => button.addEventListener("click", () => openLeadDialog(button.dataset.leadType)));
+        $("#lead-form").addEventListener("submit", submitLeadRequest);
+        $("#close-lead").addEventListener("click", closeLeadDialog);
+        $("#lead-dialog").addEventListener("close", () => $("#lead-form").reset());
         document.addEventListener("click", event => {
           if (event.target.closest("#copy-area-link")) copyAreaLink();
         });
@@ -934,6 +982,82 @@
         const dialog = $("#privacy-dialog");
         if (typeof dialog.close === "function") dialog.close();
         else dialog.removeAttribute("open");
+      }
+
+      function leadService(type = activeLeadType) {
+        const services = {
+          finance: {
+            title: "Pyydä rahoitusvertailua",
+            intro: "Pyydä yhteydenottoa rahoituksen kilpailutuksesta. Laskurin raha- tai lainatietoja ei sisällytetä viestiin.",
+            subject: "Kotivaihto: rahoitusvertailun yhteydenottopyyntö",
+            email: launchConfig.leadFinanceEmail || launchConfig.contactEmail,
+            partner: launchConfig.leadFinancePartner
+          },
+          valuation: {
+            title: "Pyydä myyntiarviota",
+            intro: "Pyydä yhteydenottoa nykyisen kodin myyntiarviosta. Laskurin raha- tai lainatietoja ei sisällytetä viestiin.",
+            subject: "Kotivaihto: myyntiarvion yhteydenottopyyntö",
+            email: launchConfig.leadValuationEmail || launchConfig.contactEmail,
+            partner: launchConfig.leadValuationPartner
+          }
+        };
+        return services[type] || services.finance;
+      }
+
+      function isEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || ""));
+      }
+
+      function leadRecipientName(service) {
+        return service.partner || launchConfig.publisherName || "Kotivaihto";
+      }
+
+      function setLeadStatus(message, tone = "") {
+        const status = $("#lead-status");
+        status.textContent = message;
+        status.className = `lead-status ${tone}`;
+      }
+
+      function openLeadDialog(type) {
+        activeLeadType = type === "valuation" ? "valuation" : "finance";
+        const service = leadService();
+        const recipient = leadRecipientName(service);
+        const ready = isEmail(service.email);
+        const form = $("#lead-form");
+        form.reset();
+        $("#lead-dialog-title").textContent = service.title;
+        $("#lead-dialog-copy").textContent = ready
+          ? `${service.intro} Vastaanottaja: ${recipient}.`
+          : "Yhteydenottopyynnöt avataan, kun Kotivaihdon tai valitun kumppanin vastaanottava sähköposti on määritetty.";
+        $("#lead-consent-text").textContent = `Hyväksyn, että ${recipient} saa ottaa minuun yhteyttä tämän pyynnön vuoksi. Laskelman talouslukuja ei välitetä.`;
+        $$("input, button", form).forEach(element => { element.disabled = !ready; });
+        setLeadStatus(ready ? "Pyyntö avataan omassa sähköpostisovelluksessasi. Lähetä viesti itse, jos haluat välittää tietosi." : "Pyyntöjen välitystä ei ole vielä määritetty. Tietojasi ei voi lähettää tästä lomakkeesta.", ready ? "ready" : "pending");
+        const dialog = $("#lead-dialog");
+        if (typeof dialog.showModal === "function") dialog.showModal();
+        else dialog.setAttribute("open", "");
+      }
+
+      function closeLeadDialog() {
+        const form = $("#lead-form");
+        form.reset();
+        const dialog = $("#lead-dialog");
+        if (typeof dialog.close === "function") dialog.close();
+        else dialog.removeAttribute("open");
+      }
+
+      function submitLeadRequest(event) {
+        event.preventDefault();
+        const service = leadService();
+        if (!isEmail(service.email)) { setLeadStatus("Pyyntöjen välitystä ei ole vielä määritetty.", "pending"); return; }
+        const form = $("#lead-form");
+        if (!form.reportValidity()) return;
+        const name = $("#lead-name").value.trim();
+        const email = $("#lead-email").value.trim();
+        const phone = $("#lead-phone").value.trim();
+        const body = [`Hei,`, ``, `Haluan pyytää yhteydenottoa: ${service.title.toLocaleLowerCase("fi-FI")}.`, ``, `Nimi: ${name}`, `Sähköposti: ${email}`, phone ? `Puhelin: ${phone}` : "", ``, `Pyyntö on tehty Kotivaihdon kautta. Laskurin talouslukuja ei välitetty.`].filter(Boolean).join("\n");
+        window.location.href = `mailto:${encodeURIComponent(service.email)}?subject=${encodeURIComponent(service.subject)}&body=${encodeURIComponent(body)}`;
+        toast("Yhteydenottoviesti avattiin. Lähetä se itse sähköpostisovelluksestasi.");
+        window.setTimeout(closeLeadDialog, 350);
       }
 
       function setSavedTargetStatus(message, tone = "") {
