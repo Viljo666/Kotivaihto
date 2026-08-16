@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kotivaihto">
+  <path fill="#063d33" d="M7 28 32 8l25 20v27H39V36H25v19H7z"/>
+  <path fill="#ec7057" d="M42 20v17h10V20l-5-4z"/>
+  <path fill="#b7d3a7" d="M12 28 32 12l12 10v8L32 20 20 30v20H12z"/>
+</svg>

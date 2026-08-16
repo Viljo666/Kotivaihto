@@ -3,28 +3,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Kotivaihto auttaa vertaamaan nykyistä kotia ja seuraavaa kotia. Laskelma käyttää postinumeroalueen hintatasoa ja kuntaindeksiä selkeästi erillään.">
-  <meta name="theme-color" content="#5a2348">
-  <title>Kotivaihto — muuton rahoitus ja aluevertailu</title>
+  <meta name="description" content="Kotivaihto auttaa näkemään, mitä kodinvaihto vaatii ennen asuntolainaneuvottelua: vertaa koteja, rahoitustarvetta ja kuukausimenoja.">
+  <meta name="theme-color" content="#063d33">
+  <meta name="site-url" content="https://kotivaihto.fi">
+  <meta name="publisher-name" content="">
+  <meta name="publisher-id" content="">
+  <meta name="contact-email" content="">
+  <meta name="lead-finance-email" content="">
+  <meta name="lead-finance-partner" content="">
+  <meta name="lead-valuation-email" content="">
+  <meta name="lead-valuation-partner" content="">
+  <meta name="adsense-client" content="">
+  <meta name="adsense-slot-mid-page" content="">
+  <meta name="adsense-slot-footer" content="">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fi_FI">
+  <meta property="og:title" content="Kotivaihto — valmistaudu kodinvaihtoon ja pankkineuvotteluun">
+  <meta property="og:description" content="Näe kodinvaihdon rahoitustarve ja kuukausimenot ennen pankkineuvottelua. Vertaa alueita ilman ennusteita.">
+  <meta property="og:url" content="https://kotivaihto.fi/">
+  <meta property="og:image" content="https://kotivaihto.fi/assets/kotivaihto-share.png">
+  <meta property="og:image:width" content="1731">
+  <meta property="og:image:height" content="909">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://kotivaihto.fi/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <title>Kotivaihto — kodinvaihdon rahoituslaskuri</title>
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"Kotivaihto","url":"https://kotivaihto.fi/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fi","description":"Kodinvaihdon rahoitustarpeen, kuukausimenojen ja alueiden julkaistujen hintatasojen vertailu ennen asuntolainaneuvottelua."}
+  </script>
   <style>
     :root {
-      --ink: #1f1820;
-      --muted: #6e6570;
-      --soft: #f7f3f5;
-      --surface: #ffffff;
-      --line: #e6dfe4;
-      --plum: #5a2348;
-      --plum-2: #7b315f;
-      --plum-soft: #f5e9f0;
-      --green: #1b7654;
-      --green-soft: #e6f4ed;
-      --amber: #a55f05;
-      --amber-soft: #fff3df;
-      --red: #a12e34;
-      --red-soft: #fae8e9;
-      --shadow: 0 16px 42px rgba(54, 26, 43, .08);
-      --shadow-small: 0 5px 16px rgba(54, 26, 43, .06);
-      --radius: 18px;
+      --ink: #102b25;
+      --muted: #5f6a63;
+      --soft: #f6f1e8;
+      --surface: #fffdf9;
+      --line: #e4ddd2;
+      --plum: #063d33;
+      --plum-2: #0a5647;
+      --plum-soft: #e4efe9;
+      --green: #287358;
+      --green-soft: #e4f1e8;
+      --coral: #ec7057;
+      --coral-dark: #cf533f;
+      --amber: #a26013;
+      --amber-soft: #fff1dc;
+      --red: #ae3f3b;
+      --red-soft: #fae8e3;
+      --shadow: 0 18px 44px rgba(19, 49, 41, .12);
+      --shadow-small: 0 7px 18px rgba(19, 49, 41, .08);
+      --radius: 20px;
       --radius-small: 12px;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
@@ -37,30 +65,44 @@
     button, input { font: inherit; }
     button { cursor: pointer; }
     a { color: inherit; }
-    :focus-visible { outline: 3px solid #bd8ba9; outline-offset: 2px; }
+    :focus-visible { outline: 3px solid #ec7057; outline-offset: 2px; }
 
-    .skip-link { position: absolute; left: 1rem; top: -5rem; z-index: 20; background: var(--ink); color: #fff; padding: .65rem 1rem; border-radius: 8px; }
+    .skip-link { position: absolute; left: 1rem; top: -5rem; z-index: 20; background: var(--plum); color: #fff; padding: .65rem 1rem; border-radius: 8px; }
     .skip-link:focus { top: 1rem; }
-    .site-header { position: sticky; top: 0; z-index: 10; background: rgba(247, 243, 245, .93); border-bottom: 1px solid rgba(230, 223, 228, .9); backdrop-filter: blur(12px); }
+    .site-header { position: sticky; top: 0; z-index: 10; background: rgba(255, 253, 249, .93); border-bottom: 1px solid rgba(228, 221, 210, .9); backdrop-filter: blur(12px); }
     .nav { width: min(1180px, calc(100% - 2rem)); height: 70px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .brand { display: inline-flex; align-items: center; gap: .6rem; font-weight: 800; font-size: 1.14rem; text-decoration: none; letter-spacing: -.03em; }
-    .brand-mark { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: var(--plum); color: #fff; font-size: 1rem; }
+    .brand-mark { width: 32px; height: 32px; display: block; flex: 0 0 32px; }
     .nav-links { display: flex; gap: 1.2rem; font-size: .91rem; color: var(--muted); }
     .nav-links a { text-decoration: none; }
     .nav-actions { display: flex; gap: .55rem; }
     .button, .button-quiet { border: 0; border-radius: 10px; min-height: 40px; padding: .55rem .85rem; font-weight: 700; font-size: .9rem; }
-    .button { background: var(--plum); color: #fff; box-shadow: 0 5px 10px rgba(90, 35, 72, .14); }
-    .button:hover { background: #431a36; }
-    .button-quiet { background: transparent; color: var(--plum); border: 1px solid var(--line); }
-    .button-quiet:hover { background: #fff; }
+    .button { background: var(--coral); color: #fff; box-shadow: 0 7px 13px rgba(207, 83, 63, .2); }
+    .button:hover { background: var(--coral-dark); }
+    .button-quiet { background: transparent; color: var(--plum); border: 1px solid #cbd7ce; }
+    .button-quiet:hover { background: var(--plum-soft); }
 
     .container { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; }
-    .hero { padding: clamp(2.7rem, 7vw, 5.8rem) 0 2.3rem; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: clamp(2rem, 7vw, 6rem); align-items: end; }
-    .eyebrow { display: inline-flex; margin: 0 0 1rem; padding: .32rem .66rem; border-radius: 999px; background: var(--plum-soft); color: var(--plum); font-size: .78rem; font-weight: 800; letter-spacing: .04em; }
-    h1 { max-width: 700px; margin: 0; font-size: clamp(2.55rem, 5.8vw, 5.15rem); letter-spacing: -.06em; line-height: .98; }
-    .hero-copy { max-width: 620px; margin: 1.25rem 0 0; color: var(--muted); font-size: clamp(1rem, 1.7vw, 1.17rem); }
-    .hero-note { margin: 0; padding: 1.15rem 1.2rem; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); font-size: .9rem; box-shadow: var(--shadow-small); }
-    .hero-note strong { display: block; margin-bottom: .35rem; color: var(--ink); }
+    .hero { position: relative; isolation: isolate; overflow: hidden; margin: 1.35rem 0 1.7rem; padding: clamp(2.1rem, 6vw, 4.7rem); display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, 330px); gap: clamp(1.8rem, 6vw, 5rem); align-items: end; border-radius: clamp(22px, 3vw, 32px); background: radial-gradient(circle at 76% 32%, rgba(131, 180, 149, .28), transparent 18rem), linear-gradient(130deg, #053c32 0%, #052e27 72%, #164f41 100%); color: #fff; box-shadow: 0 22px 52px rgba(10, 56, 45, .2); }
+    .hero::before { content: ""; position: absolute; z-index: -1; width: min(58vw, 720px); height: min(58vw, 720px); right: -18vw; top: -28vw; border: 52px solid rgba(246, 241, 232, .09); border-radius: 50%; }
+    .hero::after { content: ""; position: absolute; z-index: -1; width: 370px; height: 170px; right: 6%; bottom: -105px; border-radius: 50% 50% 0 0; background: rgba(236, 112, 87, .24); transform: rotate(-12deg); }
+    .hero > * { position: relative; z-index: 1; }
+    .eyebrow { display: inline-flex; margin: 0 0 1rem; padding: .32rem .66rem; border-radius: 999px; background: rgba(255, 253, 249, .13); color: #e9f1e8; font-size: .78rem; font-weight: 800; letter-spacing: .04em; }
+    h1 { max-width: 700px; margin: 0; color: #fffdf9; font-size: clamp(2.55rem, 5.8vw, 5.15rem); letter-spacing: -.065em; line-height: .98; }
+    .hero-copy { max-width: 620px; margin: 1.25rem 0 0; color: #dce9df; font-size: clamp(1rem, 1.7vw, 1.17rem); }
+    .hero-note { margin: 0; padding: 1.2rem 1.25rem; background: rgba(255, 253, 249, .96); border: 1px solid rgba(255,255,255,.45); border-radius: var(--radius); color: var(--muted); font-size: .9rem; box-shadow: 0 18px 34px rgba(0, 22, 17, .2); }
+    .hero-note strong { display: block; margin-bottom: .35rem; color: var(--plum); }
+
+    .quick-start { margin: 0 0 1.7rem; padding: 1.08rem; border: 1px solid #cbded0; border-radius: var(--radius); background: linear-gradient(135deg, #eef6ef, #fffdf9); box-shadow: var(--shadow-small); }
+    .quick-start-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
+    .quick-start h2 { margin: 0; color: var(--plum); font-size: 1.08rem; letter-spacing: -.03em; }
+    .quick-start p { margin: .18rem 0 0; color: var(--muted); font-size: .8rem; }
+    .quick-start-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; margin-top: .85rem; }
+    .guide-step { display: grid; grid-template-columns: auto 1fr; gap: .65rem; align-items: center; width: 100%; padding: .78rem; border: 1px solid #dce6dd; border-radius: 12px; color: var(--ink); text-align: left; background: #fffefb; }
+    .guide-step:hover { border-color: #9fc3aa; background: #f7fbf7; }
+    .guide-step .guide-number { width: 1.65rem; height: 1.65rem; display: grid; place-items: center; border-radius: 50%; color: var(--coral); background: var(--plum); font-size: .85rem; font-weight: 900; line-height: 1; }
+    .guide-step strong { display: block; font-size: .82rem; }
+    .guide-step span { display: block; margin-top: .08rem; color: var(--muted); font-size: .72rem; line-height: 1.3; }
 
     .app-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; align-items: start; gap: 1.35rem; padding-bottom: 1.6rem; }
     .app-grid > * { min-width: 0; }
@@ -70,13 +112,13 @@
     .section-heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
     .section-heading h2, .summary-card h2 { margin: 0; font-size: clamp(1.22rem, 2vw, 1.5rem); letter-spacing: -.035em; }
     .section-heading p { max-width: 620px; margin: .35rem 0 0; color: var(--muted); font-size: .92rem; }
-    .section-tag { flex: 0 0 auto; padding: .28rem .55rem; background: var(--soft); border-radius: 999px; color: var(--muted); font-size: .72rem; font-weight: 750; }
+    .section-tag { flex: 0 0 auto; padding: .28rem .55rem; background: var(--plum-soft); border-radius: 999px; color: var(--plum); font-size: .72rem; font-weight: 750; }
 
     .home-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-    .home-card { padding: 1.08rem; border: 1px solid var(--line); border-radius: var(--radius-small); background: linear-gradient(145deg, #fff, #fdfbfc); }
-    .home-card.target { border-color: #d8c1d0; background: linear-gradient(145deg, #fff, #faf4f7); }
+    .home-card { padding: 1.08rem; border: 1px solid var(--line); border-radius: var(--radius-small); background: linear-gradient(145deg, #fffefb, #fbf7f0); }
+    .home-card.target { border-color: #b7d3c2; background: linear-gradient(145deg, #fffefb, #edf5ef); }
     .home-title { display: flex; align-items: center; gap: .65rem; margin-bottom: 1rem; }
-    .home-symbol { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--soft); color: var(--plum); font-size: 1rem; }
+    .home-symbol { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--plum-soft); color: var(--plum); font-size: 1rem; }
     .target .home-symbol { background: var(--plum); color: #fff; }
     .home-title h3 { margin: 0; font-size: 1.04rem; letter-spacing: -.02em; }
     .home-title p { margin: 0; color: var(--muted); font-size: .79rem; }
@@ -86,7 +128,7 @@
     label { font-size: .76rem; color: #554d55; font-weight: 750; }
     .label-help { color: var(--muted); font-weight: 500; }
     input { width: 100%; min-height: 42px; padding: .6rem .68rem; border: 1px solid #d9d0d6; border-radius: 9px; color: var(--ink); background: #fff; }
-    input:hover { border-color: #bcaeb7; }
+    input:hover { border-color: #abc2b3; }
     input:focus { border-color: var(--plum); outline: 0; box-shadow: 0 0 0 3px var(--plum-soft); }
     .input-with-unit { position: relative; }
     .input-with-unit input { padding-right: 3rem; }
@@ -96,9 +138,9 @@
     .area-status.suppressed { background: var(--amber-soft); color: #8d540a; }
     .area-status strong { color: inherit; }
 
-    .listing-import { margin: 0 0 1rem; border: 1px solid #decbd5; border-radius: 11px; background: #fffafc; overflow: hidden; }
+    .listing-import { margin: 0 0 1rem; border: 1px solid #c7dbc9; border-radius: 11px; background: #f8fcf8; overflow: hidden; }
     .listing-import summary { padding: .8rem .86rem; color: var(--plum); cursor: pointer; font-size: .86rem; font-weight: 800; }
-    .listing-import[open] summary { border-bottom: 1px solid #eadde4; background: #fff; }
+    .listing-import[open] summary { border-bottom: 1px solid #d9e7dc; background: #fffefb; }
     .listing-import-content { padding: .85rem; }
     .listing-import-content > p { margin: 0 0 .78rem; color: var(--muted); font-size: .77rem; }
     .import-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin: 0 0 .8rem; padding: 0; list-style: none; counter-reset: import-step; }
@@ -106,7 +148,7 @@
     .import-steps li::before { counter-increment: import-step; content: counter(import-step); position: absolute; left: .54rem; top: .52rem; width: .9rem; height: .9rem; display: grid; place-items: center; border-radius: 50%; background: var(--plum); color: #fff; font-size: .61rem; font-weight: 900; }
     .import-steps strong { display: block; margin-bottom: .1rem; color: var(--ink); font-size: .72rem; }
     .listing-source-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .8rem; }
-    .listing-source-links a { display: inline-flex; align-items: center; min-height: 34px; padding: .38rem .58rem; border: 1px solid #dbc9d3; border-radius: 8px; color: var(--plum); background: #fff; font-size: .76rem; font-weight: 800; text-decoration: none; }
+    .listing-source-links a { display: inline-flex; align-items: center; min-height: 34px; padding: .38rem .58rem; border: 1px solid #cbd8ce; border-radius: 8px; color: var(--plum); background: #fffefb; font-size: .76rem; font-weight: 800; text-decoration: none; }
     .listing-source-links a:hover { background: var(--plum-soft); }
     .listing-import-row { display: flex; gap: .5rem; }
     .listing-import-row input { min-width: 0; }
@@ -121,6 +163,7 @@
     .import-status.good { color: var(--green); }
     .import-status.warning { color: var(--amber); }
     .import-status.error { color: var(--red); }
+    .target-note-help { margin: .05rem 0 0; color: var(--muted); font-size: .7rem; line-height: 1.35; }
 
     .combobox { position: relative; }
     .combo-input { padding-right: 2.2rem; }
@@ -138,25 +181,61 @@
     .details summary { padding: .85rem 0 .2rem; color: var(--plum); cursor: pointer; font-size: .86rem; font-weight: 750; }
     .details-content { padding: .8rem 0 0; }
     .finance-settings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+    .saved-targets { margin-top: 1rem; padding: 1rem; border: 1px solid #d8e4da; border-radius: 12px; background: #f2f7f2; }
+    .saved-targets-head { display: flex; align-items: start; justify-content: space-between; gap: .9rem; }
+    .saved-targets-head h3 { margin: 0; font-size: .96rem; }
+    .saved-targets-head p { margin: .16rem 0 0; color: var(--muted); font-size: .74rem; }
+    .saved-targets-head .button { flex: 0 0 auto; min-height: 36px; font-size: .78rem; }
+    .saved-targets-list { display: grid; gap: .55rem; margin-top: .82rem; }
+    .saved-target { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .72rem; border: 1px solid #e3dce1; border-radius: 10px; background: #fff; }
+    .saved-target-main { min-width: 0; }
+    .saved-target-main strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .82rem; }
+    .saved-target-main span { display: block; margin-top: .13rem; color: var(--muted); font-size: .72rem; }
+    .saved-target-actions { display: flex; flex: 0 0 auto; gap: .4rem; }
+    .saved-target-actions button { min-height: 34px; padding: .35rem .54rem; font-size: .73rem; }
+    .saved-target-empty { margin: .82rem 0 0; color: var(--muted); font-size: .75rem; }
+    .saved-target-note, .saved-target-status { margin: .7rem 0 0; color: var(--muted); font-size: .71rem; }
+    .saved-target-status.good { color: var(--green); }
+    .saved-target-compare { margin-top: .82rem; padding-top: .8rem; border-top: 1px solid #d8e4da; }
+    .saved-target-compare-head { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; }
+    .saved-target-compare h4 { margin: 0; color: var(--plum); font-size: .84rem; }
+    .saved-target-compare p { margin: .1rem 0 0; color: var(--muted); font-size: .71rem; }
+    .saved-target-compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin-top: .65rem; }
+    .saved-compare-card { padding: .72rem; border: 1px solid #d8e4da; border-radius: 10px; background: #fff; }
+    .saved-compare-card.active { border-color: #80af90; box-shadow: inset 0 0 0 1px #80af90; }
+    .saved-compare-card header { display: flex; align-items: start; justify-content: space-between; gap: .5rem; }
+    .saved-compare-card h5 { margin: 0; font-size: .78rem; line-height: 1.25; }
+    .saved-compare-card header span { display: block; margin-top: .12rem; color: var(--muted); font-size: .66rem; }
+    .saved-compare-card .button-quiet { min-height: 30px; padding: .28rem .42rem; font-size: .68rem; }
+    .saved-compare-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .42rem; margin: .62rem 0 0; }
+    .saved-compare-metric { padding: .45rem; border-radius: 8px; background: var(--soft); }
+    .saved-compare-metric span { display: block; color: var(--muted); font-size: .61rem; line-height: 1.2; }
+    .saved-compare-metric strong { display: block; margin-top: .17rem; color: var(--ink); font-size: .75rem; font-variant-numeric: tabular-nums; }
+    .saved-compare-metric strong.positive { color: var(--red); }
+    .saved-compare-metric strong.negative { color: var(--green); }
 
     .summary-wrap { position: sticky; top: 88px; }
-    .summary-card { padding: 1.18rem; overflow: hidden; }
+    .summary-card { padding: 1.18rem; overflow: hidden; background: linear-gradient(150deg, #063d33, #082d26); border-color: transparent; color: #fffdf9; box-shadow: 0 18px 38px rgba(6, 61, 51, .2); }
     .summary-card h2 { font-size: 1.15rem; }
-    .summary-kicker { margin: .22rem 0 0; color: var(--muted); font-size: .8rem; }
-    .headline { margin: 1.15rem 0 .15rem; color: var(--plum); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 850; letter-spacing: -.07em; line-height: 1; font-variant-numeric: tabular-nums; }
-    .headline-label { margin: 0 0 1rem; color: var(--muted); font-size: .84rem; }
-    .summary-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-    .summary-list li { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; padding: .78rem 0; border-bottom: 1px solid var(--line); }
-    .summary-list span { color: var(--muted); font-size: .78rem; }
+    .summary-kicker { margin: .22rem 0 0; color: #b5c9bc; font-size: .8rem; }
+    .headline { margin: 1.15rem 0 .15rem; color: #fffdf9; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 850; letter-spacing: -.07em; line-height: 1; font-variant-numeric: tabular-nums; }
+    .headline-label { margin: 0 0 1rem; color: #b5c9bc; font-size: .84rem; }
+    .summary-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid rgba(231, 242, 234, .18); }
+    .summary-list li { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; padding: .78rem 0; border-bottom: 1px solid rgba(231, 242, 234, .18); }
+    .summary-list span { color: #b5c9bc; font-size: .78rem; }
     .summary-list strong { text-align: right; font-size: .9rem; font-variant-numeric: tabular-nums; }
-    .summary-list strong.positive { color: var(--red); }
-    .summary-list strong.negative { color: var(--green); }
-    .summary-footnote { margin: 1rem 0 0; color: var(--muted); font-size: .72rem; }
+    .summary-list strong.positive { color: #f3a18f; }
+    .summary-list strong.negative { color: #b9dfbd; }
+    .summary-footnote { margin: 1rem 0 0; color: #b5c9bc; font-size: .72rem; }
     .summary-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: 1rem; }
     .summary-actions button { min-width: 0; }
+    .summary-card .button-quiet { border-color: rgba(231, 242, 234, .34); color: #fffdf9; }
+    .summary-card .button-quiet:hover { background: rgba(255,255,255,.1); }
+    .shared-comparison-status { min-height: 1.2rem; margin: .8rem 0 0; color: #b5c9bc; font-size: .72rem; }
+    .shared-comparison-status.good { color: #b9dfbd; }
 
     .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
-    .metric { padding: .92rem; border-radius: 11px; background: var(--soft); }
+    .metric { padding: .92rem; border-radius: 11px; background: #f4f8f3; }
     .metric span { display: block; color: var(--muted); font-size: .72rem; }
     .metric strong { display: block; margin-top: .25rem; color: var(--ink); font-size: 1.08rem; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
     .metric strong.plum { color: var(--plum); }
@@ -167,24 +246,84 @@
     .flow-step:not(:last-child)::after { content: "→"; position: absolute; z-index: 1; right: -.82rem; top: calc(50% - .7rem); width: 1.35rem; height: 1.35rem; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--soft); color: var(--plum); font-weight: 800; }
     .flow-step span { display: block; color: var(--muted); font-size: .7rem; }
     .flow-step strong { display: block; margin-top: .35rem; font-size: .96rem; line-height: 1.18; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
-    .flow-step.emphasis { border-color: #c9a8ba; background: var(--plum-soft); }
+    .flow-step.emphasis { border-color: #a4c5b1; background: var(--plum-soft); }
     .flow-step.emphasis strong { color: var(--plum); }
     .calculation-note { margin: .75rem 0 0; color: var(--muted); font-size: .76rem; }
 
     .chart-card { overflow: hidden; }
-    .chart-shell { max-width: 100%; padding: .3rem .2rem 0; overflow-x: auto; overflow-y: hidden; }
+    .chart-shell { position: relative; max-width: 100%; padding: .3rem .2rem 0; overflow-x: auto; overflow-y: hidden; }
     .chart { min-width: 510px; width: 100%; height: 255px; display: block; }
     .chart-grid { stroke: #e7e0e5; stroke-width: 1; }
     .chart-label { fill: #7b737a; font-size: 11px; font-family: inherit; }
     .chart-line-current { fill: none; stroke: var(--plum); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-    .chart-line-target { fill: none; stroke: #1d7657; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-    .chart-dot-current { fill: var(--plum); }
-    .chart-dot-target { fill: #1d7657; }
+    .chart-line-target { fill: none; stroke: var(--coral); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .chart-dot-current { fill: var(--plum); stroke: #fff; stroke-width: 0; transition: r .16s ease, stroke-width .16s ease; }
+    .chart-dot-target { fill: var(--coral); stroke: #fff; stroke-width: 0; transition: r .16s ease, stroke-width .16s ease; }
+    .chart-dot-current.is-active, .chart-dot-target.is-active { stroke-width: 2.5; }
+    .chart-crosshair { stroke: #a79aa2; stroke-width: 1; stroke-dasharray: 3 4; pointer-events: none; }
+    .chart-hit { fill: transparent; cursor: crosshair; }
+    .chart-hit:focus { fill: rgba(90, 35, 72, .07); outline: none; }
     .chart-legend { display: flex; flex-wrap: wrap; gap: .7rem 1.1rem; margin-top: .15rem; color: var(--muted); font-size: .78rem; }
     .legend-item { display: inline-flex; align-items: center; gap: .35rem; }
     .legend-mark { width: 11px; height: 3px; border-radius: 10px; background: var(--plum); }
-    .legend-mark.green { background: var(--green); }
+    .legend-mark.green { background: var(--coral); }
+    .chart-readout { min-height: 1.3rem; margin: .75rem 0 0; color: var(--ink); font-size: .8rem; font-variant-numeric: tabular-nums; }
     .index-note { margin: .82rem 0 0; color: var(--muted); font-size: .76rem; }
+    .market-scenario { margin-top: 1rem; padding: 1rem; border: 1px solid #d6e3d8; border-radius: 13px; background: linear-gradient(135deg, #f3f8f2, #fffdf9); }
+    .market-scenario-head { display: flex; align-items: start; justify-content: space-between; gap: .8rem; }
+    .market-scenario h3 { margin: 0; color: var(--plum); font-size: .98rem; }
+    .market-scenario-head p { margin: .22rem 0 0; color: var(--muted); font-size: .75rem; }
+    .scenario-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
+    .scenario-option { display: inline-flex; align-items: center; gap: .35rem; min-height: 35px; padding: .42rem .65rem; border: 1px solid #cbd9ce; border-radius: 9px; background: #fff; color: var(--ink); font: inherit; font-size: .74rem; font-weight: 750; cursor: pointer; }
+    .scenario-option span { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .scenario-option:hover { border-color: #8ab099; }
+    .scenario-option[aria-pressed="true"] { border-color: var(--green); background: var(--green); color: #fff; box-shadow: 0 4px 11px rgba(35, 110, 76, .18); }
+    .scenario-option[aria-pressed="true"] span { color: #d8eddd; }
+    .scenario-values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-top: .8rem; }
+    .scenario-value { padding: .72rem; border: 1px solid #dde7df; border-radius: 10px; background: rgba(255,255,255,.82); }
+    .scenario-value span { display: block; color: var(--muted); font-size: .68rem; }
+    .scenario-value strong { display: block; margin-top: .22rem; color: var(--plum); font-size: .98rem; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
+    .scenario-value small { display: block; margin-top: .22rem; color: var(--muted); font-size: .66rem; line-height: 1.35; }
+    .scenario-note { margin: .75rem 0 0; color: var(--muted); font-size: .73rem; line-height: 1.45; }
+
+    .area-profile { background: linear-gradient(135deg, #f5f9f4, #fffdf9); }
+    .area-profile-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(190px, .7fr); gap: .8rem; align-items: stretch; }
+    .area-profile-main { padding: .95rem; border-radius: 12px; background: #fff; border: 1px solid #dce6dd; }
+    .area-profile-main h3 { margin: 0; font-size: 1rem; letter-spacing: -.025em; }
+    .area-profile-main p { margin: .35rem 0 0; color: var(--muted); font-size: .77rem; }
+    .area-profile-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .55rem; margin-top: .8rem; }
+    .area-profile-metric { padding: .6rem; border-radius: 9px; background: var(--soft); }
+    .area-profile-metric span { display: block; color: var(--muted); font-size: .66rem; }
+    .area-profile-metric strong { display: block; margin-top: .18rem; color: var(--plum); font-size: .84rem; line-height: 1.25; }
+    .area-profile-share { display: flex; flex-direction: column; justify-content: space-between; gap: .8rem; padding: .95rem; border-radius: 12px; color: #fff; background: var(--plum); }
+    .area-profile-share p { margin: 0; color: #d2e4d7; font-size: .75rem; }
+    .area-profile-share .button-quiet { align-self: start; border-color: rgba(255,255,255,.38); color: #fff; }
+    .area-profile-share .button-quiet:hover { background: rgba(255,255,255,.1); }
+
+    .bank-ready { display: grid; grid-template-columns: minmax(190px, .8fr) minmax(0, 1.2fr); gap: .9rem; align-items: start; margin-top: .95rem; padding: .95rem; border: 1px solid #bed7c4; border-radius: 12px; background: #f6faf6; }
+    .bank-ready h3 { margin: 0; color: var(--plum); font-size: .94rem; }
+    .bank-ready p { margin: .3rem 0 0; color: var(--muted); font-size: .76rem; line-height: 1.45; }
+    .bank-ready ul { display: grid; gap: .42rem; margin: 0; padding: 0; list-style: none; }
+    .bank-ready li { padding-left: 1.1rem; color: var(--ink); font-size: .77rem; line-height: 1.4; position: relative; }
+    .bank-ready li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 900; }
+    .bank-ready .bank-ready-note { grid-column: 1 / -1; margin: -.25rem 0 0; padding-top: .65rem; border-top: 1px solid #d9e7dc; }
+
+    .monthly-compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+    .monthly-home { padding: 1rem; border: 1px solid var(--line); border-radius: 11px; background: #fffefb; }
+    .monthly-home.target { border-color: #b7d3c2; background: #f6faf6; }
+    .monthly-home header { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; padding-bottom: .8rem; border-bottom: 1px solid var(--line); }
+    .monthly-home h3 { margin: 0; font-size: .94rem; letter-spacing: -.02em; }
+    .monthly-home header strong { color: var(--plum); font-size: 1rem; font-variant-numeric: tabular-nums; }
+    .monthly-list { display: grid; gap: .52rem; margin: .85rem 0 0; padding: 0; list-style: none; }
+    .monthly-list li { display: flex; justify-content: space-between; gap: .75rem; color: var(--muted); font-size: .78rem; }
+    .monthly-list strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .monthly-delta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: .75rem; padding: .9rem 1rem; border-radius: 11px; background: var(--soft); }
+    .monthly-delta p { margin: 0; color: var(--muted); font-size: .8rem; }
+    .monthly-delta strong { color: var(--plum); font-size: 1.12rem; font-variant-numeric: tabular-nums; }
+    .monthly-delta.positive { background: var(--red-soft); }
+    .monthly-delta.positive strong { color: var(--red); }
+    .monthly-delta.negative { background: var(--green-soft); }
+    .monthly-delta.negative strong { color: var(--green); }
 
     .risk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
     .risk { min-height: 124px; padding: .95rem; border: 1px solid var(--line); border-radius: 11px; }
@@ -201,18 +340,76 @@
     .risk.good { background: #fbfefc; border-color: #cde9d9; }
     .risk.good .risk-icon { color: var(--green); background: var(--green-soft); }
 
+    .offer-summary { background: #fffdf9; }
+    .offer-summary-body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(230px, .85fr); gap: .8rem; }
+    .offer-summary-section { padding: .95rem; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+    .offer-summary-section h3 { margin: 0; color: var(--plum); font-size: .92rem; }
+    .offer-summary-section p { margin: .35rem 0 0; color: var(--muted); font-size: .75rem; }
+    .offer-summary-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin-top: .75rem; }
+    .offer-summary-metric { padding: .6rem; border-radius: 9px; background: var(--soft); }
+    .offer-summary-metric span { display: block; color: var(--muted); font-size: .66rem; line-height: 1.25; }
+    .offer-summary-metric strong { display: block; margin-top: .17rem; color: var(--ink); font-size: .88rem; font-variant-numeric: tabular-nums; }
+    .offer-summary-checks { margin: .7rem 0 0; padding: 0; list-style: none; }
+    .offer-summary-checks li { padding: .46rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; }
+    .offer-summary-checks strong { color: var(--ink); }
+    .summary-bank-cta { margin-top: .85rem; padding: .8rem; border-radius: 10px; color: #fff; background: var(--plum); }
+    .summary-bank-cta span { display: block; color: #c9dfcf; font-size: .65rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .summary-bank-cta strong { display: block; margin-top: .26rem; color: #fff; font-size: .88rem; line-height: 1.25; }
+    .summary-bank-cta p { margin-top: .34rem; color: #d7e9dc; font-size: .71rem; line-height: 1.4; }
+    .summary-bank-cta .button { width: 100%; justify-content: center; margin-top: .65rem; }
+    .offer-summary-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .9rem; }
+    .offer-summary-actions p { flex-basis: 100%; margin: 0; color: var(--muted); font-size: .7rem; }
+    .lead-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: center; margin-top: .9rem; padding: 1rem; border: 1px solid #bed7c4; border-radius: 13px; color: #fff; background: linear-gradient(120deg, #063d33, #0b5546); }
+    .lead-card h3 { margin: 0; color: #fff; font-size: .97rem; }
+    .lead-card p { margin: .24rem 0 0; color: #d4e5d8; font-size: .76rem; }
+    .lead-card-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; }
+    .lead-card .button-quiet { border-color: rgba(255,255,255,.38); color: #fff; }
+    .lead-card .button-quiet:hover { background: rgba(255,255,255,.1); }
+
     .method-card { padding-bottom: 1.25rem; }
     .method-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
-    .method { padding: .9rem; border-left: 3px solid #dcc9d4; background: var(--soft); border-radius: 0 10px 10px 0; }
+    .method { padding: .9rem; border-left: 3px solid var(--coral); background: var(--soft); border-radius: 0 10px 10px 0; }
     .method strong { display: block; margin-bottom: .25rem; font-size: .84rem; }
     .method p { margin: 0; color: var(--muted); font-size: .77rem; }
     .source-line { margin: 1rem 0 0; color: var(--muted); font-size: .76rem; }
-    .source-line a { color: var(--plum); font-weight: 700; }
+    .source-line a { color: var(--plum-2); font-weight: 700; }
+    .data-freshness { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-top: 1rem; }
+    .freshness-item { padding: .7rem; border-radius: 10px; background: #f4f8f3; }
+    .freshness-item span { display: block; color: var(--muted); font-size: .66rem; }
+    .freshness-item strong { display: block; margin-top: .18rem; color: var(--plum); font-size: .8rem; }
 
-    footer { padding: 1.7rem 0 2.4rem; color: var(--muted); font-size: .78rem; }
-    .footer-inner { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+    .ad-slot { margin: .1rem auto 1.35rem; padding: .75rem 0; }
+    .ad-slot[hidden] { display: none; }
+    .ad-slot-label { display: block; margin: 0 0 .42rem; color: var(--muted); font-size: .62rem; font-weight: 800; letter-spacing: .12em; text-align: center; }
+    .ad-slot .adsbygoogle { display: block; min-height: 90px; overflow: hidden; border-radius: 12px; }
+
+    footer { margin-top: 1rem; padding: 1.7rem 0 2.4rem; background: var(--plum); color: #d4e2d8; font-size: .78rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid rgba(231, 242, 234, .18); }
     .footer-inner p { max-width: 810px; margin: 0; }
-    .toast { position: fixed; z-index: 30; left: 50%; bottom: 1.25rem; transform: translate(-50%, 130%); padding: .7rem .95rem; border-radius: 10px; background: #272027; color: #fff; box-shadow: var(--shadow); font-size: .85rem; transition: transform .25s ease; }
+    .footer-inner button { min-height: auto; padding: 0; border: 0; color: #d4e2d8; background: transparent; font-weight: 750; text-decoration: underline; }
+    dialog { width: min(620px, calc(100% - 2rem)); max-height: min(740px, calc(100vh - 2rem)); padding: 0; border: 0; border-radius: 16px; color: var(--ink); box-shadow: 0 25px 70px rgba(0, 30, 22, .3); }
+    dialog::backdrop { background: rgba(2, 31, 24, .58); }
+    .privacy-dialog { padding: 1.15rem; }
+    .privacy-dialog header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+    .privacy-dialog h2 { margin: 0; color: var(--plum); font-size: 1.18rem; }
+    .privacy-dialog h3 { margin: 1rem 0 .35rem; color: var(--plum); font-size: .9rem; }
+    .privacy-dialog p, .privacy-dialog li { color: var(--muted); font-size: .79rem; }
+    .privacy-dialog ul { margin: .4rem 0 0; padding-left: 1.2rem; }
+    .privacy-status { margin: .7rem 0 0; padding: .68rem; border-radius: 9px; background: var(--green-soft); color: #245c42 !important; }
+    .privacy-dialog .button-quiet { min-height: 34px; padding: .34rem .56rem; font-size: .73rem; }
+    .lead-dialog { padding: 1.15rem; }
+    .lead-dialog header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+    .lead-dialog h2 { margin: 0; color: var(--plum); font-size: 1.18rem; }
+    .lead-dialog-copy { margin: .35rem 0 0; color: var(--muted); font-size: .8rem; }
+    .lead-dialog form { display: grid; gap: .75rem; margin-top: 1rem; }
+    .lead-dialog .field { margin: 0; }
+    .lead-dialog .field input { width: 100%; }
+    .lead-consent { display: flex; align-items: start; gap: .55rem; padding: .72rem; border-radius: 9px; background: var(--soft); color: var(--muted); font-size: .74rem; line-height: 1.35; }
+    .lead-consent input { width: auto; margin: .16rem 0 0; }
+    .lead-status { min-height: 1.2rem; margin: 0; color: var(--muted); font-size: .74rem; }
+    .lead-status.ready { color: var(--green); }
+    .lead-status.pending { color: var(--amber); }
+    .toast { position: fixed; z-index: 30; left: 50%; bottom: 1.25rem; transform: translate(-50%, 130%); padding: .7rem .95rem; border-radius: 10px; background: var(--plum); color: #fffdf9; box-shadow: var(--shadow); font-size: .85rem; transition: transform .25s ease; }
     .toast.show { transform: translate(-50%, 0); }
     .load-error { padding: 1rem; border-radius: 12px; background: var(--red-soft); color: #7d242b; }
 
@@ -233,7 +430,7 @@
       .nav-actions .button-quiet { display: none; }
       .container { width: min(100% - 1.2rem, 1180px); }
       .hero { padding-top: 2.4rem; }
-      .home-grid, .risk-grid, .method-grid { grid-template-columns: 1fr; }
+      .home-grid, .risk-grid, .method-grid, .monthly-compare, .quick-start-grid, .area-profile-grid, .offer-summary-body, .lead-card, .bank-ready, .scenario-values { grid-template-columns: 1fr; }
       .finance-settings, .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .flow { grid-template-columns: 1fr; gap: .45rem; }
       .flow-step { min-height: auto; }
@@ -244,13 +441,15 @@
       .footer-inner p + p { margin-top: .7rem; }
     }
     @media (max-width: 430px) {
-      .input-grid, .finance-settings, .metrics { grid-template-columns: 1fr; }
+      .input-grid, .finance-settings, .metrics, .saved-target-compare-grid, .area-profile-metrics, .offer-summary-metrics, .data-freshness { grid-template-columns: 1fr; }
       .field.wide { grid-column: auto; }
       .section-heading { display: block; }
       .section-tag { display: inline-block; margin-top: .6rem; }
       .listing-import-row { display: grid; grid-template-columns: 1fr; }
       .import-steps { grid-template-columns: 1fr; }
       .import-steps li { min-height: 43px; }
+      .saved-targets-head, .saved-target { align-items: stretch; flex-direction: column; }
+      .saved-target-actions { justify-content: flex-end; }
     }
     @media print {
       body { background: #fff; }
@@ -260,6 +459,13 @@
       .summary-wrap { position: static; margin-bottom: 1rem; }
       .card, .summary-card { box-shadow: none; break-inside: avoid; }
       .details { display: none; }
+      body.print-offer .hero, body.print-offer .summary-wrap, body.print-offer .ad-slot, body.print-offer footer, body.print-offer .quick-start { display: none !important; }
+      body.print-offer main.container { width: auto; margin: 0; }
+      body.print-offer #app { display: block; }
+      body.print-offer #laskuri > section:not(#offer-summary) { display: none !important; }
+      body.print-offer .offer-summary { display: block !important; padding: 0; border: 0; }
+      body.print-offer .offer-summary-actions { display: none !important; }
+      body.print-offer .lead-card { display: none !important; }
     }
   </style>
 </head>
@@ -267,20 +473,29 @@
   <a class="skip-link" href="#laskuri">Siirry laskuriin</a>
   <header class="site-header">
     <nav class="nav" aria-label="Päävalikko">
-      <a class="brand" href="#alku" aria-label="Kotivaihto, alkuun"><span class="brand-mark" aria-hidden="true">K</span> Kotivaihto</a>
-      <div class="nav-links"><a href="#markkina">Markkina</a><a href="#rahoitus">Rahoitus</a><a href="#tarkistus">Tarkistus</a><a href="#menetelma">Menetelmä</a></div>
-      <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton">Jaa</button><button class="button" type="button" id="printButton">Tulosta</button></div>
+      <a class="brand" href="#alku" aria-label="Kotivaihto, alkuun"><img class="brand-mark" src="assets/favicon.svg" width="32" height="32" alt=""> Kotivaihto</a>
+      <div class="nav-links"><a href="#markkina">Markkina</a><a href="#rahoitus">Rahoitus</a><a href="#kuukausi">Kuukausi</a><a href="#tarkistus">Tarkistus</a><a href="#menetelma">Menetelmä</a></div>
+      <div class="nav-actions"><button class="button-quiet" type="button" id="shareButton" title="Jaettava linkki sisältää laskelman luvut, ei ilmoitustekstiä, kohdelinkkiä tai omaa muistiinpanoa.">Jaa vertailu</button><button class="button" type="button" id="printButton">Tulosta</button></div>
     </nav>
   </header>
 
   <main id="alku" class="container">
     <section class="hero" aria-labelledby="hero-title">
       <div>
-        <p class="eyebrow">Havaittuihin tietoihin perustuva vertailu</p>
-        <h1 id="hero-title">Näe muuton raha­vaikutus ennen näyttöjä.</h1>
-        <p class="hero-copy">Vertaa nykyistä kotiasi seuraavaan kotiin. Kotivaihto erottaa alueen hintatason ja kuntaindeksin historiallisen muutoksen – eikä näytä ennusteita.</p>
+        <p class="eyebrow">Selkeämpi päätös ennen pankkineuvottelua</p>
+        <h1 id="hero-title">Näe, mitä kodinvaihto vaatii ennen pankkineuvottelua.</h1>
+        <p class="hero-copy">Vertaa nykyistä kotiasi seuraavaan kotiin. Kotivaihto kokoaa rahoitustarpeen, kuukausivaikutuksen ja alueiden julkaistut hintatiedot yhteen – ilman ennusteita.</p>
       </div>
-      <p class="hero-note"><strong>Ei hinta-arvio eikä lainatarjous.</strong> Laskelma on päätöksenteon tuki. Tarkista kohteen velaton hinta, yhtiölaina, vastikkeet ja rahoitus aina asiakirjoista sekä rahoittajalta.</p>
+      <p class="hero-note"><strong>Ei hinta-arvio eikä lainatarjous.</strong> Laskelma auttaa valmistautumaan. Pankki arvioi maksukyvyn, vakuudet ja mahdollisen lainatarjouksen omassa neuvottelussaan.</p>
+    </section>
+
+    <section class="quick-start" aria-labelledby="quick-start-title">
+      <div class="quick-start-head"><div><h2 id="quick-start-title">Aloita kolmessa vaiheessa</h2><p>Voit tehdä ensimmäisen vertailun ilman, että täytät kaikkea kerralla.</p></div></div>
+      <div class="quick-start-grid">
+        <button class="guide-step" type="button" data-guide-step="current"><span class="guide-number">1</span><span><strong>Valitse nykyinen koti</strong><span>Aloita postinumerosta ja lisää omat luvut rauhassa.</span></span></button>
+        <button class="guide-step" type="button" data-guide-step="target"><span class="guide-number">2</span><span><strong>Tuo seuraava kohde</strong><span>Kopioi ilmoituksen perustiedot tai täytä vain tärkeimmät kentät.</span></span></button>
+        <button class="guide-step" type="button" data-guide-step="result"><span class="guide-number">3</span><span><strong>Valmistaudu pankkineuvotteluun</strong><span>Näe rahoitustarve, kuukausivaikutus ja tarkistettavat kohdat.</span></span></button>
+      </div>
     </section>
 
     <div id="app" class="app-grid" aria-live="polite">
@@ -343,10 +558,19 @@
                 <div class="field"><label for="target-other">Muut asumismenot</label><div class="input-with-unit"><input id="target-other" data-home="target" data-field="other" type="number" min="0" step="5" value="140"><span class="unit">€/kk</span></div></div>
                 <div class="field"><label for="target-rate">Lainan korko</label><div class="input-with-unit"><input id="target-rate" data-home="target" data-field="rate" type="number" min="0" max="25" step="0.05" value="3.30"><span class="unit">%</span></div></div>
                 <div class="field"><label for="target-years">Laina-aika</label><div class="input-with-unit"><input id="target-years" data-home="target" data-field="years" type="number" min="1" max="40" step="1" value="25"><span class="unit">v</span></div></div>
+                <div class="field wide"><label for="target-note">Oma nimi tai muistiinpano <span class="label-help">(valinnainen)</span></label><input id="target-note" type="text" maxlength="80" autocomplete="off" placeholder="Esim. Kulmakaksio, näyttö lauantaina"><p class="target-note-help">Muistiinpano tallennetaan vain tämän laitteen selaimeen, jos tallennat kohteen.</p></div>
               </div>
               <p class="area-status" id="target-area-status">Valitse alue nähdäksesi julkaistun hintatason.</p>
             </form>
           </div>
+          <section class="saved-targets" aria-labelledby="saved-targets-title">
+            <div class="saved-targets-head"><div><h3 id="saved-targets-title">Tallennetut kohteet <span class="label-help" id="saved-target-count">(0/4)</span></h3><p>Säilytä kiinnostavat vaihtoehdot ja avaa ne takaisin vertailuun.</p></div><button class="button" id="save-target-home" type="button">Tallenna seuraava koti</button></div>
+            <div class="saved-targets-list" id="saved-targets-list"></div>
+            <p class="saved-target-empty" id="saved-target-empty">Ei vielä tallennettuja kohteita.</p>
+            <p class="saved-target-note">Tallennetaan vain tämän laitteen selaimeen: alue, laskentakentät ja oma muistiinpano. Ilmoitustekstiä tai linkkiä ei tallenneta.</p>
+            <div class="saved-target-compare" id="saved-target-compare" aria-live="polite"></div>
+            <p class="saved-target-status" id="saved-target-status" role="status" aria-live="polite"></p>
+          </section>
           <details class="details"><summary>Myynnin ja oston lisäoletukset</summary><div class="details-content"><div class="finance-settings">
             <div class="field"><label for="broker-percent">Välityspalkkio</label><div class="input-with-unit"><input id="broker-percent" type="number" min="0" max="15" step="0.1" value="3.8"><span class="unit">%</span></div></div>
             <div class="field"><label for="buyer-costs">Oston muut kulut</label><div class="input-with-unit"><input id="buyer-costs" type="number" min="0" step="100" value="1000"><span class="unit">€</span></div></div>
@@ -355,22 +579,54 @@
         </section>
 
         <section id="rahoitus" class="card" aria-labelledby="finance-title">
-          <div class="section-heading"><div><h2 id="finance-title">Rahoituspolku</h2><p>Näet, mikä osa ostosta maksetaan myynnistä vapautuvalla pääomalla ja mikä jää uudeksi rahoitustarpeeksi.</p></div><span class="section-tag">Laskennallinen</span></div>
+          <div class="section-heading"><div><h2 id="finance-title">Rahoitustilanne ennen pankkineuvottelua</h2><p>Näet, mikä osa ostosta maksetaan myynnistä vapautuvalla pääomalla ja mikä jää uudeksi rahoitustarpeeksi.</p></div><span class="section-tag">Laskennallinen</span></div>
           <div class="metrics" id="finance-metrics"></div>
           <div class="flow" id="finance-flow"></div>
+          <section class="bank-ready" id="bank-ready" aria-labelledby="bank-ready-title"><div><h3 id="bank-ready-title">Ota nämä mukaan pankkineuvotteluun</h3><p>Kun luvut ovat valmiina, keskustelu pääsee nopeammin alkuun.</p></div><ul><li>Nykyisen kodin arvioitu velaton hinta ja jäljellä oleva laina</li><li>Seuraavan kohteen velaton hinta, yhtiölaina ja vastikkeet</li><li>Omat tulot, säästöt ja muut sitoumukset pankin omaa arviota varten</li></ul><p class="bank-ready-note">Pankki arvioi maksukyvyn, vakuudet ja mahdollisen lainatarjouksen aina omassa prosessissaan.</p></section>
           <p class="calculation-note" id="finance-note"></p>
+        </section>
+
+        <section id="kuukausi" class="card" aria-labelledby="monthly-title">
+          <div class="section-heading"><div><h2 id="monthly-title">Kuukausimenot vertailussa</h2><p>Näet asumismenojen osat rinnakkain. Seuraavan kodin lainaerä perustuu tässä laskelmassa uuteen rahoitustarpeeseen, korkoon ja laina-aikaan.</p></div><span class="section-tag">€/kk</span></div>
+          <div class="monthly-compare" id="monthly-compare"></div>
+          <div class="monthly-delta" id="monthly-delta"></div>
+          <p class="calculation-note" id="monthly-note"></p>
+        </section>
+
+        <section class="ad-slot" data-ad-placement="mid-page" hidden aria-label="Mainos">
+          <span class="ad-slot-label">MAINOS</span>
+          <ins class="adsbygoogle" data-ad-format="auto" data-full-width-responsive="true"></ins>
         </section>
 
         <section id="markkina" class="card chart-card" aria-labelledby="market-title">
           <div class="section-heading"><div><h2 id="market-title">Kuntatason indeksin historiallinen muutos</h2><p id="market-subtitle">Valitse kaksi aluetta nähdäksesi niiden kuntatasoisen indeksisarjan.</p></div><span class="section-tag">Ei ennusteita</span></div>
           <div class="chart-shell" id="chart-wrap"></div>
           <div class="chart-legend" id="chart-legend"></div>
+          <p class="chart-readout" id="chart-readout" aria-live="polite"></p>
           <p class="index-note" id="index-note"></p>
+          <section class="market-scenario" aria-labelledby="market-scenario-title">
+            <div class="market-scenario-head"><div><h3 id="market-scenario-title">Mahdollinen 12 kk näkymä</h3><p>Valitse oma suunnitteluoletuksesi. Tämä ei ole markkinaennuste eikä kohteen hinta-arvio.</p></div><span class="section-tag">Suunnitteluun</span></div>
+            <div class="scenario-controls" role="group" aria-label="Valitse 12 kuukauden markkinaoletus"><button class="scenario-option" type="button" data-market-scenario="-5" aria-pressed="false">Varovainen <span>−5 %</span></button><button class="scenario-option" type="button" data-market-scenario="0" aria-pressed="true">Vakaa <span>0 %</span></button><button class="scenario-option" type="button" data-market-scenario="5" aria-pressed="false">Nousu <span>+5 %</span></button></div>
+            <div class="scenario-values" id="market-scenario-values" aria-live="polite"></div>
+            <p class="scenario-note" id="market-scenario-note"></p>
+          </section>
+        </section>
+
+        <section id="alue" class="card area-profile" aria-labelledby="area-profile-title">
+          <div class="section-heading"><div><h2 id="area-profile-title">Alueen näkymä</h2><p>Jaa valitun seuraavan alueen julkaistu hintataso ja kuntaindeksin viimeisin havainto ilman omia laskelmalukuja.</p></div><span class="section-tag">Jaettava alue</span></div>
+          <div class="area-profile-grid" id="area-profile"></div>
         </section>
 
         <section id="tarkistus" class="card" aria-labelledby="risk-title">
           <div class="section-heading"><div><h2 id="risk-title">Tarkista ennen tarjousta</h2><p>Nämä nostot eivät ole luottopäätöksiä. Ne auttavat tekemään näkyväksi kohdat, jotka kannattaa varmistaa asiakirjoista tai asiantuntijalta.</p></div><span class="section-tag" id="risk-count">0 kohtaa</span></div>
           <div class="risk-grid" id="risk-grid"></div>
+        </section>
+
+        <section id="tarjous" class="card offer-summary" aria-labelledby="offer-summary-title">
+          <div class="section-heading"><div><h2 id="offer-summary-title">Tarjousyhteenveto</h2><p>Kokoa juuri tämän laskelman avainluvut ja tarkistettavat kohdat yhdelle tulostettavalle sivulle.</p></div><span class="section-tag">Ei tarjouksen korvike</span></div>
+          <div class="offer-summary-body" id="offer-summary-body"></div>
+          <section class="lead-card" aria-labelledby="lead-card-title"><div><h3 id="lead-card-title">Haluatko pankilta lainatarjouksen tai välittäjältä myyntiarvion?</h3><p>Pyydä asuntolainatarjousta tai nykyisen kodin myyntiarviota. Laskelman omia numeroita ei välitetä pyynnössä.</p></div><div class="lead-card-actions"><button class="button" type="button" data-lead-type="finance">Pyydä asuntolainatarjousta</button><button class="button-quiet" type="button" data-lead-type="valuation">Pyydä myyntiarviota</button></div></section>
+          <div class="offer-summary-actions"><button class="button" id="print-offer-summary" type="button">Tulosta tarjousyhteenveto</button><button class="button-quiet" id="copy-offer-summary" type="button">Kopioi yhteenveto</button><p>Yhteenveto ei sisällä ilmoitustekstiä, kohdelinkkiä eikä omaa muistiinpanoasi.</p></div>
         </section>
 
         <section id="menetelma" class="card method-card" aria-labelledby="method-title">
@@ -380,15 +636,50 @@
             <article class="method"><strong>2. Ajallinen muutos</strong><p>Historiakuvio käyttää vain kunta-/aluekohtaista laatuvakioitua hintaindeksiä. Neliöhintoja ei käytetä ajan muutoksen laskentaan.</p></article>
             <article class="method"><strong>3. Salatut ja puuttuvat tiedot</strong><p>Salattu neliöhinta näytetään salattuna. Kotivaihto ei arvioi puuttuvaa lukua eikä esitä ennusteita.</p></article>
           </div>
+          <div class="data-freshness" id="data-freshness" aria-label="Tietojen ajantasaisuus"></div>
           <p class="source-line" id="source-line">Ladataan lähde- ja kattavuustietoja…</p>
         </section>
       </section>
 
-      <aside class="summary-wrap" aria-label="Laskelman yhteenveto"><section class="summary-card" id="summary-card"><header><h2>Yhteenveto</h2><p class="summary-kicker">Päivittyy jokaisella muutoksella</p></header><div><p class="headline" id="summary-financing">—</p><p class="headline-label">uuden rahoituksen tarve</p></div><ul class="summary-list" id="summary-list"></ul><p class="summary-footnote">Asuntolainaerä on annuiteettilaskelma valitulla korolla ja laina-ajalla. Se ei ole pankin lainatarjous.</p><div class="summary-actions"><button class="button-quiet" type="button" id="resetButton">Palauta esimerkki</button><button class="button" type="button" id="scrollButton">Tarkista kohdat</button></div></section></aside>
+      <aside class="summary-wrap" aria-label="Laskelman yhteenveto"><section class="summary-card" id="summary-card" tabindex="-1"><header><h2>Yhteenveto</h2><p class="summary-kicker">Päivittyy jokaisella muutoksella</p></header><div><p class="headline" id="summary-financing">—</p><p class="headline-label">uuden rahoituksen tarve</p></div><ul class="summary-list" id="summary-list"></ul><p class="summary-footnote">Asuntolainaerä on annuiteettilaskelma valitulla korolla ja laina-ajalla. Se ei ole pankin lainatarjous.</p><div class="summary-actions"><button class="button-quiet" type="button" id="resetButton">Palauta esimerkki</button><button class="button" type="button" id="scrollButton">Tarkista kohdat</button></div><p class="shared-comparison-status" id="shared-comparison-status" role="status" aria-live="polite"></p></section></aside>
     </div>
   </main>
 
-  <footer><div class="container footer-inner"><p>© Kotivaihto. Laskelma on suuntaa-antava päätöksenteon tuki, ei kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo. Varainsiirtovero on laskettu asunto-osakkeelle 1,5 %:n oletuksella velattomasta hinnasta.</p><p>Ei ennusteita · Salaukset näkyviin</p></div></footer>
+  <section class="ad-slot container" data-ad-placement="footer" hidden aria-label="Mainos">
+    <span class="ad-slot-label">MAINOS</span>
+    <ins class="adsbygoogle" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </section>
+
+  <footer><div class="container footer-inner"><p>© Kotivaihto. Laskelma on suuntaa-antava päätöksenteon tuki, ei kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo. Varainsiirtovero on laskettu asunto-osakkeelle 1,5 %:n oletuksella velattomasta hinnasta.</p><p>Ei ennusteita · Salaukset näkyviin · <button type="button" id="privacy-button">Tietosuoja ja mainosasetukset</button></p></div></footer>
+  <dialog id="privacy-dialog" aria-labelledby="privacy-title">
+    <div class="privacy-dialog">
+      <header><div><h2 id="privacy-title">Tietosuoja ja mainosasetukset</h2><p>Selkeä kuva siitä, mitä Kotivaihto säilyttää ja mitä se ei tee.</p></div><button class="button-quiet" id="close-privacy" type="button">Sulje</button></header>
+      <h3>Tämän laitteen tallennukset</h3>
+      <ul><li>Voit tallentaa enintään neljä seuraavaa kotia oman selaimesi muistiin. Tallenne sisältää alueen, laskentakentät ja oman lyhyen muistiinpanon.</li><li>Tallennettuihin kohteisiin ei sisälly ilmoitustekstiä eikä Etuovi- tai Oikotie-linkkiä.</li><li>Jaettu vertailulinkki sisältää vain laskelmaan valitut alueet ja numerot. Se ei sisällä muistiinpanoa, ilmoitustekstiä tai kohdelinkkiä.</li></ul>
+      <h3>Mainokset ja evästeet</h3>
+      <p id="privacy-ad-status" class="privacy-status">Mainosasetus tarkistetaan, kun avaat tämän ikkunan.</p>
+      <p>Ennen kuin mainokset voidaan ottaa käyttöön Suomessa tai muualla ETA-alueella, sivustolle tulee määrittää julkaisijan oma tietosuojateksti ja Googlen vaatimusten mukainen sertifioitu suostumusalusta. Tämä näkymä ei korvaa sitä suostumusalustaa.</p>
+      <h3>Rekisterinpitäjä ja yhteydenotot</h3>
+      <p id="privacy-controller">Julkaisija- ja yhteystiedot lisätään ennen julkista julkaisua.</p>
+      <h3>Yhteydenottopyynnöt</h3>
+      <p>Asuntolainatarjous- tai myyntiarviopyyntö ei välitä laskurin hinta-, laina- tai muita taloustietoja. Pyyntö muodostaa käyttäjän omassa sähköpostisovelluksessa viestin vain siihen vastaanottajaan, joka on kerrottu pyynnön yhteydessä. Kotivaihto ei tallenna lomakekenttiä selaimeen.</p>
+      <h3>Käyttöehdot</h3>
+      <p>Kotivaihto on päätöksenteon tuki. Se ei ole kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo, eikä laskelma ole tarjous tai luottopäätös. Tarkista aina kohteen asiakirjat, hinnat, kulut ja rahoitus omista lähteistäsi ennen päätöstä.</p>
+    </div>
+  </dialog>
+  <dialog id="lead-dialog" aria-labelledby="lead-dialog-title">
+    <div class="lead-dialog">
+      <header><div><h2 id="lead-dialog-title">Pyydä yhteydenottoa</h2><p class="lead-dialog-copy" id="lead-dialog-copy"></p></div><button class="button-quiet" id="close-lead" type="button">Sulje</button></header>
+      <form id="lead-form" novalidate>
+        <div class="field"><label for="lead-name">Nimi</label><input id="lead-name" name="name" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="lead-email">Sähköposti</label><input id="lead-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="lead-phone">Puhelin <span class="label-help">(valinnainen)</span></label><input id="lead-phone" name="phone" type="tel" autocomplete="tel"></div>
+        <label class="lead-consent"><input id="lead-consent" type="checkbox" required><span id="lead-consent-text">Hyväksyn, että vastaanottaja saa ottaa minuun yhteyttä tämän pyynnön vuoksi. Laskelman talouslukuja ei välitetä.</span></label>
+        <p class="lead-status" id="lead-status" role="status" aria-live="polite"></p>
+        <button class="button" id="lead-submit" type="submit">Avaa yhteydenottoviesti</button>
+      </form>
+    </div>
+  </dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -401,17 +692,40 @@
       const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
       const toNumber = (value) => Number(String(value ?? "").replace(",", ".")) || 0;
       const safeText = (value) => String(value ?? "");
+      const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
       const euro = (value) => money.format(Number.isFinite(value) ? value : 0);
       const signedEuro = (value) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${euro(Math.abs(value))}`;
       const percent = (value) => `${value > 0 ? "+" : ""}${decimal.format(value)} %`;
       const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+      const savedTargetHomesKey = "kotivaihto-saved-target-homes-v1";
+      const maxSavedTargetHomes = 4;
+      const targetInputIds = ["target-size", "target-price", "target-company-loan", "target-maintenance", "target-company-charge", "target-other", "target-rate", "target-years"];
+      const sharedInputIds = ["current-size", "current-price", "current-company-loan", "current-private-loan", "current-maintenance", "current-company-charge", "current-mortgage-payment", "current-other", ...targetInputIds, "broker-percent", "buyer-costs", "buffer"];
+      const adSenseConfig = {
+        client: document.querySelector('meta[name="adsense-client"]')?.content.trim() || "",
+        slots: {
+          "mid-page": document.querySelector('meta[name="adsense-slot-mid-page"]')?.content.trim() || "",
+          footer: document.querySelector('meta[name="adsense-slot-footer"]')?.content.trim() || ""
+        }
+      };
+      const launchConfig = {
+        publisherName: document.querySelector('meta[name="publisher-name"]')?.content.trim() || "",
+        publisherId: document.querySelector('meta[name="publisher-id"]')?.content.trim() || "",
+        contactEmail: document.querySelector('meta[name="contact-email"]')?.content.trim() || "",
+        leadFinanceEmail: document.querySelector('meta[name="lead-finance-email"]')?.content.trim() || "",
+        leadFinancePartner: document.querySelector('meta[name="lead-finance-partner"]')?.content.trim() || "",
+        leadValuationEmail: document.querySelector('meta[name="lead-valuation-email"]')?.content.trim() || "",
+        leadValuationPartner: document.querySelector('meta[name="lead-valuation-partner"]')?.content.trim() || ""
+      };
       let data;
       let state;
+      let activeLeadType = "finance";
 
       const defaultState = () => ({
         current: { area: null },
         target: { area: null, importedListing: null },
-        activeOption: { current: -1, target: -1 }
+        activeOption: { current: -1, target: -1 },
+        marketScenario: 0
       });
 
       async function init() {
@@ -424,9 +738,13 @@
           bindInputs();
           setupCombobox("current");
           setupCombobox("target");
-          selectArea("current", findArea("00100"), false);
-          selectArea("target", findArea("02600"), false);
+          if (!restoreSharedComparison()) {
+            selectArea("current", findArea("00100"), false);
+            selectArea("target", restoreAreaView() || findArea("02600"), false);
+          }
           updateAll();
+          renderSavedTargetHomes();
+          initializeAdSense();
         } catch (error) {
           showLoadError(error);
         }
@@ -460,9 +778,43 @@
         $("#import-listing").addEventListener("click", importListing);
         $("#paste-listing").addEventListener("click", pasteListingFromClipboard);
         $("#show-paste-area").addEventListener("click", showListingTextArea);
+        $("#save-target-home").addEventListener("click", saveTargetHome);
+        $$("[data-guide-step]").forEach(button => button.addEventListener("click", () => runGuideStep(button.dataset.guideStep)));
+        $("#print-offer-summary").addEventListener("click", printOfferSummary);
+        $("#copy-offer-summary").addEventListener("click", copyOfferSummary);
+        $$("[data-lead-type]").forEach(button => button.addEventListener("click", () => openLeadDialog(button.dataset.leadType)));
+        $("#offer-summary-body").addEventListener("click", event => {
+          const button = event.target.closest("[data-lead-type]");
+          if (button) openLeadDialog(button.dataset.leadType);
+        });
+        $("#lead-form").addEventListener("submit", submitLeadRequest);
+        $("#close-lead").addEventListener("click", closeLeadDialog);
+        $("#lead-dialog").addEventListener("close", () => $("#lead-form").reset());
+        $$("[data-market-scenario]").forEach(button => button.addEventListener("click", () => {
+          state.marketScenario = clamp(toNumber(button.dataset.marketScenario), -10, 10);
+          renderMarketScenario(calculate());
+        }));
+        document.addEventListener("click", event => {
+          if (event.target.closest("#copy-area-link")) copyAreaLink();
+        });
+        $("#privacy-button").addEventListener("click", openPrivacyDialog);
+        $("#close-privacy").addEventListener("click", closePrivacyDialog);
         $("#listing-url").addEventListener("keydown", event => {
           if (event.key === "Enter") { event.preventDefault(); openListing(); }
         });
+      }
+
+      function runGuideStep(step) {
+        const actions = {
+          current: () => ({ container: $("#currentForm"), focus: $("#current-area-search") }),
+          target: () => { $("#listing-import").open = true; return { container: $("#listing-import"), focus: $("#paste-listing") }; },
+          result: () => ({ container: $("#summary-card"), focus: $("#summary-card") })
+        };
+        const action = actions[step];
+        if (!action) return;
+        const target = action();
+        target.container.scrollIntoView({ behavior: "smooth", block: "center" });
+        window.setTimeout(() => target.focus?.focus({ preventScroll: true }), 420);
       }
 
       function setupCombobox(home) {
@@ -531,6 +883,379 @@
         }
         updateAll();
         if (focus) $(`#${home}-size`).focus();
+      }
+
+      function setSharedComparisonStatus(message, tone = "") {
+        const element = $("#shared-comparison-status");
+        element.textContent = message;
+        element.className = `shared-comparison-status ${tone}`;
+      }
+
+      function createSharedComparison() {
+        return {
+          version: 1,
+          currentPostcode: state.current.area?.postcode || null,
+          targetPostcode: state.target.area?.postcode || null,
+          values: Object.fromEntries(sharedInputIds.map(id => [id, $(`#${id}`).value]))
+        };
+      }
+
+      function applySharedComparison(snapshot) {
+        if (snapshot?.version !== 1 || !snapshot.values || typeof snapshot.values !== "object") return false;
+        const currentArea = snapshot.currentPostcode ? findArea(snapshot.currentPostcode) : null;
+        const targetArea = snapshot.targetPostcode ? findArea(snapshot.targetPostcode) : null;
+        if (!currentArea || !targetArea) return false;
+        selectArea("current", currentArea, false);
+        selectArea("target", targetArea, false);
+        sharedInputIds.forEach(id => {
+          if (typeof snapshot.values[id] === "string") $(`#${id}`).value = snapshot.values[id];
+        });
+        $("#target-note").value = "";
+        $("#listing-url").value = "";
+        $("#listing-text").value = "";
+        $("#listing-text-field").hidden = true;
+        state.target.importedListing = null;
+        setImportStatus("");
+        return true;
+      }
+
+      function restoreSharedComparison() {
+        try {
+          const encoded = new URL(location.href).searchParams.get("comparison");
+          if (!encoded) return false;
+          const restored = applySharedComparison(JSON.parse(encoded));
+          if (restored) setSharedComparisonStatus("Jaettu vertailu avattiin. Sitä ei tallennettu tälle laitteelle.", "good");
+          return restored;
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function createShareUrl() {
+        const url = new URL(location.href);
+        url.searchParams.set("comparison", JSON.stringify(createSharedComparison()));
+        return url.href;
+      }
+
+      function restoreAreaView() {
+        try {
+          const postcode = new URL(location.href).searchParams.get("area");
+          return postcode ? findArea(postcode) : null;
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function createAreaUrl(area = state.target.area) {
+        const url = new URL(location.href);
+        url.searchParams.delete("comparison");
+        if (area?.postcode) url.searchParams.set("area", area.postcode);
+        else url.searchParams.delete("area");
+        url.hash = "alue";
+        return url.href;
+      }
+
+      async function copyAreaLink() {
+        const area = state.target.area;
+        if (!area) { toast("Valitse ensin seuraavan kodin alue."); return; }
+        try {
+          await navigator.clipboard.writeText(createAreaUrl(area));
+          toast("Alueen linkki kopioitiin. Se ei sisällä omia laskelmalukuja.");
+        } catch (_) {
+          toast("Aluelinkin kopiointi ei onnistunut tässä selaimessa.");
+        }
+      }
+
+      function hasAdSenseConfiguration() {
+        return /^ca-pub-\d+$/.test(adSenseConfig.client) && Object.values(adSenseConfig.slots).some(slot => /^\d+$/.test(slot));
+      }
+
+      function revealAdSenseSlots() {
+        $$('[data-ad-placement]').forEach(placement => {
+          const slot = adSenseConfig.slots[placement.dataset.adPlacement];
+          const ad = $(".adsbygoogle", placement);
+          if (!/^\d+$/.test(slot) || !ad || ad.dataset.adsenseLoaded) return;
+          ad.dataset.adClient = adSenseConfig.client;
+          ad.dataset.adSlot = slot;
+          placement.hidden = false;
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            ad.dataset.adsenseLoaded = "true";
+          } catch (_) {
+            placement.hidden = true;
+          }
+        });
+      }
+
+      function loadAdSenseScript() {
+        const existing = document.querySelector('script[data-kotivaihto-adsense]');
+        if (existing) { revealAdSenseSlots(); return; }
+        const script = document.createElement("script");
+        script.async = true;
+        script.dataset.kotivaihtoAdsense = "true";
+        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(adSenseConfig.client)}`;
+        script.crossOrigin = "anonymous";
+        script.addEventListener("load", revealAdSenseSlots, { once: true });
+        script.addEventListener("error", () => $$('[data-ad-placement]').forEach(placement => { placement.hidden = true; }), { once: true });
+        document.head.append(script);
+      }
+
+      function initializeAdSense() {
+        if (!hasAdSenseConfiguration()) return;
+        /* A Google-certified CMP must set this flag only after valid advertising consent. */
+        if (window.KotivaihtoAdsConsent === true) { loadAdSenseScript(); return; }
+        window.addEventListener("kotivaihto:ads-consent", () => {
+          if (window.KotivaihtoAdsConsent === true) loadAdSenseScript();
+        }, { once: true });
+      }
+
+      function openPrivacyDialog() {
+        const configured = hasAdSenseConfiguration();
+        $("#privacy-ad-status").textContent = configured
+          ? "Mainospaikat on määritetty, mutta Google-mainoksia ei ladata ennen sertifioidun suostumusalustan välittämää voimassa olevaa mainossuostumusta."
+          : "Mainoksia ei ole käytössä: sivulla ei ole AdSense-julkaisijatunnusta tai mainospaikkoja, joten Google-mainoskoodia ei ladata.";
+        const identity = [launchConfig.publisherName, launchConfig.publisherId && `Y-tunnus ${launchConfig.publisherId}`, launchConfig.contactEmail && `Yhteys: ${launchConfig.contactEmail}`].filter(Boolean);
+        $("#privacy-controller").textContent = identity.length
+          ? identity.join(" · ")
+          : "Julkaisija- ja yhteystiedot lisätään ennen julkista julkaisua. Täydennä ne index.html-tiedoston publisher-name-, publisher-id- ja contact-email-asetuksiin.";
+        const dialog = $("#privacy-dialog");
+        if (typeof dialog.showModal === "function") dialog.showModal();
+        else dialog.setAttribute("open", "");
+      }
+
+      function closePrivacyDialog() {
+        const dialog = $("#privacy-dialog");
+        if (typeof dialog.close === "function") dialog.close();
+        else dialog.removeAttribute("open");
+      }
+
+      function leadService(type = activeLeadType) {
+        const services = {
+          finance: {
+            title: "Pyydä asuntolainatarjousta",
+            intro: "Pyydä yhteydenottoa asuntolainaneuvottelua ja mahdollista lainatarjousta varten. Laskurin raha- tai lainatietoja ei sisällytetä viestiin.",
+            subject: "Kotivaihto: asuntolainatarjouksen yhteydenottopyyntö",
+            email: launchConfig.leadFinanceEmail || launchConfig.contactEmail,
+            partner: launchConfig.leadFinancePartner
+          },
+          valuation: {
+            title: "Pyydä myyntiarviota",
+            intro: "Pyydä yhteydenottoa nykyisen kodin myyntiarviosta. Laskurin raha- tai lainatietoja ei sisällytetä viestiin.",
+            subject: "Kotivaihto: myyntiarvion yhteydenottopyyntö",
+            email: launchConfig.leadValuationEmail || launchConfig.contactEmail,
+            partner: launchConfig.leadValuationPartner
+          }
+        };
+        return services[type] || services.finance;
+      }
+
+      function isEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || ""));
+      }
+
+      function leadRecipientName(service) {
+        return service.partner || launchConfig.publisherName || "Kotivaihto";
+      }
+
+      function setLeadStatus(message, tone = "") {
+        const status = $("#lead-status");
+        status.textContent = message;
+        status.className = `lead-status ${tone}`;
+      }
+
+      function openLeadDialog(type) {
+        activeLeadType = type === "valuation" ? "valuation" : "finance";
+        const service = leadService();
+        const recipient = leadRecipientName(service);
+        const ready = isEmail(service.email);
+        const form = $("#lead-form");
+        form.reset();
+        $("#lead-dialog-title").textContent = service.title;
+        $("#lead-dialog-copy").textContent = ready
+          ? `${service.intro} Vastaanottaja: ${recipient}.`
+          : "Yhteydenottopyynnöt avataan, kun Kotivaihdon, pankkikumppanin tai välittäjän vastaanottava sähköposti on määritetty.";
+        $("#lead-consent-text").textContent = `Hyväksyn, että ${recipient} saa ottaa minuun yhteyttä tämän pyynnön vuoksi. Laskelman talouslukuja ei välitetä.`;
+        $$("input, button", form).forEach(element => { element.disabled = !ready; });
+        setLeadStatus(ready ? "Pyyntö avataan omassa sähköpostisovelluksessasi. Lähetä viesti itse, jos haluat välittää tietosi." : "Pyyntöjen välitystä ei ole vielä määritetty. Tietojasi ei voi lähettää tästä lomakkeesta.", ready ? "ready" : "pending");
+        const dialog = $("#lead-dialog");
+        if (typeof dialog.showModal === "function") dialog.showModal();
+        else dialog.setAttribute("open", "");
+      }
+
+      function closeLeadDialog() {
+        const form = $("#lead-form");
+        form.reset();
+        const dialog = $("#lead-dialog");
+        if (typeof dialog.close === "function") dialog.close();
+        else dialog.removeAttribute("open");
+      }
+
+      function submitLeadRequest(event) {
+        event.preventDefault();
+        const service = leadService();
+        if (!isEmail(service.email)) { setLeadStatus("Pyyntöjen välitystä ei ole vielä määritetty.", "pending"); return; }
+        const form = $("#lead-form");
+        if (!form.reportValidity()) return;
+        const name = $("#lead-name").value.trim();
+        const email = $("#lead-email").value.trim();
+        const phone = $("#lead-phone").value.trim();
+        const body = [`Hei,`, ``, `Haluan pyytää yhteydenottoa: ${service.title.toLocaleLowerCase("fi-FI")}.`, ``, `Nimi: ${name}`, `Sähköposti: ${email}`, phone ? `Puhelin: ${phone}` : "", ``, `Pyyntö on tehty Kotivaihdon kautta. Laskurin talouslukuja ei välitetty.`].filter(Boolean).join("\n");
+        window.location.href = `mailto:${encodeURIComponent(service.email)}?subject=${encodeURIComponent(service.subject)}&body=${encodeURIComponent(body)}`;
+        toast("Yhteydenottoviesti avattiin. Lähetä se itse sähköpostisovelluksestasi.");
+        window.setTimeout(closeLeadDialog, 350);
+      }
+
+      function setSavedTargetStatus(message, tone = "") {
+        const element = $("#saved-target-status");
+        element.textContent = message;
+        element.className = `saved-target-status ${tone}`;
+      }
+
+      function readSavedTargetHomes() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(savedTargetHomesKey) || "[]");
+          if (!Array.isArray(parsed)) return [];
+          return parsed.filter(item => item && typeof item.id === "string" && item.values && typeof item.values === "object").slice(0, maxSavedTargetHomes);
+        } catch (_) {
+          return [];
+        }
+      }
+
+      function writeSavedTargetHomes(homes) {
+        localStorage.setItem(savedTargetHomesKey, JSON.stringify(homes.slice(0, maxSavedTargetHomes)));
+      }
+
+      function savedTargetSignature(postcode, values) {
+        return [postcode || "", ...targetInputIds.map(id => String(values[id] ?? ""))].join("|");
+      }
+
+      function createSavedTargetHome() {
+        const values = Object.fromEntries(targetInputIds.map(id => [id, $(`#${id}`).value]));
+        const postcode = state.target.area?.postcode || null;
+        return {
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          savedAt: new Date().toISOString(),
+          postcode,
+          note: $("#target-note").value.trim().slice(0, 80),
+          values,
+          signature: savedTargetSignature(postcode, values)
+        };
+      }
+
+      function describeSavedTarget(item) {
+        const area = item.postcode ? findArea(item.postcode) : null;
+        const price = toNumber(item.values?.["target-price"]);
+        const size = toNumber(item.values?.["target-size"]);
+        const areaTitle = area ? `${area.postcode} · ${area.area}, ${area.municipality}` : item.postcode ? `${item.postcode} · aluetta ei enää löydy` : "Kohde ilman aluetta";
+        const title = item.note || areaTitle;
+        const details = [item.note ? areaTitle : "", price > 0 ? `Velaton hinta ${euro(price)}` : "Velaton hinta puuttuu", size > 0 ? `${number.format(size)} m²` : "Pinta-ala puuttuu"].filter(Boolean).join(" · ");
+        return { title, details };
+      }
+
+      function readSavedTarget(item) {
+        const read = field => toNumber(item.values?.[`target-${field}`]);
+        return {
+          area: item.postcode ? findArea(item.postcode) : null,
+          size: read("size"), price: read("price"), companyLoan: read("company-loan"), maintenance: read("maintenance"), companyCharge: read("company-charge"), other: read("other"),
+          privateLoan: 0, mortgagePayment: 0, rate: read("rate"), years: read("years")
+        };
+      }
+
+      function currentTargetSignature() {
+        return savedTargetSignature(state.target.area?.postcode || null, Object.fromEntries(targetInputIds.map(id => [id, $(`#${id}`).value])));
+      }
+
+      function renderSavedTargetComparison() {
+        const container = $("#saved-target-compare");
+        const homes = readSavedTargetHomes();
+        if (!homes.length) { container.innerHTML = ""; return; }
+        const current = readHome("current");
+        const settings = readFinanceSettings();
+        const activeSignature = currentTargetSignature();
+        container.innerHTML = `<div class="saved-target-compare-head"><div><h4>Vaihtoehdot rinnakkain</h4><p>Rahoitustarve ja kuukausivaikutus lasketaan samoilla nykyisen kodin ja rahoituksen oletuksilla.</p></div></div><div class="saved-target-compare-grid">${homes.map(item => {
+          const description = describeSavedTarget(item);
+          const result = calculateFor(current, readSavedTarget(item), settings);
+          const active = item.signature === activeSignature;
+          return `<article class="saved-compare-card ${active ? "active" : ""}"><header><div><h5>${escapeHTML(description.title)}</h5><span>${escapeHTML(item.postcode || "Alue puuttuu")}${active ? " · avoinna" : ""}</span></div><button class="button-quiet" type="button" data-load-target="${escapeHTML(item.id)}">Avaa</button></header><div class="saved-compare-metrics"><div class="saved-compare-metric"><span>Velaton hinta</span><strong>${euro(result.target.price)}</strong></div><div class="saved-compare-metric"><span>Uusi rahoitustarve</span><strong>${euro(result.financingNeed)}</strong></div><div class="saved-compare-metric"><span>Asumismenot</span><strong>${euro(result.targetMonthly)}/kk</strong></div><div class="saved-compare-metric"><span>Vaikutus / kk</span><strong class="${result.monthlyDelta > 0 ? "positive" : result.monthlyDelta < 0 ? "negative" : ""}">${signedEuro(result.monthlyDelta)}/kk</strong></div></div></article>`;
+        }).join("")}</div>`;
+        $$('[data-load-target]', container).forEach(button => button.addEventListener("click", () => loadSavedTargetHome(button.dataset.loadTarget)));
+      }
+
+      function renderSavedTargetHomes() {
+        const homes = readSavedTargetHomes();
+        $("#saved-target-count").textContent = `(${homes.length}/${maxSavedTargetHomes})`;
+        $("#saved-target-empty").hidden = homes.length > 0;
+        $("#save-target-home").textContent = homes.length >= maxSavedTargetHomes ? "Tallenna / päivitä" : "Tallenna seuraava koti";
+        $("#saved-targets-list").innerHTML = homes.map(item => {
+          const description = describeSavedTarget(item);
+          return `<article class="saved-target"><div class="saved-target-main"><strong>${escapeHTML(description.title)}</strong><span>${escapeHTML(description.details)}</span></div><div class="saved-target-actions"><button class="button-quiet" type="button" data-load-target="${escapeHTML(item.id)}">Avaa</button><button class="button-quiet" type="button" data-remove-target="${escapeHTML(item.id)}">Poista</button></div></article>`;
+        }).join("");
+        $$('[data-load-target]').forEach(button => button.addEventListener("click", () => loadSavedTargetHome(button.dataset.loadTarget)));
+        $$('[data-remove-target]').forEach(button => button.addEventListener("click", () => removeSavedTargetHome(button.dataset.removeTarget)));
+        renderSavedTargetComparison();
+      }
+
+      function saveTargetHome() {
+        try {
+          const snapshot = createSavedTargetHome();
+          const homes = readSavedTargetHomes();
+          const existing = homes.findIndex(item => item.signature === snapshot.signature);
+          if (existing >= 0) {
+            homes[existing] = { ...snapshot, id: homes[existing].id };
+            writeSavedTargetHomes(homes);
+            renderSavedTargetHomes();
+            setSavedTargetStatus("Kohteen tallennettu versio päivitettiin tälle laitteelle.", "good");
+            toast("Tallennettu kohde päivitettiin.");
+            return;
+          }
+          if (homes.length >= maxSavedTargetHomes) {
+            setSavedTargetStatus("Tallenna enintään neljä kohdetta. Poista ensin yksi, jos haluat tallentaa uuden.");
+            return;
+          }
+          homes.unshift(snapshot);
+          writeSavedTargetHomes(homes);
+          renderSavedTargetHomes();
+          setSavedTargetStatus("Kohde tallennettiin vain tälle laitteelle. Ilmoitustekstiä tai linkkiä ei tallennettu.", "good");
+          toast("Seuraava koti tallennettiin.");
+        } catch (_) {
+          setSavedTargetStatus("Kohteen tallennus ei ole käytettävissä tässä selaimessa.");
+        }
+      }
+
+      function loadSavedTargetHome(id) {
+        const snapshot = readSavedTargetHomes().find(item => item.id === id);
+        if (!snapshot) return;
+        const area = snapshot.postcode ? findArea(snapshot.postcode) : null;
+        if (area) selectArea("target", area, false);
+        else {
+          state.target.area = null;
+          $("#target-area-search").value = snapshot.postcode ? `${snapshot.postcode} · aluetta ei enää löydy` : "";
+        }
+        targetInputIds.forEach(inputId => {
+          if (typeof snapshot.values[inputId] === "string") $(`#${inputId}`).value = snapshot.values[inputId];
+        });
+        $("#target-note").value = typeof snapshot.note === "string" ? snapshot.note : "";
+        state.target.importedListing = null;
+        $("#listing-url").value = "";
+        $("#listing-text").value = "";
+        $("#listing-text-field").hidden = true;
+        setImportStatus("");
+        updateAll();
+        const description = describeSavedTarget(snapshot);
+        setSavedTargetStatus(`${description.title} avattiin takaisin vertailuun.`, "good");
+        toast("Tallennettu kohde avattiin.");
+      }
+
+      function removeSavedTargetHome(id) {
+        try {
+          const homes = readSavedTargetHomes();
+          writeSavedTargetHomes(homes.filter(item => item.id !== id));
+          renderSavedTargetHomes();
+          setSavedTargetStatus("Tallennettu kohde poistettiin tältä laitteelta.");
+          toast("Tallennettu kohde poistettiin.");
+        } catch (_) {
+          setSavedTargetStatus("Tallennetun kohteen poistaminen ei onnistunut tässä selaimessa.");
+        }
       }
 
       function setImportStatus(message, tone = "") {
@@ -667,9 +1392,19 @@
       function calculate() {
         const current = readHome("current");
         const target = readHome("target");
-        const brokerPercent = toNumber($("#broker-percent").value) / 100;
-        const buyerCosts = toNumber($("#buyer-costs").value);
-        const buffer = toNumber($("#buffer").value);
+        return calculateFor(current, target, readFinanceSettings());
+      }
+
+      function readFinanceSettings() {
+        return {
+          brokerPercent: toNumber($("#broker-percent").value) / 100,
+          buyerCosts: toNumber($("#buyer-costs").value),
+          buffer: toNumber($("#buffer").value)
+        };
+      }
+
+      function calculateFor(current, target, settings) {
+        const { brokerPercent, buyerCosts, buffer } = settings;
         const brokerFee = current.price * brokerPercent;
         const currentSharePrice = current.price - current.companyLoan;
         const equityAfterSale = currentSharePrice - current.privateLoan - brokerFee;
@@ -698,8 +1433,12 @@
         renderAreaStatus("target", result.target.area);
         renderSummary(result);
         renderFinance(result);
+        renderMonthly(result);
         renderChart(result);
+        renderAreaProfile(result);
         renderRisks(result);
+        renderOfferSummary(result);
+        renderSavedTargetComparison();
         renderSource();
       }
 
@@ -717,11 +1456,12 @@
 
       function renderSummary(result) {
         $("#summary-financing").textContent = euro(result.financingNeed);
+        const riskCount = buildRisks(result).filter(risk => risk.tone !== "good").length;
         const items = [
           ["Myynnistä jää", result.equityAfterSale >= 0 ? euro(result.equityAfterSale) : `−${euro(Math.abs(result.equityAfterSale))}`, result.equityAfterSale >= 0 ? "negative" : "positive"],
           ["Kuukausivaikutus", signedEuro(result.monthlyDelta) + "/kk", result.monthlyDelta <= 0 ? "negative" : "positive"],
           ["Alueiden hintataso", result.perSqmDelta == null ? "Ei vertailtavissa" : percent(result.perSqmDelta), ""],
-          ["Tarkistettavaa", `${buildRisks(result).filter(risk => risk.tone !== "good").length} kohtaa`, ""]
+          ["Tarkistettavaa", riskCountLabel(riskCount), ""]
         ];
         $("#summary-list").innerHTML = items.map(([label, value, className]) => `<li><span>${label}</span><strong class="${className}">${value}</strong></li>`).join("");
       }
@@ -741,7 +1481,66 @@
           ["= uusi rahoitustarve", result.financingNeed]
         ];
         $("#finance-flow").innerHTML = steps.map(([label, value], index) => `<div class="flow-step ${index === steps.length - 1 ? "emphasis" : ""}"><span>${label}</span><strong>${value < 0 ? `−${euro(Math.abs(value))}` : euro(value)}</strong></div>`).join("");
-        $("#finance-note").textContent = `Ostossa käteisenä maksettava kauppahinta on velaton hinta (${euro(result.target.price)}) − yhtiölaina (${euro(result.target.companyLoan)}). Varainsiirtovero ${euro(result.transferTax)} on 1,5 % velattomasta hinnasta. Laskelma ei huomioi mahdollisia pankin kuluja, korkosuojausta tai verovaikutuksia.`;
+        $("#finance-note").textContent = `Ostossa käteisenä maksettava kauppahinta on velaton hinta (${euro(result.target.price)}) − yhtiölaina (${euro(result.target.companyLoan)}). Varainsiirtovero ${euro(result.transferTax)} on 1,5 % velattomasta hinnasta. Laskelma ei huomioi mahdollisia pankin kuluja, korkosuojausta tai verovaikutuksia. Pankki arvioi maksukyvyn, vakuudet ja mahdollisen lainatarjouksen omassa prosessissaan.`;
+      }
+
+      function renderMonthly(result) {
+        const homes = [
+          {
+            title: "Nykyinen koti",
+            total: result.currentMonthly,
+            rows: [
+              ["Hoitovastike", result.current.maintenance],
+              ["Rahoitusvastike", result.current.companyCharge],
+              ["Asuntolainaerä", result.current.mortgagePayment],
+              ["Muut asumismenot", result.current.other]
+            ]
+          },
+          {
+            title: "Seuraava koti",
+            total: result.targetMonthly,
+            target: true,
+            rows: [
+              ["Hoitovastike", result.target.maintenance],
+              ["Rahoitusvastike", result.target.companyCharge],
+              ["Uusi lainaerä", result.monthlyLoan],
+              ["Muut asumismenot", result.target.other]
+            ]
+          }
+        ];
+        $("#monthly-compare").innerHTML = homes.map(home => `<section class="monthly-home ${home.target ? "target" : ""}"><header><h3>${home.title}</h3><strong>${euro(home.total)}/kk</strong></header><ul class="monthly-list">${home.rows.map(([label, value]) => `<li><span>${label}</span><strong>${euro(value)}/kk</strong></li>`).join("")}</ul></section>`).join("");
+        const tone = result.monthlyDelta > 0 ? "positive" : result.monthlyDelta < 0 ? "negative" : "";
+        $("#monthly-delta").className = `monthly-delta ${tone}`;
+        $("#monthly-delta").innerHTML = `<p>Muutos nykyisiin asumismenoihin verrattuna</p><strong>${signedEuro(result.monthlyDelta)}/kk</strong>`;
+        $("#monthly-note").textContent = "Kuukausivertailu ei sisällä esimerkiksi sähköä, kotivakuutusta tai muuttokuluja, ellei niitä ole lisätty kohtaan Muut asumismenot.";
+      }
+
+      function renderMarketScenario(result) {
+        const assumption = clamp(toNumber(state.marketScenario), -10, 10);
+        state.marketScenario = assumption;
+        const changeLabel = `${assumption > 0 ? "+" : assumption < 0 ? "−" : ""}${number.format(Math.abs(assumption))} %`;
+        $$("[data-market-scenario]").forEach(button => button.setAttribute("aria-pressed", String(toNumber(button.dataset.marketScenario) === assumption)));
+        const currentPrice = result.current.price;
+        const targetPrice = result.target.price;
+        if (!(currentPrice > 0) || !(targetPrice > 0)) {
+          $("#market-scenario-values").innerHTML = `<article class="scenario-value"><span>Tarvitaan hinnat</span><strong>—</strong><small>Syötä nykyisen ja seuraavan kodin velaton hinta nähdäksesi suunnittelulaskelman.</small></article>`;
+          $("#market-scenario-note").textContent = "Skenaario ei käytä eikä muodosta tulevaisuuden markkinadataa.";
+          return;
+        }
+        const factor = 1 + assumption / 100;
+        const projectedCurrent = currentPrice * factor;
+        const projectedTarget = targetPrice * factor;
+        const projectedResult = calculateFor(
+          { ...result.current, price: projectedCurrent },
+          { ...result.target, price: projectedTarget },
+          { brokerPercent: result.brokerPercent, buyerCosts: result.buyerCosts, buffer: result.buffer }
+        );
+        $("#market-scenario-values").innerHTML = [
+          ["Nykyinen koti · 12 kk", projectedCurrent, `${changeLabel} · muutos ${signedEuro(projectedCurrent - currentPrice)}`],
+          ["Seuraava koti · 12 kk", projectedTarget, `${changeLabel} · muutos ${signedEuro(projectedTarget - targetPrice)}`],
+          ["Uusi rahoitustarve", projectedResult.financingNeed, `nykyiseen laskelmaan ${signedEuro(projectedResult.financingNeed - result.financingNeed)}`]
+        ].map(([label, value, detail]) => `<article class="scenario-value"><span>${label}</span><strong>${euro(value)}</strong><small>${detail}</small></article>`).join("");
+        $("#market-scenario-note").textContent = `Oletus ${changeLabel} sovelletaan samalla tavalla molempien kotien velattomaan hintaan 12 kuukauden ajalle. Kohteiden todellinen kehitys voi poiketa merkittävästi; tämä on oma suunnittelulaskelma, ei ennuste.`;
       }
 
       function renderChart(result) {
@@ -750,7 +1549,14 @@
         const municipalities = [currentMunicipality, targetMunicipality].filter((value, index, array) => value && array.indexOf(value) === index && data.municipalities[value]);
         const subtitles = municipalities.length ? municipalities.map(name => `${name} (${data.municipalities[name].indexBase})`).join(" ja ") : "Valitse kaksi aluetta nähdäksesi indeksisarjat.";
         $("#market-subtitle").textContent = `Näytetään ${subtitles}. Käyrät ovat julkaistuja havaintoja, eivät ennusteita.`;
-        if (!municipalities.length) { $("#chart-wrap").innerHTML = ""; $("#chart-legend").innerHTML = ""; $("#index-note").textContent = "Kuntaindeksiä ei ole saatavilla valinnoille."; return; }
+        renderMarketScenario(result);
+        if (!municipalities.length) {
+          $("#chart-wrap").innerHTML = "";
+          $("#chart-legend").innerHTML = "";
+          $("#chart-readout").textContent = "";
+          $("#index-note").textContent = "Kuntaindeksiä ei ole saatavilla valinnoille.";
+          return;
+        }
         const series = municipalities.map(name => ({ name, points: data.municipalities[name].series }));
         const periods = series[0].points.map(point => point.period);
         const values = series.flatMap(item => item.points.map(point => point.index));
@@ -764,12 +1570,98 @@
         const colors = ["current", "target"];
         const paths = series.map((item, index) => {
           const className = `chart-line-${colors[index]}`;
-          const dots = item.points.map((point, dotIndex) => `<circle class="chart-dot-${colors[index]}" cx="${x(dotIndex)}" cy="${y(point.index)}" r="3.5"><title>${item.name} ${point.period}: ${decimal.format(point.index)}</title></circle>`).join("");
+          const dots = item.points.map((point, dotIndex) => `<circle class="chart-dot-${colors[index]}" data-chart-dot="${dotIndex}" cx="${x(dotIndex)}" cy="${y(point.index)}" r="3.5"><title>${item.name} ${point.period}: ${decimal.format(point.index)}</title></circle>`).join("");
           return `<path class="${className}" d="${item.points.map((point, pointIndex) => `${pointIndex ? "L" : "M"}${x(pointIndex)} ${y(point.index)}`).join(" ")}"/>${dots}`;
         }).join("");
-        $("#chart-wrap").innerHTML = `<svg class="chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Kuntaindeksin historiallinen kehitys">${grid}${xLabels}${paths}</svg>`;
+        const hitWidth = (width - pad.left - pad.right) / Math.max(periods.length - 1, 1);
+        const hits = periods.map((period, index) => {
+          const left = index === 0 ? pad.left : x(index) - hitWidth / 2;
+          const right = index === periods.length - 1 ? width - pad.right : x(index) + hitWidth / 2;
+          const label = series.map(item => `${item.name} ${decimal.format(item.points[index].index)}`).join(", ");
+          return `<rect class="chart-hit" data-chart-period="${index}" x="${left}" y="${pad.top}" width="${Math.max(1, right - left)}" height="${height - pad.top - pad.bottom}" tabindex="${index === periods.length - 1 ? "0" : "-1"}" role="button" aria-label="${period}: ${label}"/>`;
+        }).join("");
+        $("#chart-wrap").innerHTML = `<svg class="chart" viewBox="0 0 ${width} ${height}" role="group" aria-label="Kuntaindeksin historiallinen kehitys. Valitse havaintopiste nähdäksesi tarkat arvot.">${grid}${xLabels}${paths}<line class="chart-crosshair" id="chart-crosshair" y1="${pad.top}" y2="${height - pad.bottom}"/>${hits}</svg>`;
         $("#chart-legend").innerHTML = series.map((item, index) => `<span class="legend-item"><i class="legend-mark ${index === 1 ? "green" : ""}"></i>${item.name}: ${decimal.format(item.points[0].index)} → ${decimal.format(item.points.at(-1).index)} (${percent((item.points.at(-1).index / item.points[0].index - 1) * 100)})</span>`).join("");
+        const setChartPeriod = index => {
+          const activeIndex = clamp(index, 0, periods.length - 1);
+          const period = periods[activeIndex];
+          const reading = series.map(item => `${item.name}: ${decimal.format(item.points[activeIndex].index)}`).join(" · ");
+          $("#chart-readout").textContent = `${period}: ${reading}.`;
+          const crosshair = $("#chart-crosshair");
+          crosshair.setAttribute("x1", x(activeIndex));
+          crosshair.setAttribute("x2", x(activeIndex));
+          $$('[data-chart-dot]', $("#chart-wrap")).forEach(dot => {
+            const active = Number(dot.dataset.chartDot) === activeIndex;
+            dot.classList.toggle("is-active", active);
+            dot.setAttribute("r", active ? "5.5" : "3.5");
+          });
+          $$('[data-chart-period]', $("#chart-wrap")).forEach(hit => hit.setAttribute("tabindex", Number(hit.dataset.chartPeriod) === activeIndex ? "0" : "-1"));
+        };
+        $$('[data-chart-period]', $("#chart-wrap")).forEach(hit => {
+          const index = Number(hit.dataset.chartPeriod);
+          hit.addEventListener("pointerenter", () => setChartPeriod(index));
+          hit.addEventListener("focus", () => setChartPeriod(index));
+          hit.addEventListener("click", () => setChartPeriod(index));
+          hit.addEventListener("keydown", event => {
+            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            const next = event.key === 'ArrowLeft' ? index - 1 : event.key === 'ArrowRight' ? index + 1 : event.key === 'Home' ? 0 : periods.length - 1;
+            const target = clamp(next, 0, periods.length - 1);
+            setChartPeriod(target);
+            $(`[data-chart-period="${target}"]`, $("#chart-wrap")).focus();
+          });
+        });
+        setChartPeriod(periods.length - 1);
         $("#index-note").textContent = "Indeksi kuvaa alueen laatuvakioitua hintamuutosta perusjaksoon nähden. Postinumeroalueen neliöhintaa käytetään sivulla vain hintatason vertailuun, ei tämän käyrän tai hintamuutoksen laskentaan.";
+      }
+
+      function renderAreaProfile(result) {
+        const area = result.target.area;
+        const profile = $("#area-profile");
+        const description = document.querySelector('meta[name="description"]');
+        if (!area) {
+          document.title = "Kotivaihto — kodinvaihdon rahoituslaskuri";
+          if (description) description.content = "Kotivaihto auttaa näkemään, mitä kodinvaihto vaatii ennen asuntolainaneuvottelua: vertaa koteja, rahoitustarvetta ja kuukausimenoja.";
+          profile.innerHTML = `<div class="area-profile-main"><h3>Valitse seuraavan kodin alue</h3><p>Kun valitset postinumeroalueen, saat tänne jaettavan alueen näkymän. Linkki sisältää vain alueen tunnisteen, ei omia laskelmalukuja.</p></div><div class="area-profile-share"><p>Alueen linkki voidaan jakaa vasta, kun seuraavan kodin postinumeroalue on valittu.</p></div>`;
+          return;
+        }
+        const series = data.municipalities[area.municipality]?.series || [];
+        const latest = series.at(-1);
+        const price = area.suppressed ? "Salattu" : `${number.format(area.pricePerSqm)} €/m²`;
+        document.title = `Kotivaihto – ${area.postcode} ${area.area} | hintataso ja muuton laskuri`;
+        if (description) description.content = `${area.postcode} ${area.area}, ${area.municipality}: julkaistu hintataso ja kuntaindeksin viimeisin havainto Kotivaihdossa. Ei ennusteita.`;
+        profile.innerHTML = `<div class="area-profile-main"><h3>${escapeHTML(area.postcode)} · ${escapeHTML(area.area)}, ${escapeHTML(area.municipality)}</h3><p>Julkaistu postinumeroalueen hintataso ja kuntatason indeksihavainto. Ne eivät ole kohteen hinta-arvioita tai ennusteita.</p><div class="area-profile-metrics"><div class="area-profile-metric"><span>Hintataso</span><strong>${price}</strong></div><div class="area-profile-metric"><span>Kauppoja havainnossa</span><strong>${number.format(area.sales)}</strong></div><div class="area-profile-metric"><span>Indeksin viimeisin havainto</span><strong>${latest ? `${latest.period} · ${decimal.format(latest.index)}` : "Ei saatavilla"}</strong></div></div></div><aside class="area-profile-share"><p>Jaa tämä alueen näkymä. Linkki ei sisällä sinun hinta-, laina- tai muistiinpanotietojasi.</p><button class="button-quiet" id="copy-area-link" type="button">Kopioi aluelinkki</button></aside>`;
+      }
+
+      function offerSummaryText(result) {
+        const currentArea = result.current.area ? `${result.current.area.postcode} ${result.current.area.area}` : "ei valittu";
+        const targetArea = result.target.area ? `${result.target.area.postcode} ${result.target.area.area}` : "ei valittu";
+        const checks = buildRisks(result).filter(risk => risk.tone !== "good").map(risk => `- ${risk.title}`).join("\n") || "- Ei automaattisia tarkistuskohtia";
+        return `Kotivaihto – tarjousyhteenveto\nNykyinen alue: ${currentArea}\nSeuraava alue: ${targetArea}\n\nVelaton hinta: ${euro(result.target.price)}\nYhtiölaina: ${euro(result.target.companyLoan)}\nVarainsiirtovero (1,5 %): ${euro(result.transferTax)}\nUusi rahoitustarve: ${euro(result.financingNeed)}\nUudet asumismenot: ${euro(result.targetMonthly)}/kk\nKuukausivaikutus: ${signedEuro(result.monthlyDelta)}/kk\n\nTarkista ennen tarjousta:\n${checks}\n\nLaskelma on suuntaa-antava päätöksenteon tuki, ei hinta-arvio tai lainatarjous.`;
+      }
+
+      function renderOfferSummary(result) {
+        const currentArea = result.current.area ? `${result.current.area.postcode} · ${result.current.area.area}` : "Alue puuttuu";
+        const targetArea = result.target.area ? `${result.target.area.postcode} · ${result.target.area.area}` : "Alue puuttuu";
+        const checks = buildRisks(result).filter(risk => risk.tone !== "good");
+        $("#offer-summary-body").innerHTML = `<section class="offer-summary-section"><h3>Rahoitus yhdellä silmäyksellä</h3><p>Nykyinen: ${escapeHTML(currentArea)} · Seuraava: ${escapeHTML(targetArea)}</p><div class="offer-summary-metrics"><div class="offer-summary-metric"><span>Velaton hinta</span><strong>${euro(result.target.price)}</strong></div><div class="offer-summary-metric"><span>Yhtiölaina</span><strong>${euro(result.target.companyLoan)}</strong></div><div class="offer-summary-metric"><span>Varainsiirtovero (1,5 %)</span><strong>${euro(result.transferTax)}</strong></div><div class="offer-summary-metric"><span>Uusi rahoitustarve</span><strong>${euro(result.financingNeed)}</strong></div><div class="offer-summary-metric"><span>Uudet asumismenot</span><strong>${euro(result.targetMonthly)}/kk</strong></div><div class="offer-summary-metric"><span>Vaikutus nykyiseen</span><strong>${signedEuro(result.monthlyDelta)}/kk</strong></div></div></section><section class="offer-summary-section"><h3>Varmista ennen tarjousta</h3><p>Alla näkyvät tämän laskelman automaattiset nostot. Tarkista aina myös asiakirjat ja rahoitus.</p><ul class="offer-summary-checks">${checks.length ? checks.map(risk => `<li><strong>${escapeHTML(risk.title)}</strong><br>${escapeHTML(risk.text)}</li>`).join("") : "<li><strong>Ei automaattisia tarkistuskohtia.</strong><br>Tämä ei korvaa kohde- tai asiakirjatarkastusta.</li>"}</ul><aside class="summary-bank-cta" aria-label="Asuntolainatarjous"><span>Seuraava askel</span><strong>Pyydä pankilta asuntolainatarjousta</strong><p>Yhteydenottopyyntö ei sisällä laskurisi lukuja. Pankki tekee mahdollisen tarjouksen omassa prosessissaan.</p><button class="button" type="button" data-lead-type="finance">Pyydä asuntolainatarjousta</button></aside></section>`;
+      }
+
+      function printOfferSummary() {
+        document.body.classList.add("print-offer");
+        const cleanup = () => document.body.classList.remove("print-offer");
+        window.addEventListener("afterprint", cleanup, { once: true });
+        window.setTimeout(cleanup, 10000);
+        window.print();
+      }
+
+      async function copyOfferSummary() {
+        try {
+          await navigator.clipboard.writeText(offerSummaryText(calculate()));
+          toast("Tarjousyhteenveto kopioitiin ilman ilmoitustekstiä, linkkiä tai muistiinpanoa.");
+        } catch (_) {
+          toast("Yhteenvedon kopiointi ei onnistunut tässä selaimessa.");
+        }
       }
 
       function buildRisks(result) {
@@ -788,16 +1680,21 @@
         return risks;
       }
 
+      function riskCountLabel(count) {
+        return `${count} ${count === 1 ? "kohta" : "kohtaa"}`;
+      }
+
       function renderRisks(result) {
         const risks = buildRisks(result);
         const icon = { warning: "!", alert: "!", info: "i", good: "✓" };
         $("#risk-grid").innerHTML = risks.map(risk => `<article class="risk ${risk.tone}"><div class="risk-top"><span class="risk-icon" aria-hidden="true">${icon[risk.tone]}</span><h3>${risk.title}</h3></div><p>${risk.text}</p></article>`).join("");
-        $("#risk-count").textContent = `${risks.filter(risk => risk.tone !== "good").length} kohtaa`;
+        $("#risk-count").textContent = riskCountLabel(risks.filter(risk => risk.tone !== "good").length);
       }
 
       function renderSource() {
         const metadata = data.metadata;
         $("#dataObservation").textContent = `Hintataso ${metadata.postalPriceObservation}`;
+        $("#data-freshness").innerHTML = `<div class="freshness-item"><span>Hintatason havainto</span><strong>${escapeHTML(metadata.postalPriceObservation)}</strong></div><div class="freshness-item"><span>Kuntaindeksin havainto</span><strong>${escapeHTML(metadata.municipalityIndexObservation)}</strong></div><div class="freshness-item"><span>Tietotiedosto muodostettu</span><strong>${escapeHTML(metadata.generatedAt)}</strong></div>`;
         $("#source-line").innerHTML = `Lähde: <a href="${metadata.source.postalPriceUrl}" target="_blank" rel="noopener">${metadata.source.publisher}, ${metadata.source.postalPriceTable}</a> (${metadata.postalPriceObservation}) ja <a href="${metadata.source.municipalityIndexUrl}" target="_blank" rel="noopener">${metadata.source.municipalityIndexTable}</a> (${metadata.municipalityIndexObservation}). ${metadata.coverageNotice}`;
       }
 
@@ -807,17 +1704,26 @@
         $("#current-size").value = 52; $("#current-private-loan").value = 98000; $("#current-maintenance").value = 260; $("#current-company-charge").value = 0; $("#current-mortgage-payment").value = 740; $("#current-other").value = 120;
         $("#target-size").value = 62; $("#target-company-loan").value = 30000; $("#target-maintenance").value = 320; $("#target-company-charge").value = 160; $("#target-other").value = 140; $("#target-rate").value = 3.3; $("#target-years").value = 25;
         $("#broker-percent").value = 3.8; $("#buyer-costs").value = 1000; $("#buffer").value = 5000;
-        $("#listing-url").value = ""; $("#listing-text").value = ""; $("#listing-text-field").hidden = true; $("#listing-import").open = true; setImportStatus("");
+        $("#listing-url").value = ""; $("#listing-text").value = ""; $("#target-note").value = ""; $("#listing-text-field").hidden = true; $("#listing-import").open = true; setImportStatus("");
+        setSharedComparisonStatus("");
         selectArea("current", findArea("00100"), false); selectArea("target", findArea("02600"), false);
         toast("Esimerkkitiedot palautettiin.");
       }
 
       async function sharePage() {
-        const payload = { title: document.title, text: "Kotivaihto – muuton rahoitus ja aluevertailu", url: location.href };
+        const result = calculate();
+        const target = result.target.area ? `${result.target.area.area}, ${result.target.area.municipality}` : "seuraava koti";
+        const direction = result.monthlyDelta > 0 ? "kasvavat" : result.monthlyDelta < 0 ? "pienenevät" : "pysyvät samoina";
+        const text = `Kotivaihto-yhteenveto\nKohde: ${target}\nUusi rahoitustarve: ${euro(result.financingNeed)}\nAsumismenot ${direction}: ${signedEuro(result.monthlyDelta)}/kk\nLaskelma on suuntaa-antava, ei lainatarjous.`;
+        const payload = { title: document.title, text, url: createShareUrl() };
         try {
-          if (navigator.share) { await navigator.share(payload); return; }
-          await navigator.clipboard.writeText(location.href);
-          toast("Sivun osoite kopioitiin leikepöydälle.");
+          if (navigator.share) {
+            await navigator.share(payload);
+            toast("Jaettu linkki sisältää tämän laskelman luvut, ei ilmoitustekstiä, kohdelinkkiä tai omaa muistiinpanoa.");
+            return;
+          }
+          await navigator.clipboard.writeText(`${text}\n${payload.url}`);
+          toast("Yhteenveto ja jaettava vertailulinkki kopioitiin leikepöydälle.");
         } catch (_) { toast("Jakaminen keskeytettiin."); }
       }
 

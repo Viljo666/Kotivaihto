@@ -1,0 +1,25 @@
+name: Validate static site
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - agent/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate data contract and launch assets
+        run: node scripts/validate-site.mjs
+      - name: Check inline JavaScript syntax
+        run: sed -n '/<script>/,/<\/script>/p' index.html | sed '1d;$d' | node --check --input-type=commonjs
