@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Kotivaihto auttaa vertaamaan nykyistä kotia ja seuraavaa kotia. Laskelma käyttää postinumeroalueen hintatasoa ja kuntaindeksiä selkeästi erillään.">
+  <meta name="description" content="Kotivaihto auttaa näkemään, mitä kodinvaihto vaatii ennen asuntolainaneuvottelua: vertaa koteja, rahoitustarvetta ja kuukausimenoja.">
   <meta name="theme-color" content="#063d33">
   <meta name="site-url" content="https://kotivaihto.fi">
   <meta name="publisher-name" content="">
@@ -18,8 +18,8 @@
   <meta name="adsense-slot-footer" content="">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fi_FI">
-  <meta property="og:title" content="Kotivaihto — muuton rahoitus ja aluevertailu">
-  <meta property="og:description" content="Näe muuton rahavaikutus ennen näyttöjä. Vertaa alueita, rahoitustarvetta ja kuukausimenoja ilman ennusteita.">
+  <meta property="og:title" content="Kotivaihto — valmistaudu kodinvaihtoon ja pankkineuvotteluun">
+  <meta property="og:description" content="Näe kodinvaihdon rahoitustarve ja kuukausimenot ennen pankkineuvottelua. Vertaa alueita ilman ennusteita.">
   <meta property="og:url" content="https://kotivaihto.fi/">
   <meta property="og:image" content="https://kotivaihto.fi/assets/kotivaihto-share.png">
   <meta property="og:image:width" content="1731">
@@ -28,9 +28,9 @@
   <link rel="canonical" href="https://kotivaihto.fi/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
-  <title>Kotivaihto — muuton rahoitus ja aluevertailu</title>
+  <title>Kotivaihto — kodinvaihdon rahoituslaskuri</title>
   <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","name":"Kotivaihto","url":"https://kotivaihto.fi/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fi","description":"Muuton rahoitustarpeen, kuukausimenojen ja alueiden julkaistujen hintatasojen vertailu."}
+    {"@context":"https://schema.org","@type":"WebApplication","name":"Kotivaihto","url":"https://kotivaihto.fi/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fi","description":"Kodinvaihdon rahoitustarpeen, kuukausimenojen ja alueiden julkaistujen hintatasojen vertailu ennen asuntolainaneuvottelua."}
   </script>
   <style>
     :root {
@@ -300,6 +300,14 @@
     .area-profile-share .button-quiet { align-self: start; border-color: rgba(255,255,255,.38); color: #fff; }
     .area-profile-share .button-quiet:hover { background: rgba(255,255,255,.1); }
 
+    .bank-ready { display: grid; grid-template-columns: minmax(190px, .8fr) minmax(0, 1.2fr); gap: .9rem; align-items: start; margin-top: .95rem; padding: .95rem; border: 1px solid #bed7c4; border-radius: 12px; background: #f6faf6; }
+    .bank-ready h3 { margin: 0; color: var(--plum); font-size: .94rem; }
+    .bank-ready p { margin: .3rem 0 0; color: var(--muted); font-size: .76rem; line-height: 1.45; }
+    .bank-ready ul { display: grid; gap: .42rem; margin: 0; padding: 0; list-style: none; }
+    .bank-ready li { padding-left: 1.1rem; color: var(--ink); font-size: .77rem; line-height: 1.4; position: relative; }
+    .bank-ready li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 900; }
+    .bank-ready .bank-ready-note { grid-column: 1 / -1; margin: -.25rem 0 0; padding-top: .65rem; border-top: 1px solid #d9e7dc; }
+
     .monthly-compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
     .monthly-home { padding: 1rem; border: 1px solid var(--line); border-radius: 11px; background: #fffefb; }
     .monthly-home.target { border-color: #b7d3c2; background: #f6faf6; }
@@ -417,7 +425,7 @@
       .nav-actions .button-quiet { display: none; }
       .container { width: min(100% - 1.2rem, 1180px); }
       .hero { padding-top: 2.4rem; }
-      .home-grid, .risk-grid, .method-grid, .monthly-compare, .quick-start-grid, .area-profile-grid, .offer-summary-body, .lead-card, .scenario-values { grid-template-columns: 1fr; }
+      .home-grid, .risk-grid, .method-grid, .monthly-compare, .quick-start-grid, .area-profile-grid, .offer-summary-body, .lead-card, .bank-ready, .scenario-values { grid-template-columns: 1fr; }
       .finance-settings, .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .flow { grid-template-columns: 1fr; gap: .45rem; }
       .flow-step { min-height: auto; }
@@ -469,19 +477,19 @@
   <main id="alku" class="container">
     <section class="hero" aria-labelledby="hero-title">
       <div>
-        <p class="eyebrow">Havaittuihin tietoihin perustuva vertailu</p>
-        <h1 id="hero-title">Näe muuton raha­vaikutus ennen näyttöjä.</h1>
-        <p class="hero-copy">Vertaa nykyistä kotiasi seuraavaan kotiin. Kotivaihto erottaa alueen hintatason ja kuntaindeksin historiallisen muutoksen – eikä näytä ennusteita.</p>
+        <p class="eyebrow">Selkeämpi päätös ennen pankkineuvottelua</p>
+        <h1 id="hero-title">Näe, mitä kodinvaihto vaatii ennen pankkineuvottelua.</h1>
+        <p class="hero-copy">Vertaa nykyistä kotiasi seuraavaan kotiin. Kotivaihto kokoaa rahoitustarpeen, kuukausivaikutuksen ja alueiden julkaistut hintatiedot yhteen – ilman ennusteita.</p>
       </div>
-      <p class="hero-note"><strong>Ei hinta-arvio eikä lainatarjous.</strong> Laskelma on päätöksenteon tuki. Tarkista kohteen velaton hinta, yhtiölaina, vastikkeet ja rahoitus aina asiakirjoista sekä rahoittajalta.</p>
+      <p class="hero-note"><strong>Ei hinta-arvio eikä lainatarjous.</strong> Laskelma auttaa valmistautumaan. Pankki arvioi maksukyvyn, vakuudet ja mahdollisen lainatarjouksen omassa neuvottelussaan.</p>
     </section>
 
     <section class="quick-start" aria-labelledby="quick-start-title">
       <div class="quick-start-head"><div><h2 id="quick-start-title">Aloita kolmessa vaiheessa</h2><p>Voit tehdä ensimmäisen vertailun ilman, että täytät kaikkea kerralla.</p></div></div>
       <div class="quick-start-grid">
-        <button class="guide-step" type="button" data-guide-step="current"><span class="guide-number">1</span><span><strong>Valitse nykyinen alue</strong><span>Aloita postinumerosta ja lisää omat luvut rauhassa.</span></span></button>
-        <button class="guide-step" type="button" data-guide-step="target"><span class="guide-number">2</span><span><strong>Liitä seuraava kohde</strong><span>Kopioi ilmoituksen perustiedot tai täytä vain tärkeimmät kentät.</span></span></button>
-        <button class="guide-step" type="button" data-guide-step="result"><span class="guide-number">3</span><span><strong>Näe raha­vaikutus</strong><span>Katso uusi rahoitustarve ja kuukausimenojen muutos.</span></span></button>
+        <button class="guide-step" type="button" data-guide-step="current"><span class="guide-number">1</span><span><strong>Valitse nykyinen koti</strong><span>Aloita postinumerosta ja lisää omat luvut rauhassa.</span></span></button>
+        <button class="guide-step" type="button" data-guide-step="target"><span class="guide-number">2</span><span><strong>Tuo seuraava kohde</strong><span>Kopioi ilmoituksen perustiedot tai täytä vain tärkeimmät kentät.</span></span></button>
+        <button class="guide-step" type="button" data-guide-step="result"><span class="guide-number">3</span><span><strong>Valmistaudu pankkineuvotteluun</strong><span>Näe rahoitustarve, kuukausivaikutus ja tarkistettavat kohdat.</span></span></button>
       </div>
     </section>
 
@@ -566,9 +574,10 @@
         </section>
 
         <section id="rahoitus" class="card" aria-labelledby="finance-title">
-          <div class="section-heading"><div><h2 id="finance-title">Rahoituspolku</h2><p>Näet, mikä osa ostosta maksetaan myynnistä vapautuvalla pääomalla ja mikä jää uudeksi rahoitustarpeeksi.</p></div><span class="section-tag">Laskennallinen</span></div>
+          <div class="section-heading"><div><h2 id="finance-title">Rahoitustilanne ennen pankkineuvottelua</h2><p>Näet, mikä osa ostosta maksetaan myynnistä vapautuvalla pääomalla ja mikä jää uudeksi rahoitustarpeeksi.</p></div><span class="section-tag">Laskennallinen</span></div>
           <div class="metrics" id="finance-metrics"></div>
           <div class="flow" id="finance-flow"></div>
+          <section class="bank-ready" id="bank-ready" aria-labelledby="bank-ready-title"><div><h3 id="bank-ready-title">Ota nämä mukaan pankkineuvotteluun</h3><p>Kun luvut ovat valmiina, keskustelu pääsee nopeammin alkuun.</p></div><ul><li>Nykyisen kodin arvioitu velaton hinta ja jäljellä oleva laina</li><li>Seuraavan kohteen velaton hinta, yhtiölaina ja vastikkeet</li><li>Omat tulot, säästöt ja muut sitoumukset pankin omaa arviota varten</li></ul><p class="bank-ready-note">Pankki arvioi maksukyvyn, vakuudet ja mahdollisen lainatarjouksen aina omassa prosessissaan.</p></section>
           <p class="calculation-note" id="finance-note"></p>
         </section>
 
@@ -611,7 +620,7 @@
         <section id="tarjous" class="card offer-summary" aria-labelledby="offer-summary-title">
           <div class="section-heading"><div><h2 id="offer-summary-title">Tarjousyhteenveto</h2><p>Kokoa juuri tämän laskelman avainluvut ja tarkistettavat kohdat yhdelle tulostettavalle sivulle.</p></div><span class="section-tag">Ei tarjouksen korvike</span></div>
           <div class="offer-summary-body" id="offer-summary-body"></div>
-          <section class="lead-card" aria-labelledby="lead-card-title"><div><h3 id="lead-card-title">Haluatko jatkaa asiantuntijan kanssa?</h3><p>Pyydä yhteydenottoa rahoituksen kilpailutukseen tai nykyisen kodin myyntiarvioon. Laskelman omia numeroita ei välitetä pyynnössä.</p></div><div class="lead-card-actions"><button class="button" type="button" data-lead-type="finance">Pyydä rahoitusvertailua</button><button class="button-quiet" type="button" data-lead-type="valuation">Pyydä myyntiarviota</button></div></section>
+          <section class="lead-card" aria-labelledby="lead-card-title"><div><h3 id="lead-card-title">Haluatko jatkaa pankin tai välittäjän kanssa?</h3><p>Pyydä asuntolainaneuvottelua tai nykyisen kodin myyntiarviota. Laskelman omia numeroita ei välitetä pyynnössä.</p></div><div class="lead-card-actions"><button class="button" type="button" data-lead-type="finance">Pyydä asuntolainaneuvottelua</button><button class="button-quiet" type="button" data-lead-type="valuation">Pyydä myyntiarviota</button></div></section>
           <div class="offer-summary-actions"><button class="button" id="print-offer-summary" type="button">Tulosta tarjousyhteenveto</button><button class="button-quiet" id="copy-offer-summary" type="button">Kopioi yhteenveto</button><p>Yhteenveto ei sisällä ilmoitustekstiä, kohdelinkkiä eikä omaa muistiinpanoasi.</p></div>
         </section>
 
@@ -648,7 +657,7 @@
       <h3>Rekisterinpitäjä ja yhteydenotot</h3>
       <p id="privacy-controller">Julkaisija- ja yhteystiedot lisätään ennen julkista julkaisua.</p>
       <h3>Yhteydenottopyynnöt</h3>
-      <p>Rahoitusvertailu- tai myyntiarviopyyntö ei välitä laskurin hinta-, laina- tai muita taloustietoja. Pyyntö muodostaa käyttäjän omassa sähköpostisovelluksessa viestin vain siihen vastaanottajaan, joka on kerrottu pyynnön yhteydessä. Kotivaihto ei tallenna lomakekenttiä selaimeen.</p>
+      <p>Asuntolainaneuvottelu- tai myyntiarviopyyntö ei välitä laskurin hinta-, laina- tai muita taloustietoja. Pyyntö muodostaa käyttäjän omassa sähköpostisovelluksessa viestin vain siihen vastaanottajaan, joka on kerrottu pyynnön yhteydessä. Kotivaihto ei tallenna lomakekenttiä selaimeen.</p>
       <h3>Käyttöehdot</h3>
       <p>Kotivaihto on päätöksenteon tuki. Se ei ole kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo, eikä laskelma ole tarjous tai luottopäätös. Tarkista aina kohteen asiakirjat, hinnat, kulut ja rahoitus omista lähteistäsi ennen päätöstä.</p>
     </div>
@@ -1014,9 +1023,9 @@
       function leadService(type = activeLeadType) {
         const services = {
           finance: {
-            title: "Pyydä rahoitusvertailua",
-            intro: "Pyydä yhteydenottoa rahoituksen kilpailutuksesta. Laskurin raha- tai lainatietoja ei sisällytetä viestiin.",
-            subject: "Kotivaihto: rahoitusvertailun yhteydenottopyyntö",
+            title: "Pyydä asuntolainaneuvottelua",
+            intro: "Pyydä yhteydenottoa asuntolainaneuvottelua varten. Laskurin raha- tai lainatietoja ei sisällytetä viestiin.",
+            subject: "Kotivaihto: asuntolainaneuvottelun yhteydenottopyyntö",
             email: launchConfig.leadFinanceEmail || launchConfig.contactEmail,
             partner: launchConfig.leadFinancePartner
           },
@@ -1055,7 +1064,7 @@
         $("#lead-dialog-title").textContent = service.title;
         $("#lead-dialog-copy").textContent = ready
           ? `${service.intro} Vastaanottaja: ${recipient}.`
-          : "Yhteydenottopyynnöt avataan, kun Kotivaihdon tai valitun kumppanin vastaanottava sähköposti on määritetty.";
+          : "Yhteydenottopyynnöt avataan, kun Kotivaihdon, pankkikumppanin tai välittäjän vastaanottava sähköposti on määritetty.";
         $("#lead-consent-text").textContent = `Hyväksyn, että ${recipient} saa ottaa minuun yhteyttä tämän pyynnön vuoksi. Laskelman talouslukuja ei välitetä.`;
         $$("input, button", form).forEach(element => { element.disabled = !ready; });
         setLeadStatus(ready ? "Pyyntö avataan omassa sähköpostisovelluksessasi. Lähetä viesti itse, jos haluat välittää tietosi." : "Pyyntöjen välitystä ei ole vielä määritetty. Tietojasi ei voi lähettää tästä lomakkeesta.", ready ? "ready" : "pending");
@@ -1463,7 +1472,7 @@
           ["= uusi rahoitustarve", result.financingNeed]
         ];
         $("#finance-flow").innerHTML = steps.map(([label, value], index) => `<div class="flow-step ${index === steps.length - 1 ? "emphasis" : ""}"><span>${label}</span><strong>${value < 0 ? `−${euro(Math.abs(value))}` : euro(value)}</strong></div>`).join("");
-        $("#finance-note").textContent = `Ostossa käteisenä maksettava kauppahinta on velaton hinta (${euro(result.target.price)}) − yhtiölaina (${euro(result.target.companyLoan)}). Varainsiirtovero ${euro(result.transferTax)} on 1,5 % velattomasta hinnasta. Laskelma ei huomioi mahdollisia pankin kuluja, korkosuojausta tai verovaikutuksia.`;
+        $("#finance-note").textContent = `Ostossa käteisenä maksettava kauppahinta on velaton hinta (${euro(result.target.price)}) − yhtiölaina (${euro(result.target.companyLoan)}). Varainsiirtovero ${euro(result.transferTax)} on 1,5 % velattomasta hinnasta. Laskelma ei huomioi mahdollisia pankin kuluja, korkosuojausta tai verovaikutuksia. Pankki arvioi maksukyvyn, vakuudet ja mahdollisen lainatarjouksen omassa prosessissaan.`;
       }
 
       function renderMonthly(result) {
@@ -1602,8 +1611,8 @@
         const profile = $("#area-profile");
         const description = document.querySelector('meta[name="description"]');
         if (!area) {
-          document.title = "Kotivaihto — muuton rahoitus ja aluevertailu";
-          if (description) description.content = "Kotivaihto auttaa vertaamaan nykyistä kotia ja seuraavaa kotia. Laskelma käyttää postinumeroalueen hintatasoa ja kuntaindeksiä selkeästi erillään.";
+          document.title = "Kotivaihto — kodinvaihdon rahoituslaskuri";
+          if (description) description.content = "Kotivaihto auttaa näkemään, mitä kodinvaihto vaatii ennen asuntolainaneuvottelua: vertaa koteja, rahoitustarvetta ja kuukausimenoja.";
           profile.innerHTML = `<div class="area-profile-main"><h3>Valitse seuraavan kodin alue</h3><p>Kun valitset postinumeroalueen, saat tänne jaettavan alueen näkymän. Linkki sisältää vain alueen tunnisteen, ei omia laskelmalukuja.</p></div><div class="area-profile-share"><p>Alueen linkki voidaan jakaa vasta, kun seuraavan kodin postinumeroalue on valittu.</p></div>`;
           return;
         }

@@ -11,7 +11,7 @@ Tämä projekti on valmis GitHub Pages -julkaisuun, kun seuraavat omistajan tied
    - `publisher-name`: rekisterinpitäjän/julkaisijan virallinen nimi
    - `publisher-id`: Y-tunnus, jos soveltuu
    - `contact-email`: toimiva tuki- ja tietosuojayhteys
-   - `lead-finance-email` ja `lead-finance-partner`: rahoitusvertailupyynnön vastaanottajan sähköposti ja nimi
+   - `lead-finance-email` ja `lead-finance-partner`: asuntolainaneuvottelupyynnön vastaanottajan sähköposti ja nimi
    - `lead-valuation-email` ja `lead-valuation-partner`: myyntiarviopyynnön vastaanottajan sähköposti ja nimi
    - Jos palvelukohtaista vastaanottajaa ei vielä ole, jätä se tyhjäksi. Sivusto käyttää tällöin `contact-email`-osoitetta Kotivaihdon omaan alkukäsittelyyn. Jos myöskään sitä ei ole määritetty, yhteydenottopainike näyttää vain avoimen tilan eikä käyttäjän tietoja voi lähettää.
 3. Tarkista tietosuojateksti oikean toimintamallin ja mahdollisten ulkoisten palveluiden kanssa. Sivusto tallentaa käyttäjän pyynnöstä kohteita selaimen paikalliseen muistiin ja voi myöhemmin käyttää mainosteknologiaa. Yhteydenottopyyntö avaa käyttäjän oman sähköpostisovelluksen ja välittää vain hänen itse täyttämänsä yhteystiedot — laskurin hinta-, laina- tai muita taloustietoja ei sisällytetä viestiin.
@@ -29,7 +29,7 @@ Tämä projekti on valmis GitHub Pages -julkaisuun, kun seuraavat omistajan tied
 4. Avaa julkaistu osoite eri selaimella ja tarkista:
    - `data/hinnat.json` latautuu ja laskuri päivittyy
    - postinumerohaku, kohdetuonti, tallennetut kohteet, tulostus ja jaettava linkki toimivat
-   - rahoitusvertailu- ja myyntiarviopyyntö kertovat vastaanottajan nimen, vaativat suostumuksen ja avaavat oikean vastaanottajan sähköpostiviestin
+   - asuntolainaneuvottelu- ja myyntiarviopyyntö kertovat vastaanottajan nimen, vaativat suostumuksen ja avaavat oikean vastaanottajan sähköpostiviestin
    - tietosuoja- ja mainosasetusten teksti sisältää oikeat julkaisija- ja yhteystiedot
    - Google Search Console- ja Bing Webmaster Tools -sivusto-omistukset on vahvistettu ja `sitemap.xml` lähetetty
 

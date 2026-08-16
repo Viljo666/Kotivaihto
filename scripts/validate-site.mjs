@@ -17,6 +17,7 @@ const requiredMarkup = [
   'id="lead-dialog"',
   'data-lead-type="finance"',
   'data-lead-type="valuation"',
+  'id="bank-ready"',
   'id="market-scenario-values"',
   'data-market-scenario="-5"',
   'data-ad-placement="mid-page"'
