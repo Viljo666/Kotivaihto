@@ -352,6 +352,11 @@
     .offer-summary-checks { margin: .7rem 0 0; padding: 0; list-style: none; }
     .offer-summary-checks li { padding: .46rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; }
     .offer-summary-checks strong { color: var(--ink); }
+    .summary-bank-cta { margin-top: .85rem; padding: .8rem; border-radius: 10px; color: #fff; background: var(--plum); }
+    .summary-bank-cta span { display: block; color: #c9dfcf; font-size: .65rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .summary-bank-cta strong { display: block; margin-top: .26rem; color: #fff; font-size: .88rem; line-height: 1.25; }
+    .summary-bank-cta p { margin-top: .34rem; color: #d7e9dc; font-size: .71rem; line-height: 1.4; }
+    .summary-bank-cta .button { width: 100%; justify-content: center; margin-top: .65rem; }
     .offer-summary-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .9rem; }
     .offer-summary-actions p { flex-basis: 100%; margin: 0; color: var(--muted); font-size: .7rem; }
     .lead-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: center; margin-top: .9rem; padding: 1rem; border: 1px solid #bed7c4; border-radius: 13px; color: #fff; background: linear-gradient(120deg, #063d33, #0b5546); }
@@ -620,7 +625,7 @@
         <section id="tarjous" class="card offer-summary" aria-labelledby="offer-summary-title">
           <div class="section-heading"><div><h2 id="offer-summary-title">Tarjousyhteenveto</h2><p>Kokoa juuri tämän laskelman avainluvut ja tarkistettavat kohdat yhdelle tulostettavalle sivulle.</p></div><span class="section-tag">Ei tarjouksen korvike</span></div>
           <div class="offer-summary-body" id="offer-summary-body"></div>
-          <section class="lead-card" aria-labelledby="lead-card-title"><div><h3 id="lead-card-title">Haluatko jatkaa pankin tai välittäjän kanssa?</h3><p>Pyydä asuntolainaneuvottelua tai nykyisen kodin myyntiarviota. Laskelman omia numeroita ei välitetä pyynnössä.</p></div><div class="lead-card-actions"><button class="button" type="button" data-lead-type="finance">Pyydä asuntolainaneuvottelua</button><button class="button-quiet" type="button" data-lead-type="valuation">Pyydä myyntiarviota</button></div></section>
+          <section class="lead-card" aria-labelledby="lead-card-title"><div><h3 id="lead-card-title">Haluatko pankilta lainatarjouksen tai välittäjältä myyntiarvion?</h3><p>Pyydä asuntolainatarjousta tai nykyisen kodin myyntiarviota. Laskelman omia numeroita ei välitetä pyynnössä.</p></div><div class="lead-card-actions"><button class="button" type="button" data-lead-type="finance">Pyydä asuntolainatarjousta</button><button class="button-quiet" type="button" data-lead-type="valuation">Pyydä myyntiarviota</button></div></section>
           <div class="offer-summary-actions"><button class="button" id="print-offer-summary" type="button">Tulosta tarjousyhteenveto</button><button class="button-quiet" id="copy-offer-summary" type="button">Kopioi yhteenveto</button><p>Yhteenveto ei sisällä ilmoitustekstiä, kohdelinkkiä eikä omaa muistiinpanoasi.</p></div>
         </section>
 
@@ -657,7 +662,7 @@
       <h3>Rekisterinpitäjä ja yhteydenotot</h3>
       <p id="privacy-controller">Julkaisija- ja yhteystiedot lisätään ennen julkista julkaisua.</p>
       <h3>Yhteydenottopyynnöt</h3>
-      <p>Asuntolainaneuvottelu- tai myyntiarviopyyntö ei välitä laskurin hinta-, laina- tai muita taloustietoja. Pyyntö muodostaa käyttäjän omassa sähköpostisovelluksessa viestin vain siihen vastaanottajaan, joka on kerrottu pyynnön yhteydessä. Kotivaihto ei tallenna lomakekenttiä selaimeen.</p>
+      <p>Asuntolainatarjous- tai myyntiarviopyyntö ei välitä laskurin hinta-, laina- tai muita taloustietoja. Pyyntö muodostaa käyttäjän omassa sähköpostisovelluksessa viestin vain siihen vastaanottajaan, joka on kerrottu pyynnön yhteydessä. Kotivaihto ei tallenna lomakekenttiä selaimeen.</p>
       <h3>Käyttöehdot</h3>
       <p>Kotivaihto on päätöksenteon tuki. Se ei ole kiinteistönvälitys-, arvonmääritys-, vero- tai rahoitusneuvo, eikä laskelma ole tarjous tai luottopäätös. Tarkista aina kohteen asiakirjat, hinnat, kulut ja rahoitus omista lähteistäsi ennen päätöstä.</p>
     </div>
@@ -778,6 +783,10 @@
         $("#print-offer-summary").addEventListener("click", printOfferSummary);
         $("#copy-offer-summary").addEventListener("click", copyOfferSummary);
         $$("[data-lead-type]").forEach(button => button.addEventListener("click", () => openLeadDialog(button.dataset.leadType)));
+        $("#offer-summary-body").addEventListener("click", event => {
+          const button = event.target.closest("[data-lead-type]");
+          if (button) openLeadDialog(button.dataset.leadType);
+        });
         $("#lead-form").addEventListener("submit", submitLeadRequest);
         $("#close-lead").addEventListener("click", closeLeadDialog);
         $("#lead-dialog").addEventListener("close", () => $("#lead-form").reset());
@@ -1023,9 +1032,9 @@
       function leadService(type = activeLeadType) {
         const services = {
           finance: {
-            title: "Pyydä asuntolainaneuvottelua",
-            intro: "Pyydä yhteydenottoa asuntolainaneuvottelua varten. Laskurin raha- tai lainatietoja ei sisällytetä viestiin.",
-            subject: "Kotivaihto: asuntolainaneuvottelun yhteydenottopyyntö",
+            title: "Pyydä asuntolainatarjousta",
+            intro: "Pyydä yhteydenottoa asuntolainaneuvottelua ja mahdollista lainatarjousta varten. Laskurin raha- tai lainatietoja ei sisällytetä viestiin.",
+            subject: "Kotivaihto: asuntolainatarjouksen yhteydenottopyyntö",
             email: launchConfig.leadFinanceEmail || launchConfig.contactEmail,
             partner: launchConfig.leadFinancePartner
           },
@@ -1635,7 +1644,7 @@
         const currentArea = result.current.area ? `${result.current.area.postcode} · ${result.current.area.area}` : "Alue puuttuu";
         const targetArea = result.target.area ? `${result.target.area.postcode} · ${result.target.area.area}` : "Alue puuttuu";
         const checks = buildRisks(result).filter(risk => risk.tone !== "good");
-        $("#offer-summary-body").innerHTML = `<section class="offer-summary-section"><h3>Rahoitus yhdellä silmäyksellä</h3><p>Nykyinen: ${escapeHTML(currentArea)} · Seuraava: ${escapeHTML(targetArea)}</p><div class="offer-summary-metrics"><div class="offer-summary-metric"><span>Velaton hinta</span><strong>${euro(result.target.price)}</strong></div><div class="offer-summary-metric"><span>Yhtiölaina</span><strong>${euro(result.target.companyLoan)}</strong></div><div class="offer-summary-metric"><span>Varainsiirtovero (1,5 %)</span><strong>${euro(result.transferTax)}</strong></div><div class="offer-summary-metric"><span>Uusi rahoitustarve</span><strong>${euro(result.financingNeed)}</strong></div><div class="offer-summary-metric"><span>Uudet asumismenot</span><strong>${euro(result.targetMonthly)}/kk</strong></div><div class="offer-summary-metric"><span>Vaikutus nykyiseen</span><strong>${signedEuro(result.monthlyDelta)}/kk</strong></div></div></section><section class="offer-summary-section"><h3>Varmista ennen tarjousta</h3><p>Alla näkyvät tämän laskelman automaattiset nostot. Tarkista aina myös asiakirjat ja rahoitus.</p><ul class="offer-summary-checks">${checks.length ? checks.map(risk => `<li><strong>${escapeHTML(risk.title)}</strong><br>${escapeHTML(risk.text)}</li>`).join("") : "<li><strong>Ei automaattisia tarkistuskohtia.</strong><br>Tämä ei korvaa kohde- tai asiakirjatarkastusta.</li>"}</ul></section>`;
+        $("#offer-summary-body").innerHTML = `<section class="offer-summary-section"><h3>Rahoitus yhdellä silmäyksellä</h3><p>Nykyinen: ${escapeHTML(currentArea)} · Seuraava: ${escapeHTML(targetArea)}</p><div class="offer-summary-metrics"><div class="offer-summary-metric"><span>Velaton hinta</span><strong>${euro(result.target.price)}</strong></div><div class="offer-summary-metric"><span>Yhtiölaina</span><strong>${euro(result.target.companyLoan)}</strong></div><div class="offer-summary-metric"><span>Varainsiirtovero (1,5 %)</span><strong>${euro(result.transferTax)}</strong></div><div class="offer-summary-metric"><span>Uusi rahoitustarve</span><strong>${euro(result.financingNeed)}</strong></div><div class="offer-summary-metric"><span>Uudet asumismenot</span><strong>${euro(result.targetMonthly)}/kk</strong></div><div class="offer-summary-metric"><span>Vaikutus nykyiseen</span><strong>${signedEuro(result.monthlyDelta)}/kk</strong></div></div></section><section class="offer-summary-section"><h3>Varmista ennen tarjousta</h3><p>Alla näkyvät tämän laskelman automaattiset nostot. Tarkista aina myös asiakirjat ja rahoitus.</p><ul class="offer-summary-checks">${checks.length ? checks.map(risk => `<li><strong>${escapeHTML(risk.title)}</strong><br>${escapeHTML(risk.text)}</li>`).join("") : "<li><strong>Ei automaattisia tarkistuskohtia.</strong><br>Tämä ei korvaa kohde- tai asiakirjatarkastusta.</li>"}</ul><aside class="summary-bank-cta" aria-label="Asuntolainatarjous"><span>Seuraava askel</span><strong>Pyydä pankilta asuntolainatarjousta</strong><p>Yhteydenottopyyntö ei sisällä laskurisi lukuja. Pankki tekee mahdollisen tarjouksen omassa prosessissaan.</p><button class="button" type="button" data-lead-type="finance">Pyydä asuntolainatarjousta</button></aside></section>`;
       }
 
       function printOfferSummary() {
